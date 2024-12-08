@@ -17,6 +17,9 @@ var serviceAccount = require("../firebase/serviceAccountKey.json");
 const { BACKEND_URL } = require("../config/backend-domain");
 const RevokedToken = require("../models/RevokedToken");
 
+// Get JWT secret from environment variable
+const JWT_SECRET = process.env.JWT_SECRET || 'dosti_secret_key_2023';
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -86,7 +89,7 @@ exports.googleLogin = async (req, res, next) => {
     // Generate a JWT token for the user
     const jwtToken = jwt.sign(
       { email: userDoc.email, userId: userDoc._id.toString() },
-      "somesupersecret",
+      JWT_SECRET,
       { expiresIn: "1h" }
     );
 
@@ -121,7 +124,7 @@ exports.facebookLogin = async (req, res, next) => {
     }
 
     // Generate a JWT token for the user
-    const jwtToken = jwt.sign({ userId: userDoc._id.toString() }, "somesupersecret", {
+    const jwtToken = jwt.sign({ userId: userDoc._id.toString() }, JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -163,7 +166,7 @@ exports.login = async (req, res, next) => {
     // Create json webtoken here!!!
     const token = jwt.sign(
       { email: userDoc.email, userId: userDoc._id.toString() },
-      "somesupersecret",
+      JWT_SECRET,
       { expiresIn: "1h" }
     );
 
@@ -216,7 +219,7 @@ exports.adminLogin = async (req, res, next) => {
     // Create json webtoken here!!!
     const token = jwt.sign(
       { email: userDoc.email, userId: userDoc._id.toString(), adminRole: userDoc.role },
-      "somesupersecret",
+      JWT_SECRET,
       { expiresIn: "1h" }
     );
 
