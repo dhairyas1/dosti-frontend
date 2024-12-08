@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Navigation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        :root {
+            --primary-color: #78aafa;
+            --secondary-color: #58b7d7;
+            --success-color: #449ec9;
+            --text-color: #f5f6fa;
+            --background-color: #0b1929;
+            --dark-color: #003050;
+            --complete-color: #4ccf6d;
+            --button-color: #4ccf6d;
+            --button-hover-color: #2c773f;
+            --accent-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 500px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 80px; /* Increased to accommodate larger header */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--dark-color);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-image {
+            width: 150%;
+            height: 180px;
+            object-fit: cover;
+            
+            border: 1px solid black;
+            
+        }
+        .dosti-logo {
+            width: 150%;
+            height: 180px;
+            object-fit: fill;
+            
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .course-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--button-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .course-button:hover {
+            background: var(--button-hover-color);
+        }
+
+        .difficulty {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .beginner { background: #2ecc71; color: white; }
+        .intermediate { background: #f1c40f; color: white; }
+        .advanced { background: var(--accent-color); color: white; }
+
+        .about-button {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .about-button:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Add navigation styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            background-color: #78aafa;
+            box-shadow: 0 0 10px rgba(120, 170, 250, 0.3);
+            padding: 0.5rem 2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .header__wrapper {
+            width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px; /* Increased height */
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .header__logo-img {
+            height: 50px; /* Slightly increased */
+            width: auto;
+        }
+
+        .header__search {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem; /* Increased padding */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 0.85rem; /* Reduced font size */
+            font-family: 'Poppins', sans-serif;
+            height: 45px; /* Explicit height */
+        }
+
+        .search-button {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.8rem 1.2rem;
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .header__nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header__nav-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2rem;
+        }
+
+        .header__nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .header__nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .header__auth {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sign-in-btn {
+            padding: 0.8rem 1.5rem;
+            background: #0b1929;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sign-up-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cart-icon {
+            color: white;
+            font-size: 1.6rem;
+            margin: 0 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .header__wrapper {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header__menu-mobile {
+                display: block;
+            }
+            
+            .header__nav-list {
+                display: none;
+            }
+            
+            .header__search {
+                max-width: 200px;
+            }
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-col {
+            padding: 1rem;
+        }
+
+        .footer-logo-img {
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-title {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer-text {
+            color: var(--text-color);
+            opacity: 0.8;
+            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .featured-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .featured-list {
+            list-style: none;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .featured-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .featured-list a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .featured-list a:hover {
+            opacity: 1;
+        }
+
+        .social-list {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            background: transparent;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .social-btn:hover {
+            background: var(--text-color);
+            color: var(--dark-color);
+        }
+
+        @media (max-width: 768px) {
+            .footer-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-links-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Add navigation bar -->
+    <header class="header">
+        <div class="header__wrapper">
+            <a href="/" class="header__logo">
+                <img src="src/assets/images/logo.png" alt="Codey AI Logo" class="header__logo-img">
+            </a>
+            
+            <div class="header__search">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search to find your suitable courses">
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="header__nav">
+                <ul class="header__nav-list">
+                    <li class="header__nav-item">
+                        <a href="http://localhost:8000/" class="header__nav-link">Home</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="http://localhost:8000/courses" class="header__nav-link">Courses</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="http://localhost:8000/contact" class="header__nav-link">Contact</a>
+                    </li>
+                    <li class="header__nav-item">
+                        <a href="http://localhost:8000/about-us" class="header__nav-link">About us</a>
+                    </li>
+                </ul>
+                
+                <a href="http://localhost:8000/cart" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+                
+                <div class="header__auth">
+                    <button class="sign-in-btn">Sign in</button>
+                    <button class="sign-up-btn">Sign up</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="courses-grid">
+            <div class="course-card">
+                <img src="src/assets/images/logo.png" alt="Course 1" class="course-image" onerror="this.src='assets/images/default-course.jpg'" >
+                <div class="course-content">
+                    <h2 class="course-title">Python for Begginers</h2>
+                    <p class="course-description">This course is designed for beginners who want to learn the basics of Python programming. It covers the fundamental concepts of Python, including data types, variables, control structures, functions, and object-oriented programming. By the end of this course, you will be able to write your own Python programs and understand how to apply Python to real-world problems.</p>
+                    <div class="course-meta">
+                        <span>No. of Lessons: 6</span>
+                    </div>
+                    <br>
+                    <a href="course_1.html" class="course-button">Start Learning</a>  
+                </div>
+            </div>
+
+            <!-- <div class="course-card">
+                <img src="src/assets/images/logo.png" alt="Course 2" class="course-image" onerror="this.src='assets/images/default-course.jpg'">
+                <div class="course-content">
+                    <h2 class="course-title">Course 2</h2>
+                    <p class="course-description">Description</p>
+                    <div class="course-meta">
+                        <span>Num of Lessons</span>
+                    </div>
+                    <br>
+                    <a href="course_2.html" class="course-button">Start Learning</a>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <img src="src/assets/images/logo.png" alt="Course 3" class="course-image" onerror="this.src='assets/images/default-course.jpg'">
+                <div class="course-content">
+                    <h2 class="course-title">Course 3</h2>
+                    <p class="course-description">Description</p>
+                    <div class="course-meta">
+                        <span>Num of Lessons</span>
+                    </div>
+                    <br>
+                    <a href="course_3.html" class="course-button">Start Learning</a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <!-- Column 1 -->
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="src/assets/images/logo.png" alt="Codey AI Logo" class="footer-logo-img">
+                    </div>
+                    <p class="footer-text">
+                        By Project Dosti<br/><br/>
+                        Our mission is to empower remote and underserved communities through access to technology and digital literacy, fostering opportunities for economic development and personal growth.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="footer-col">
+                    <h3 class="footer-title">Featured links</h3>
+                    <div class="featured-links-grid">
+                        <ul class="featured-list">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/coursehome">Courses</a></li>
+                            <a href="http://localhost:8000/contact" class="course-button">Contact</a>
+
+                        </ul>
+                        <ul class="featured-list">
+                            <li><a href="/contact">Contact Us</a></li>
+                            <li><a href="/terms">Terms & Conditions</a></li>
+                            <li><a href="/cookie-policy">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="footer-col">
+                    <h3 class="footer-title">Connect with us</h3>
+                    <div class="social-list">
+                        <button title="facebook" class="social-btn">
+                            <i class="fab fa-facebook"></i>
+                        </button>
+                        <button title="twitter" class="social-btn">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button title="linkedin" class="social-btn">
+                            <i class="fab fa-linkedin"></i>
+                        </button>
+                        <button title="youtube" class="social-btn">
+                            <i class="fab fa-youtube"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/static/js/bundle.js"></script>
+    <div id="root"></div>
+    </body>
+    </html>
