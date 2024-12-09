@@ -14,46 +14,7 @@ router.put("/signup", authController.signup);
 router.post("/login", authController.login);
 
 // POST Logout
-
-router.post("/logout", isUserAuth, authController.logout);
-
-// POST ADMIN LOGOUT
-router.post("/admin/logout", isAuth, authController.adminLogout);
-
-// POST google login
-router.post("/google-login", authController.googleLogin);
-
-// POST facebook login
-
-router.post("/facebook-login", authController.facebookLogin);
-
-// POST admin-login
-router.post("/admin-login", authController.adminLogin);
-
-// Check exisiting Email (Account with provider ID)
-
-router.post("/exisiting-email", authController.checkExistingEmail);
-
-// Check existing Facebook
-
-router.post("/exisiting-fb", authController.checkExistingFacebook);
-
-// router.get("/reset", authController.getReset);
-
-router.post("/reset", authController.postReset);
-
-router.get("/reset/:token", authController.getNewPassword);
-
-router.post("/new-password", authController.postNewPassword);
-
-// POST reset password
-
-router.post("/reset", authController.postResetPassword);
-
-// Update User with last login
-
-router.patch("/:userId/last-login", authController.updateLastLogin);
-
-// router.get("/status", authController.getUserStatus);
+router.post("/logout", extractToken, authController.logout);
 
 module.exports = router;
+
