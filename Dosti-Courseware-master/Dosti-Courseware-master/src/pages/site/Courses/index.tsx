@@ -216,20 +216,11 @@ const Courses = () => {
                     return (
                       <li key={author[1]._id} className='authors-filter__item'>
                         <Checkbox
-                          value={author[1]._id}
                           checked={filterParams._author.includes(author[1]._id)}
-                          onChange={filterAuthorsHandler}
+                          onChange={(e) => filterAuthorsHandler(e)}
                         >
                           {author[1].name}
                         </Checkbox>
-                        {/* <a
-                          onClick={filterAuthorsHandler}
-                          className='authors-filter__item-link'
-                          href=''
-                          author-id={author[1]._id}
-                        >
-                          {author[1].name}
-                        </a> */}
                       </li>
                     );
                   })}
@@ -251,9 +242,8 @@ const Courses = () => {
                     return (
                       <li key={index} className='course-level__item'>
                         <Checkbox
-                          value={level}
                           checked={filterParams._level.includes(level)}
-                          onChange={filterLevelHandler}
+                          onChange={(e) => filterLevelHandler(e)}
                         >
                           {level}
                         </Checkbox>
@@ -290,12 +280,18 @@ const Courses = () => {
               <div className='course-by-price'>
                 <ul className='course-by-price__list'>
                   <li className='course-by-price__item'>
-                    <Checkbox value='Free' checked={filterParams._price.includes('Free')} onChange={filterPriceHandler}>
+                    <Checkbox 
+                      checked={filterParams._price.includes('Free')} 
+                      onChange={(e) => filterPriceHandler(e)}
+                    >
                       Free
                     </Checkbox>
                   </li>
                   <li className='course-by-price__item'>
-                    <Checkbox value='Paid' checked={filterParams._price.includes('Paid')} onChange={filterPriceHandler}>
+                    <Checkbox 
+                      checked={filterParams._price.includes('Paid')} 
+                      onChange={(e) => filterPriceHandler(e)}
+                    >
                       Paid
                     </Checkbox>
                   </li>

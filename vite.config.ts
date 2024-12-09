@@ -12,16 +12,19 @@ export default defineConfig(({ command, mode }) => {
       port: 8000,
       proxy: {
         '/api': {
-          target: command === 'serve' ? 'http://localhost:9000' : env.VITE_API_URL,
+          target: 'https://dosti-backend-1ign.onrender.com',
           changeOrigin: true,
-          secure: command !== 'serve',
-          rewrite: (path) => path.replace(/^\/api/, ''),
-          configure: (proxy, _options) => {
-            proxy.on('proxyReq', (proxyReq, req, _res) => {
-              if (req.headers.userid) {
-                proxyReq.setHeader('userid', req.headers.userid);
-              }
-            });
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+          modifyVars: {
+            'primary-color': '#1890ff'
           }
         }
       }
@@ -35,16 +38,20 @@ export default defineConfig(({ command, mode }) => {
             vendor: ['react', 'react-dom', 'react-router-dom'],
             antd: ['antd']
           }
-        },
-        external: ['antd/dist/reset.css']
-      },
-      css: {
-        preprocessorOptions: {
-          less: {
-            javascriptEnabled: true
-          }
         }
+      },
+      commonjsOptions: {
+        transformMixedEsModules: true,
+        include: [/node_modules/]
+      }
+    },
+    optimizeDeps: {
+      include: ['antd']
+    },
+    resolve: {
+      alias: {
+        'antd/dist/reset.css': 'node_modules/antd/dist/reset.css'
       }
     }
   }
-})
+}) 

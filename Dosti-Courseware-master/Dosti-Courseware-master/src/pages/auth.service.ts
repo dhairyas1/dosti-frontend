@@ -178,14 +178,25 @@ export const authApi = createApi({
     }),
     signup: build.mutation<signupResponse, Omit<IUser, '_id'>>({
       query(body) {
-        return {
-          url: `signup`,
-          method: 'PUT',
-          body
-        };
+        try {
+          return {
+            url: `signup`,
+            method: 'POST',
+            body
+          };
+        } catch (error: any) {
+          console.error('Signup error:', error);
+          throw new CustomError(error.message || 'Signup failed');
+        }
       },
       // Trong trường hợp này thì Authentication sẽ chạy lại
-      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error, data) => {
+        if (error) {
+          console.error('Signup invalidation error:', error);
+          return [];
+        }
+        return [{ type: 'Authentication', id: 'LIST' }];
+      }
     }),
     resetPassword: build.mutation<IUser, { id: string; body: IUser }>({
       query(data) {
