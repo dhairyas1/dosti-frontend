@@ -19,6 +19,7 @@ const Signup: React.FC<SignupProps> = (props) => {
 
   const onFinish = (formValues: { email: string; password: string; name: string }) => {
     setIsSubmitting(true);
+    console.log('Starting signup process with values:', formValues);
 
     const userInfo: Omit<IUser, '_id'> = {
       email: formValues.email,
@@ -28,24 +29,28 @@ const Signup: React.FC<SignupProps> = (props) => {
       providerId: 'local',
       fbUserId: ''
     };
+    console.log('Prepared user info:', userInfo);
 
     signup(userInfo)
       .unwrap()
       .then((result) => {
+        console.log('Signup success:', result);
         notification.success({ message: result.message });
         form.resetFields();
         props.onClick('login');
       })
       .catch((error) => {
+        console.error('Signup error:', error);
         notification.error({ message: 'Signup failed', description: error.data?.message || 'Please try again' });
       })
       .finally(() => {
+        console.log('Signup process completed');
         setIsSubmitting(false);
       });
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    console.error('Form validation failed:', errorInfo);
   };
 
   const navigateSignupHandler = (e: React.MouseEvent) => {

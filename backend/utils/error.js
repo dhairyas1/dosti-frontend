@@ -1,8 +1,8 @@
 class CustomError extends Error {
-  constructor(errorType, message) {
-    super();
-    this.errorType = errorType;
-    this.message = message;
+  constructor(type, message) {
+    super(message);
+    this.type = type;
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 

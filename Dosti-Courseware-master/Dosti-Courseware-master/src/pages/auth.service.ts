@@ -181,7 +181,7 @@ export const authApi = createApi({
         try {
           return {
             url: `signup`,
-            method: 'POST',
+            method: 'PUT',
             body
           };
         } catch (error: any) {

@@ -1,19 +1,22 @@
 // models/RevokedToken.js
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const revokedTokenSchema = new mongoose.Schema({
-  token: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    // expires: 60 * 60,
-    expires: 60 * 60 * 24 * 7, // The token will be automatically removed from the collection after 7 days
-  },
-});
+const revokedTokenSchema = new Schema({
+    token: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    revokedAt: {
+        type: Date,
+        required: true,
+        default: Date.now
+    }
+}, { timestamps: true });
 
-module.exports = mongoose.model("RevokedToken", revokedTokenSchema);
+// Add TTL index to automatically remove tokens after 24 hours
+revokedTokenSchema.index({ revokedAt: 1 }, { expireAfterSeconds: 86400 });
+
+module.exports = mongoose.model('RevokedToken', revokedTokenSchema);

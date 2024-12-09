@@ -2,31 +2,31 @@ name: Deploy to Firebase
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v3
+
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'  # or your Node version
-          
+          node-version: '18'
+
       - name: Install Dependencies
+        working-directory: Dosti-Courseware-master/Dosti-Courseware-master
         run: npm install
-        
+
       - name: Build
+        working-directory: Dosti-Courseware-master/Dosti-Courseware-master
         run: npm run build
-        env:
-          FIREBASE_SERVICE_ACCOUNT_DOSTI_CODEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOSTI_CODEY }}
-          
+
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: dosti-codey
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOSTI_CODEY }}'
+          channelId: live
+          projectId: dosti-codey

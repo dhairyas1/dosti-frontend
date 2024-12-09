@@ -23,11 +23,19 @@ admin.initializeApp({
 });
 
 exports.signup = async (req, res, next) => {
+  console.log('Signup request received:', {
+    body: req.body,
+    headers: req.headers,
+    method: req.method
+  });
+
   const { email, name, password, role, avatar, providerId, fbUserId } = req.body;
+  console.log('Parsed signup data:', { email, name, role });
 
   try {
     // Basic validation
     if (!email || !password) {
+      console.log('Validation error: missing email or password');
       const error = new customError("validation", "Email and password are required!");
       error.statusCode = 422;
       throw error;
@@ -35,6 +43,7 @@ exports.signup = async (req, res, next) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('Signup error: email already exists');
       const error = new customError("email", "Email already exists!");
       error.statusCode = 422;
       throw error;
@@ -43,7 +52,7 @@ exports.signup = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     const userData = {
       email,
-      name,
+      name: name || email.split('@')[0],
       password: hashedPassword,
       role: role || 'USER',
       avatar,
@@ -54,10 +63,11 @@ exports.signup = async (req, res, next) => {
       userData.fbUserId = fbUserId;
     }
 
+    console.log('Creating new user with data:', { ...userData, password: '[HIDDEN]' });
     const newUser = new User(userData);
     const result = await newUser.save();
+    console.log('User created successfully:', result._id);
 
-    // Create token for immediate login
     const token = jwt.sign(
       { email: result.email, userId: result._id.toString(), role: result.role },
       JWT_SECRET,
@@ -71,6 +81,7 @@ exports.signup = async (req, res, next) => {
       role: result.role
     });
   } catch (error) {
+    console.error('Signup error:', error);
     if (!error.statusCode) {
       error.statusCode = 500;
     }
@@ -80,24 +91,31 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log('Login attempt:', { email });
 
   try {
     if (!email || !password) {
+      console.log('Validation error: missing email or password');
       const error = new customError("validation", "Email and password are required!");
       error.statusCode = 422;
       throw error;
     }
 
     const userDoc = await User.findOne({ email, providerId: "local" });
+    console.log('User found:', userDoc ? 'yes' : 'no');
 
     if (!userDoc) {
+      console.log('Authentication failed: user not found');
       const error = new customError("auth", "Invalid email or password!");
       error.statusCode = 401;
       throw error;
     }
 
     const isMatched = await bcrypt.compare(password, userDoc.password);
+    console.log('Password match:', isMatched ? 'yes' : 'no');
+    
     if (!isMatched) {
+      console.log('Authentication failed: password mismatch');
       const error = new customError("auth", "Invalid email or password!");
       error.statusCode = 401;
       throw error;
@@ -118,6 +136,8 @@ exports.login = async (req, res, next) => {
     userDoc.loginTokenExpiration = Date.now() + 60 * 60 * 1000;
     await userDoc.save();
 
+    console.log('Login successful for user:', userDoc.email);
+    
     res.status(200).json({
       message: "Login successful!",
       token: token,
@@ -125,6 +145,7 @@ exports.login = async (req, res, next) => {
       role: userDoc.role
     });
   } catch (error) {
+    console.error('Login error:', error);
     if (!error.statusCode) {
       error.statusCode = 500;
     }
@@ -142,7 +163,7 @@ exports.logout = async (req, res, next) => {
       throw error;
     }
 
-    // Add token to revoked tokens
+    // Add token to revoked tokens list
     const revokedToken = new RevokedToken({
       token: tokenToRevoke,
       revokedAt: new Date()
