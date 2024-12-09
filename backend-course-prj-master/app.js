@@ -18,40 +18,32 @@ const clientRouter = require("./routes/client");
 const reportRouter = require("./routes/report");
 const app = express();
 
-const port = process.env.PORT || 9000;
-
-// const MONGODB_URI = "mongodb://127.0.0.1:27017/fullstack_es6";
+// Port configuration for Render
+const port = process.env.PORT || 3000;
 
 const MONGODB_URI =
   "mongodb+srv://projectdosti:Dhairya1212@dosti.peeng.mongodb.net/?retryWrites=true&w=majority&appName=Dosti";
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:8000', 'http://127.0.0.1:8000'],
+  origin: ['http://localhost:8000', 'http://127.0.0.1:8000', 'https://dosti-site.web.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'userId', 'adminRole', 'userRole'],
   credentials: true
 }));
 
-// Other middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, userId, adminRole, userRole"
-  );
-  next();
+// Health check endpoint for Render
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
 });
 
-// uploadCategoryMiddleware,
+// Routes
 app.use("/auth", authRouter);
 app.use("/admin", adminCategoryRouter);
 app.use("/admin", adminCourseRouter);
@@ -62,10 +54,9 @@ app.use("/admin", adminOrderRouter);
 app.use("/admin", reportRouter);
 app.use(clientRouter);
 
-// Middleware handler error!!! (custom error here!!!)
+// Error handling middleware
 app.use((error, req, res, next) => {
   console.log(error);
-
   const status = error.statusCode || 500;
   const message = error.message;
   const errorType = error.errorType || "unknown";
@@ -78,18 +69,17 @@ app.use((error, req, res, next) => {
   });
 });
 
-mongoose
-  .connect(MONGODB_URI)
-  .then((result) => {
-    app.listen(port, () => {
-      console.log(`App listening on port ${port}`);
+// Start server first, then connect to MongoDB
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
+  
+  // Connect to MongoDB after server starts
+  mongoose
+    .connect(MONGODB_URI)
+    .then(() => {
+      console.log('Connected to MongoDB');
+    })
+    .catch((err) => {
+      console.log('MongoDB connection error:', err);
     });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-
-app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
 });
