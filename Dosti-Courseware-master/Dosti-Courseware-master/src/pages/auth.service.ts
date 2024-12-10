@@ -42,18 +42,30 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/auth`,
     prepareHeaders(headers) {
+      headers.set('Content-Type', 'application/json');
+      headers.set('Accept', 'application/json');
+      
       const adminToken = localStorage.getItem('adminToken');
       const token = localStorage.getItem('token');
+      
       if (adminToken) {
-        headers.set('authorization', `Bearer ${adminToken}`);
+        headers.set('Authorization', `Bearer ${adminToken}`);
         headers.set('adminRole', 'admin');
       }
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
         headers.set('userRole', 'user');
       }
-      // Set some headers here !
+      
       return headers;
+    },
+    fetchFn: async (input: RequestInfo | URL, init?: RequestInit) => {
+      const modifiedInit: RequestInit = {
+        ...init,
+        mode: 'cors',
+        credentials: 'include'
+      };
+      return fetch(input, modifiedInit);
     }
   }),
   endpoints: (build) => ({
@@ -69,6 +81,7 @@ export const authApi = createApi({
             url: 'login',
             method: 'POST',
             body,
+            credentials: 'include',
             validateStatus: (response, result) => 
               response.status === 200 || response.status === 401 || response.status === 422
           };
@@ -86,104 +99,57 @@ export const authApi = createApi({
       }
     }),
     logout: build.mutation<loginResponse, void>({
-      query(body) {
-        try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
-          return {
-            url: 'logout',
-            method: 'POST',
-            body
-          };
-        } catch (error: any) {
-          throw new CustomError((error as CustomError).message);
-        }
+      query() {
+        return {
+          url: 'logout',
+          method: 'POST',
+          credentials: 'include'
+        };
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Authentication sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
     adminLogout: build.mutation<loginResponse, void>({
-      query(body) {
-        try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
-          return {
-            url: 'admin/logout',
-            method: 'POST',
-            body
-          };
-        } catch (error: any) {
-          throw new CustomError((error as CustomError).message);
-        }
+      query() {
+        return {
+          url: 'admin/logout',
+          method: 'POST',
+          credentials: 'include'
+        };
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Authentication sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
 
     updateLastLogin: build.mutation<loginResponse, { userId: string; lastLogin: Date }>({
       query(body) {
-        try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
-          return {
-            url: `${body.userId}/last-login`,
-            method: 'PATCH',
-            body: {
-              lastLogin: body.lastLogin
-            }
-          };
-        } catch (error: any) {
-          throw new CustomError((error as CustomError).message);
-        }
+        return {
+          url: `${body.userId}/last-login`,
+          method: 'PATCH',
+          body: { lastLogin: body.lastLogin },
+          credentials: 'include'
+        };
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Authentication sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
 
     adminLogin: build.mutation<loginResponse, { email: string; password: string }>({
       query(body) {
-        try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
-          return {
-            url: 'admin-login',
-            method: 'POST',
-            body
-          };
-        } catch (error: any) {
-          throw new CustomError((error as CustomError).message);
-        }
+        return {
+          url: 'admin-login',
+          method: 'POST',
+          body,
+          credentials: 'include'
+        };
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Authentication sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
     signup: build.mutation<signupResponse, Omit<IUser, '_id'>>({
       query(body) {
         try {
           return {
-            url: `signup`,
+            url: 'signup',
             method: 'PUT',
             body,
+            credentials: 'include',
             validateStatus: (response, result) => 
               response.status === 201 || response.status === 422
           };
@@ -203,12 +169,12 @@ export const authApi = createApi({
     resetPassword: build.mutation<IUser, { id: string; body: IUser }>({
       query(data) {
         return {
-          url: `signup`,
+          url: 'signup',
           method: 'PUT',
-          body: data.body
+          body: data.body,
+          credentials: 'include'
         };
       },
-      // Trong trường hợp này thì Authentication sẽ chạy lại
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: data.id }])
     })
   })
