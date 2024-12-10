@@ -16,23 +16,23 @@ export enum CourseLevel {
 
 export interface ICourse {
   _id: string;
-  name: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  finalPrice: number;
-  level: CourseLevel;
-  author: string;
-  topics: string[];
-  duration: number;
-  access: AccessStatus;
-  courseSlug: string;
-  categoryId: {
+  name?: string;
+  title?: string;
+  description?: string;
+  thumbnail?: string;
+  price?: number;
+  finalPrice?: number;
+  level?: CourseLevel;
+  author?: string;
+  topics?: string[];
+  duration?: number;
+  access?: AccessStatus;
+  courseSlug?: string;
+  categoryId?: {
     _id: string;
     name: string;
   };
-  userId: {
+  userId?: {
     _id: string;
     name: string;
     avatar: string;
@@ -44,12 +44,35 @@ export interface ICourse {
   updatedAt?: string;
   subTitle?: string;
   willLearns?: string[];
-  lessons?: number;
-  sections?: number;
+  lessons?: number | ILesson[];
+  sections?: number | ISection[];
   numOfReviews?: number;
   totalVideosLength?: number;
   avgRatingStars?: number;
   isBought?: boolean;
+  requirements?: string[];
+}
+
+export interface ILesson {
+  _id: string;
+  name: string;
+  sectionId: string;
+  type: string;
+  content: string;
+  access: string;
+  description: string;
+  videoLength: number;
+  isDone?: boolean;
+}
+
+export interface ISection {
+  _id: string;
+  name: string;
+  courseId: string;
+  description: string;
+  access: string;
+  numOfLessons?: number;
+  totalVideosLength?: number;
 }
 
 // When is use is enrolled ? (bought the course, click enroll if course is free)

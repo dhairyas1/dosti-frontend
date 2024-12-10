@@ -91,7 +91,7 @@ export interface getCourseResponse {
   message: string;
 }
 
-export interface ICourseEnrolledByUser extends ICourse {
+export interface ICourseEnrolledByUser extends Omit<ICourse, 'lessons' | 'sections'> {
   progress: number;
   totalVideosLengthDone: number;
   isBought: boolean;
@@ -132,7 +132,7 @@ export interface getUserResponse {
   message: string;
 }
 
-export interface IUserDetail extends IUser {
+export interface IUserDetail extends Omit<IUser, 'courses'> {
   courses: ICourseEnrolledByUser[];
 }
 
