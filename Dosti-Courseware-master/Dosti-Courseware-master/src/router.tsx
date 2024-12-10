@@ -1,4 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
 import RootAdminLayout from './components/AdminLayout/RootLayout';
 import RootSiteLayout from './components/layout/RootLayout';
@@ -33,6 +35,12 @@ import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import { UserRole } from './types/user.type';
 
+// Create a wrapper component to handle auth state
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  return isAuth ? <>{children}</> : <Navigate to="/" />;
+};
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -57,11 +65,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'start',
-        element: isAuth ? <StartLearning /> : <ErrorPage page='/' />
+        element: <ProtectedRoute><StartLearning /></ProtectedRoute>
       },
       {
         path: 'profile',
-        element: isAuth ? <Profile /> : <ErrorPage page='/' />
+        element: <ProtectedRoute><Profile /></ProtectedRoute>
       },
       {
         path: 'view-cart',
@@ -69,11 +77,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'checkout',
-        element: isAuth ? <Checkout /> : <ErrorPage page='/' />
+        element: <ProtectedRoute><Checkout /></ProtectedRoute>
       },
       {
         path: 'order-completed',
-        element: isAuth ? <OrderCompleted /> : <ErrorPage page='/' />
+        element: <ProtectedRoute><OrderCompleted /></ProtectedRoute>
       },
       {
         path: 'contact',

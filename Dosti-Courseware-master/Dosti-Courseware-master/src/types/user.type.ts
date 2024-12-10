@@ -13,8 +13,19 @@ export interface IUser {
   email: string;
   password?: string;
   role: UserRole;
+  phone?: string;
+  address?: string;
   avatar?: string;
   bio?: string;
   activities?: string[];
-  // Add other user fields as needed
+  courses?: ICourse[];
+  createdAt?: string;
+  updatedAt?: string;
+  lastLogin?: string;
+  tags?: string[];
+  providerId?: string;
+  resetToken?: string;
+  resetTokenExpiration?: string;
+  loginToken?: string;
+  loginTokenExpiration?: string;
 }

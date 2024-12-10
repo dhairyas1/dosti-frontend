@@ -16,28 +16,17 @@ export enum CourseLevel {
 
 export interface ICourse {
   _id: string;
-  name: string;
-  subTitle?: string;
-  views?: number;
+  title: string;
   description: string;
-  price: number;
-  finalPrice: number;
-  access: AccessStatus;
-  level: CourseLevel;
   thumbnail: string;
-  courseSlug: string;
-  categoryId: {
-    _id: string;
-    name: string;
-  }; // id of Lập trình/Khoa học máy tính
-  userId: {
-    _id: string;
-    name: string;
-    avatar: string;
-  }; // FK
-  requirements?: string[];
-  willLearns?: string[];
-  tags?: string[];
+  price: number;
+  level: string;
+  author: string;
+  topics: string[];
+  duration: number;
+  rating?: number;
+  reviews?: number;
+  students?: number;
   createdAt?: string;
   updatedAt?: string;
 }
