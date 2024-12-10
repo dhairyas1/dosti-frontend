@@ -16,19 +16,33 @@ export enum CourseLevel {
 
 export interface ICourse {
   _id: string;
+  name: string;
   title: string;
   description: string;
   thumbnail: string;
   price: number;
+  finalPrice: number;
   level: string;
   author: string;
   topics: string[];
   duration: number;
+  access: AccessStatus;
+  courseSlug: string;
+  categoryId: {
+    _id: string;
+    name: string;
+  };
+  userId: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
   rating?: number;
   reviews?: number;
   students?: number;
   createdAt?: string;
   updatedAt?: string;
+  subTitle?: string;
 }
 
 // When is use is enrolled ? (bought the course, click enroll if course is free)
