@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://dosti-backend.onrender.com'; 
+export const BACKEND_URL = 'https://dosti-backend-1ign.onrender.com'; 
