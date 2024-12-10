@@ -25,28 +25,25 @@ const MONGODB_URI =
   "mongodb+srv://projectdosti:Dhairya1212@dosti.peeng.mongodb.net/?retryWrites=true&w=majority&appName=Dosti";
 
 // CORS configuration
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://dosti-codey.web.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, userId, adminRole, userRole');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(cors({
-  origin: [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://dosti-site.web.app',
-    'https://dosti-codey.web.app',
-    'https://dosti-frontend.web.app'
-  ],
+  origin: 'https://dosti-codey.web.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'userId',
-    'adminRole',
-    'userRole',
-    'Access-Control-Allow-Origin',
-    'Access-Control-Allow-Methods',
-    'Access-Control-Allow-Headers'
-  ],
+  allowedHeaders: ['Content-Type', 'Authorization', 'userId', 'adminRole', 'userRole'],
   credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 200
 }));
 
 // Middleware
