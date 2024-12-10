@@ -13,6 +13,7 @@ import { useGetCategoriesQuery } from '../../../Categories/category.service';
 const initStateCourse: ICourse = {
   _id: '',
   name: '',
+  title: '',
   description: '',
   price: 0,
   finalPrice: 0,
@@ -20,6 +21,9 @@ const initStateCourse: ICourse = {
   level: CourseLevel.BEGINNER,
   thumbnail: '',
   courseSlug: '',
+  author: '',
+  topics: [],
+  duration: 0,
   categoryId: {
     _id: '',
     name: ''

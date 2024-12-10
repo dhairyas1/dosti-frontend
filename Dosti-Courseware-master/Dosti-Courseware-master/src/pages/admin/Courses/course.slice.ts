@@ -15,6 +15,7 @@ const initialState: CourseState = {
   formData: {
     _id: '',
     name: '',
+    title: '',
     description: '',
     price: 0,
     finalPrice: 0,
@@ -22,6 +23,9 @@ const initialState: CourseState = {
     level: CourseLevel.BEGINNER,
     thumbnail: '',
     courseSlug: '',
+    author: '',
+    topics: [],
+    duration: 0,
     categoryId: {
       _id: '',
       name: ''
