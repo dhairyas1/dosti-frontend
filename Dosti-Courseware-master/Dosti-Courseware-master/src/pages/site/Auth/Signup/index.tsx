@@ -25,7 +25,7 @@ const Signup: React.FC<SignupProps> = (props) => {
       email: formValues.email,
       password: formValues.password,
       name: formValues.name,
-      role: "USER",
+      role: UserRole.USER,
       providerId: 'local',
       fbUserId: ''
     };

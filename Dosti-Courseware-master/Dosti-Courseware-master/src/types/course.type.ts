@@ -22,7 +22,7 @@ export interface ICourse {
   thumbnail: string;
   price: number;
   finalPrice: number;
-  level: string;
+  level: CourseLevel;
   author: string;
   topics: string[];
   duration: number;
@@ -43,6 +43,13 @@ export interface ICourse {
   createdAt?: string;
   updatedAt?: string;
   subTitle?: string;
+  willLearns?: string[];
+  lessons?: number;
+  sections?: number;
+  numOfReviews?: number;
+  totalVideosLength?: number;
+  avgRatingStars?: number;
+  isBought?: boolean;
 }
 
 // When is use is enrolled ? (bought the course, click enroll if course is free)

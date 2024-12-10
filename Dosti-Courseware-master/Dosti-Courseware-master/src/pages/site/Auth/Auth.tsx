@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../../../auth.service';
+import { useLoginMutation } from '../../../pages/auth.service';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
