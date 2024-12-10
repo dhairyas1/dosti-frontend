@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import App from './App.tsx';
-import { store } from './store/store.ts';
+import App from './App';
+import { store } from './store/store';
 import 'antd/dist/antd.min.css';
 
 // Create the portal container for notifications

@@ -122,14 +122,21 @@ const Header = () => {
     setAuthState(authState);
   };
 
+  const [api, contextHolder] = notification.useNotification();
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    api[type]({
+      message,
+      placement: 'topRight',
+    });
+  };
+
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'logout') {
       logout()
         .unwrap()
         .then((result) => {
-          notification.success({
-            message: result.message
-          });
+          showNotification('success', result.message);
         })
         .catch((error) => {
           console.log('error: ', error);
