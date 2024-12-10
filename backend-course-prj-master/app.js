@@ -26,10 +26,27 @@ const MONGODB_URI =
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:8000', 'http://127.0.0.1:8000', 'https://dosti-site.web.app'],
+  origin: [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://dosti-site.web.app',
+    'https://dosti-codey.web.app',
+    'https://dosti-frontend.web.app'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'userId', 'adminRole', 'userRole'],
-  credentials: true
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'userId',
+    'adminRole',
+    'userRole',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Methods',
+    'Access-Control-Allow-Headers'
+  ],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 // Middleware
