@@ -65,24 +65,25 @@ export const authApi = createApi({
     login: build.mutation<loginResponse, { email: string; password: string }>({
       query(body) {
         try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
           return {
             url: 'login',
             method: 'POST',
-            body
+            body,
+            validateStatus: (response, result) => 
+              response.status === 200 || response.status === 401 || response.status === 422
           };
         } catch (error: any) {
-          throw new CustomError((error as CustomError).message);
+          console.error('Login error:', error);
+          throw new CustomError(error.message || 'Login failed');
         }
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Authentication sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      invalidatesTags: (result, error, body) => {
+        if (error) {
+          console.error('Login error:', error);
+          return [];
+        }
+        return [{ type: 'Authentication', id: 'LIST' }];
+      }
     }),
     logout: build.mutation<loginResponse, void>({
       query(body) {
@@ -182,14 +183,15 @@ export const authApi = createApi({
           return {
             url: `signup`,
             method: 'PUT',
-            body
+            body,
+            validateStatus: (response, result) => 
+              response.status === 201 || response.status === 422
           };
         } catch (error: any) {
           console.error('Signup error:', error);
           throw new CustomError(error.message || 'Signup failed');
         }
       },
-      // Trong trường hợp này thì Authentication sẽ chạy lại
       invalidatesTags: (result, error, data) => {
         if (error) {
           console.error('Signup invalidation error:', error);
