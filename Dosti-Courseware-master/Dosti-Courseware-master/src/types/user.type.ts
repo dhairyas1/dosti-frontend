@@ -2,8 +2,8 @@ import { ICourse } from './course.type';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
-  STUDENT = 'STUDENT',
   TEACHER = 'TEACHER',
+  STUDENT = 'STUDENT',
   USER = 'USER'
 }
 
@@ -13,17 +13,8 @@ export interface IUser {
   email: string;
   password?: string;
   role: UserRole;
-  phone: string;
-  address?: string;
   avatar?: string;
-  courses?: ICourse[];
-  createdAt?: string;
-  updatedAt?: string;
-  lastLogin?: string;
-  tags?: string[];
-  providerId?: string; // maybe improve later
-  resetToken?: string;
-  resetTokenExpiration?: string;
-  loginToken?: string;
-  loginTokenExpiration?: string;
+  bio?: string;
+  activities?: string[];
+  // Add other user fields as needed
 }
