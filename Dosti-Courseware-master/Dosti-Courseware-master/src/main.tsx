@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import { store } from './store/store';
-import 'antd/dist/antd.min.css';
+import 'antd/dist/reset.css';
 
 // Create the portal container for notifications
 const notificationRoot = document.createElement('div');
