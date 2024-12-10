@@ -1,6 +1,7 @@
 import { MenuOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Drawer, Dropdown, Modal, Space, notification } from 'antd';
+import type { NotificationInstance } from 'antd/es/notification/interface';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -122,10 +123,10 @@ const Header = () => {
     setAuthState(authState);
   };
 
-  const [api, contextHolder] = notification.useNotification();
+  const [notificationApi, notificationContextHolder] = notification.useNotification();
 
   const showNotification = (type: 'success' | 'error', message: string) => {
-    api[type]({
+    notificationApi[type]({
       message,
       placement: 'topRight',
     });
@@ -140,6 +141,7 @@ const Header = () => {
         })
         .catch((error) => {
           console.log('error: ', error);
+          showNotification('error', 'Logout failed');
         });
       dispatch(setUnauthenticated());
     }
@@ -175,80 +177,83 @@ const Header = () => {
   };
 
   return (
-    <div className='header'>
-      <div className='header__wrapper'>
-        <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' />
-        <Link to='/' className='header__logo'>
-          <img src={Logo} alt='Codey AI Logo' className='header__logo-img' />
-        </Link>
-        <div className='header__nav'>
-          <ul className='header__nav-list'>
-            <li className='header__nav-item'>
-              <Link to='/' className='header__nav-link'>
-                Home
-              </Link>
-            </li>
-            <li className='header__nav-item'>
-              <Link to='/course-home' className='header__nav-link'>
-                Courses
-              </Link>
-            </li>
-            <li className='header__nav-item'>
-              <Link to='/contact' className='header__nav-link'>
-                Contact
-              </Link>
-            </li>
-            <li className='header__nav-item'>
-              <Link to='/about-us' className='header__nav-link'>
-                About us
-              </Link>
-            </li>
-          </ul>
-          {isAuth && (
-            <div className='header__nav-item header__nav-item--user'>
-              <Dropdown menu={menuUserProps} placement='bottomRight'>
-                <Badge dot={true}>
-                  <Avatar className='header__nav-item-user-icon' src={userData?.avatar} />
-                </Badge>
-              </Dropdown>
-            </div>
-          )}
-
-          <div className='header__auth'>
-            {!isAuth && (
-              <Space>
-                <Button onClick={signInHandler} className='btn btn-sm'>
-                  Sign in
-                </Button>
-                <Button onClick={signUpHandler} className='btn btn-sm btn-outline-primary'>
-                  Sign up
-                </Button>
-              </Space>
+    <>
+      {notificationContextHolder}
+      <div className='header'>
+        <div className='header__wrapper'>
+          <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' />
+          <Link to='/' className='header__logo'>
+            <img src={Logo} alt='Codey AI Logo' className='header__logo-img' />
+          </Link>
+          <div className='header__nav'>
+            <ul className='header__nav-list'>
+              <li className='header__nav-item'>
+                <Link to='/' className='header__nav-link'>
+                  Home
+                </Link>
+              </li>
+              <li className='header__nav-item'>
+                <Link to='/course-home' className='header__nav-link'>
+                  Courses
+                </Link>
+              </li>
+              <li className='header__nav-item'>
+                <Link to='/contact' className='header__nav-link'>
+                  Contact
+                </Link>
+              </li>
+              <li className='header__nav-item'>
+                <Link to='/about-us' className='header__nav-link'>
+                  About us
+                </Link>
+              </li>
+            </ul>
+            {isAuth && (
+              <div className='header__nav-item header__nav-item--user'>
+                <Dropdown menu={menuUserProps} placement='bottomRight'>
+                  <Badge dot={true}>
+                    <Avatar className='header__nav-item-user-icon' src={userData?.avatar} />
+                  </Badge>
+                </Dropdown>
+              </div>
             )}
+
+            <div className='header__auth'>
+              {!isAuth && (
+                <Space>
+                  <Button onClick={signInHandler} className='btn btn-sm'>
+                    Sign in
+                  </Button>
+                  <Button onClick={signUpHandler} className='btn btn-sm btn-outline-primary'>
+                    Sign up
+                  </Button>
+                </Space>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <Modal title='' open={isOpenAuthModal} onOk={handleOk} onCancel={handleCancel}>
-        {authState === 'login' && <Login onClick={changeAuthState} />}
-        {authState === 'signup' && <Signup onClick={changeAuthState} />}
-      </Modal>
+        <Modal title='' open={isOpenAuthModal} onOk={handleOk} onCancel={handleCancel}>
+          {authState === 'login' && <Login onClick={changeAuthState} />}
+          {authState === 'signup' && <Signup onClick={changeAuthState} />}
+        </Modal>
 
-      <Drawer
-        title='Mobile menu'
-        placement={'left'}
-        width={300}
-        onClose={onCloseMobileMenu}
-        open={openMobileMenu}
-        extra={
-          <Space>
-            <Button onClick={onCloseMobileMenu}>Cancel</Button>
-            <Button onClick={onCloseMobileMenu}>OK</Button>
-          </Space>
-        }
-      >
-        <div>Content in here</div>
-      </Drawer>
-    </div>
+        <Drawer
+          title='Mobile menu'
+          placement={'left'}
+          width={300}
+          onClose={onCloseMobileMenu}
+          open={openMobileMenu}
+          extra={
+            <Space>
+              <Button onClick={onCloseMobileMenu}>Cancel</Button>
+              <Button onClick={onCloseMobileMenu}>OK</Button>
+            </Space>
+          }
+        >
+          <div>Content in here</div>
+        </Drawer>
+      </div>
+    </>
   );
 };
 
