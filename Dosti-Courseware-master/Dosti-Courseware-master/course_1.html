@@ -39,9 +39,6 @@
     </div>
 
     <script>
-        const BACKEND_URL = 'https://dosti-backend-1ign.onrender.com';
-        const courseId = 'python'; // Hardcoded for this course
-
         // Default video URLs (Python tutorial videos from freeCodeCamp)
         const defaultVideos = {
             intro: 'https://www.youtube.com/embed/rfscVS0vtbw', // Full Python course
@@ -51,77 +48,64 @@
             oop: 'https://www.youtube.com/embed/JeznW_7DlB0' // Python OOP
         };
 
-        // Function to load course details
-        async function loadCourseDetails() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/courses/${courseId}/detail`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Course details:', data);
-                
-                // Update course title and description
-                document.querySelector('.course-header h1').textContent = data.name || 'Python for Beginners';
-                document.querySelector('.course-header p').textContent = data.description || 'Learn Python programming from scratch';
-
-                // Load lessons
-                await loadLessons();
-            } catch (error) {
-                console.error('Error loading course details:', error);
-                // Show default content if API fails
-                loadDefaultContent();
+        // Course content
+        const lessons = [
+            {
+                title: 'Introduction to Python',
+                completed: false,
+                videoUrl: defaultVideos.intro,
+                objectives: [
+                    'What is Python?',
+                    'Setting up your development environment',
+                    'Writing your first Python program',
+                    'Basic syntax and structure'
+                ]
+            },
+            {
+                title: 'Variables and Data Types',
+                completed: false,
+                videoUrl: defaultVideos.variables,
+                objectives: [
+                    'Understanding variables',
+                    'Numbers, strings, and booleans',
+                    'Lists and dictionaries',
+                    'Type conversion'
+                ]
+            },
+            {
+                title: 'Control Flow',
+                completed: false,
+                videoUrl: defaultVideos.controlFlow,
+                objectives: [
+                    'If statements',
+                    'Loops (for and while)',
+                    'Break and continue',
+                    'Exception handling'
+                ]
+            },
+            {
+                title: 'Functions',
+                completed: false,
+                videoUrl: defaultVideos.functions,
+                objectives: [
+                    'Defining functions',
+                    'Parameters and return values',
+                    'Lambda functions',
+                    'Built-in functions'
+                ]
+            },
+            {
+                title: 'Object-Oriented Programming',
+                completed: false,
+                videoUrl: defaultVideos.oop,
+                objectives: [
+                    'Classes and objects',
+                    'Inheritance',
+                    'Encapsulation',
+                    'Polymorphism'
+                ]
             }
-        }
-
-        // Function to load lessons
-        async function loadLessons() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/sections/${courseId}/course`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const lessonList = document.getElementById('lessonList');
-                lessonList.innerHTML = ''; // Clear existing lessons
-
-                // Add default lessons if API returns empty
-                const lessons = data.length > 0 ? data : getDefaultLessons();
-                
-                lessons.forEach((lesson, index) => {
-                    const li = document.createElement('li');
-                    li.className = 'lesson-item' + (index === 0 ? ' active' : '');
-                    li.innerHTML = `
-                        <span class="lesson-title">${lesson.title}</span>
-                        <input type="checkbox" class="lesson-checkbox" ${lesson.completed ? 'checked' : ''}>
-                    `;
-                    li.addEventListener('click', () => selectLesson(lesson, index));
-                    lessonList.appendChild(li);
-                });
-
-                // Select first lesson by default
-                if (lessons.length > 0) {
-                    selectLesson(lessons[0], 0);
-                }
-            } catch (error) {
-                console.error('Error loading lessons:', error);
-                loadDefaultLessons();
-            }
-        }
+        ];
 
         // Function to select a lesson
         function selectLesson(lesson, index) {
@@ -131,114 +115,43 @@
 
             // Update video source
             const video = document.getElementById('lessonVideo');
-            let videoUrl;
-            switch(index) {
-                case 0:
-                    videoUrl = defaultVideos.intro;
-                    break;
-                case 1:
-                    videoUrl = defaultVideos.variables;
-                    break;
-                case 2:
-                    videoUrl = defaultVideos.controlFlow;
-                    break;
-                case 3:
-                    videoUrl = defaultVideos.functions;
-                    break;
-                case 4:
-                    videoUrl = defaultVideos.oop;
-                    break;
-                default:
-                    videoUrl = defaultVideos.intro;
-            }
-            video.src = lesson.videoUrl || videoUrl;
+            video.src = lesson.videoUrl;
 
             // Update lesson info
             const lessonInfo = document.getElementById('lessonInfo');
             lessonInfo.innerHTML = `
                 <h2>${lesson.title}</h2>
-                <p>${lesson.description || 'In this lesson, you\'ll learn about:'}</p>
+                <p>In this lesson, you'll learn about:</p>
                 <ul>
-                    ${(lesson.objectives || getDefaultObjectives(index)).map(obj => `<li>${obj}</li>`).join('')}
+                    ${lesson.objectives.map(obj => `<li>${obj}</li>`).join('')}
                 </ul>
             `;
         }
 
-        // Function to get default lessons
-        function getDefaultLessons() {
-            return [
-                {
-                    title: 'Introduction to Python',
-                    completed: false,
-                    objectives: [
-                        'What is Python?',
-                        'Setting up your development environment',
-                        'Writing your first Python program',
-                        'Basic syntax and structure'
-                    ]
-                },
-                {
-                    title: 'Variables and Data Types',
-                    completed: false,
-                    objectives: [
-                        'Understanding variables',
-                        'Numbers, strings, and booleans',
-                        'Lists and dictionaries',
-                        'Type conversion'
-                    ]
-                },
-                {
-                    title: 'Control Flow',
-                    completed: false,
-                    objectives: [
-                        'If statements',
-                        'Loops (for and while)',
-                        'Break and continue',
-                        'Exception handling'
-                    ]
-                },
-                {
-                    title: 'Functions',
-                    completed: false,
-                    objectives: [
-                        'Defining functions',
-                        'Parameters and return values',
-                        'Lambda functions',
-                        'Built-in functions'
-                    ]
-                },
-                {
-                    title: 'Object-Oriented Programming',
-                    completed: false,
-                    objectives: [
-                        'Classes and objects',
-                        'Inheritance',
-                        'Encapsulation',
-                        'Polymorphism'
-                    ]
-                }
-            ];
+        // Function to initialize the page
+        function initializePage() {
+            const lessonList = document.getElementById('lessonList');
+            
+            // Create lesson list
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                li.className = 'lesson-item' + (index === 0 ? ' active' : '');
+                li.innerHTML = `
+                    <span class="lesson-title">${lesson.title}</span>
+                    <input type="checkbox" class="lesson-checkbox" ${lesson.completed ? 'checked' : ''}>
+                `;
+                li.addEventListener('click', () => selectLesson(lesson, index));
+                lessonList.appendChild(li);
+            });
+
+            // Select first lesson by default
+            if (lessons.length > 0) {
+                selectLesson(lessons[0], 0);
+            }
         }
 
-        // Function to get default objectives for a lesson
-        function getDefaultObjectives(index) {
-            return getDefaultLessons()[index]?.objectives || [
-                'Understanding key concepts',
-                'Practical examples',
-                'Best practices',
-                'Common pitfalls to avoid'
-            ];
-        }
-
-        // Function to load default content
-        function loadDefaultContent() {
-            document.querySelector('.course-header h1').textContent = 'Python for Beginners';
-            document.querySelector('.course-header p').textContent = 'Learn Python programming from scratch';
-            loadDefaultLessons();
-        }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', loadCourseDetails);
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
