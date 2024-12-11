@@ -1,4 +1,5 @@
-import { Button, Col, Divider, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
+import React from 'react';
 import './CartItem.scss';
 
 interface CartItemProps {
@@ -7,9 +8,7 @@ interface CartItemProps {
     title: string;
     thumbnail: string;
     price: number;
-    author: {
-      name: string;
-    };
+    author: string;
   };
   onRemove: (courseId: string) => void;
 }
@@ -19,32 +18,32 @@ const CartItem: React.FC<CartItemProps> = (props) => {
 
   return (
     <div className='cart-item'>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={4}>
+      <Row>
+        <Col span={4}>
           <div className='cart-item__img'>
             <img src={thumbnail} alt={title} />
           </div>
         </Col>
-        <Col xs={24} sm={24} md={12}>
+        <Col span={12}>
           <div className='cart-item__info'>
             <h3 className='cart-item__info-title'>{title}</h3>
-            <div className='cart-item__info-author'>By {author.name}</div>
+            <div className='cart-item__info-author'>By {author}</div>
             <div className='cart-item__info-price'>${price}</div>
           </div>
         </Col>
-        <Col xs={24} sm={24} md={4}>
+        <Col span={4}>
           <div className='cart-item__actions'>
             <Button type="text" onClick={() => props.onRemove(_id)}>Remove</Button>
             <Button type="text">Save for later</Button>
           </div>
         </Col>
-        <Col xs={24} sm={24} md={4}>
+        <Col span={4}>
           <div className='cart-item__price'>
             <span className='cart-item__price-text'>${price}</span>
           </div>
         </Col>
       </Row>
-      <Divider />
+      <hr className="cart-item__divider" />
     </div>
   );
 };
