@@ -1,211 +1,117 @@
-import { ArrowLeftOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Col, Progress, Row, Skeleton, Tabs, TabsProps, notification } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Col, Row, Tabs, notification } from 'antd';
+import { LineProgress } from '@ant-design/charts';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import {
-  useCreateCertificateMutation,
-  useGetCertificateQuery,
-  useGetCourseEnrolledByUserQuery
-} from '../client.service';
-import {
-  createCertificatePath,
-  initCurrentProgress,
-  initLessonsDoneOfCourse,
-  startPlayingVideo
-} from '../client.slice';
-import './PathPlayer.scss';
-import Discusses from './components/Discusses';
-import Learners from './components/Learners';
-import Notes from './components/Notes';
+import { useGetPathDetailQuery, useUpdateProgressMutation } from '../client.service';
 import PathSections from './components/PathSections';
 import PlayerScreen from './components/PlayerScreen/PlayerScreen';
-// type Props = {};
-// props: Props
+import './PathPlayer.scss';
 
 const PathPlayer = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const courseId = searchParams.get('courseId');
-  const userId = useSelector<RootState, string>((state: RootState) => state.auth.userId);
+  const { pathId } = useParams();
+  const userId = useSelector((state: RootState) => state.auth.userId);
+  const [currVideoUrl, setCurrVideoUrl] = useState('');
+  const [currProgress, setCurrProgress] = useState(0);
 
-  const { data, isFetching } = useGetCourseEnrolledByUserQuery(courseId as string);
-  const dispatch = useDispatch();
-  const [createCertificate, createCertificateResult] = useCreateCertificateMutation();
+  const { data: pathData, isLoading } = useGetPathDetailQuery(
+    { _pathId: pathId },
+    { skip: !pathId }
+  );
 
-  const cerficiateParams = {
-    userId,
-    courseId: courseId || ''
+  const [updateProgress] = useUpdateProgressMutation();
+
+  useEffect(() => {
+    if (pathData?.path) {
+      const firstSection = pathData.path.sections[0];
+      if (firstSection && firstSection.lessons[0]) {
+        setCurrVideoUrl(firstSection.lessons[0].videoUrl);
+      }
+      if (pathData.path.progress) {
+        setCurrProgress(pathData.path.progress);
+      }
+    }
+  }, [pathData]);
+
+  const handleVideoComplete = async () => {
+    try {
+      if (pathId && userId) {
+        await updateProgress({
+          _pathId: pathId,
+          _userId: userId,
+          progress: currProgress + 1
+        }).unwrap();
+
+        setCurrProgress(prev => prev + 1);
+        notification.success({
+          message: 'Progress updated',
+          description: 'You have completed this video'
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: 'Failed to update progress',
+        description: 'There was an error updating your progress'
+      });
+    }
   };
 
-  const { data: certificateData, isFetching: isFetchingCertificate } = useGetCertificateQuery(cerficiateParams);
+  const handleVideoChange = (url: string) => {
+    setCurrVideoUrl(url);
+  };
 
-  const progressPercent = ((data?.course.progress || 0) * 100).toFixed(2);
-  const [currProgress, setCurrProgress] = useState(Number(progressPercent));
-
-  const lessonIdsDone = useSelector((state: RootState) => state.client.lessonIdsDoneByCourseId);
-
-  // const isLessonDone = useSelector((state: RootState) => state.client.isLessonDone);
-
-  const isCreateNewCertificate = useMemo(() => {
-    return currProgress === 100 && !certificateData?.certificate && isFetchingCertificate === false;
-  }, [currProgress, certificateData?.certificate, isFetchingCertificate]);
-
-  // Test demo create certificate:
-
-  useEffect(() => {
-    if (isCreateNewCertificate) {
-      const newCertificate = {
-        userId,
-        courseId: courseId || '',
-        completionDate: new Date().toISOString()
-      };
-
-      createCertificate(newCertificate)
-        .unwrap()
-        .then((result) => {
-          console.log('create certificate successfully!', result);
-          notification.success({
-            message:
-              'Congratulation! You have completed the course. Let check the certificate section to get your achievement!'
-          });
-
-          const { certificate } = result;
-
-          dispatch(createCertificatePath(certificate.certificateName));
-        })
-        .catch((error) => {
-          console.log('error: ', error);
-        });
-    }
-  }, [isCreateNewCertificate]);
-
-  // First initital first lesson of course
-
-  useEffect(() => {
-    // console.log('lesson id: ', data?.course.lessons[0]._id || '');
-    // console.log('content: ', data?.course.lessons[0].content || '');
-    let currentPlayingVideo = {
-      lessonId: '',
-      content: ''
-    };
-
-    if (data?.course && data?.course.lessons.length > 0 && !isFetching) {
-      currentPlayingVideo = {
-        lessonId: data?.course.lessons[0]._id,
-        content: data?.course.lessons[0].content
-      };
-    }
-
-    let certificateName = '';
-
-    if (certificateData?.certificate) {
-      certificateName = certificateData?.certificate.certificateName;
-    }
-
-    dispatch(startPlayingVideo(currentPlayingVideo));
-
-    dispatch(initLessonsDoneOfCourse(data?.course.lessonsDone || []));
-
-    dispatch(initCurrentProgress(data?.course.progress || 0));
-
-    dispatch(createCertificatePath(certificateName));
-  }, [
-    data?.course,
-    data?.course.lessons,
-    data?.course.lessonsDone,
-    data?.course.progress,
-    dispatch,
-    certificateData?.certificate,
-    isFetching
-  ]);
-
-  // See effect change of progress
-  useEffect(() => {
-    const totalLessonsDone = lessonIdsDone.length;
-    const lessonsOfCourse = data?.course.lessons.length;
-    let progress = 0;
-    if (lessonsOfCourse) {
-      progress = (totalLessonsDone / lessonsOfCourse) * 100;
-    }
-    setCurrProgress(progress);
-  }, [data?.course.lessons.length, lessonIdsDone.length]);
-
-  const tabItems: TabsProps['items'] = [
+  const tabItems = [
     {
       key: 'pathsections',
-      label: `Path`,
+      label: 'Course Content',
       children: (
         <PathSections
-          courseId={courseId as string}
-          progressPercent={currProgress.toString()}
-          certificate={certificateData?.certificate}
-          className='path-player__menu-content'
+          sectionData={pathData?.path}
+          onVideoChange={handleVideoChange}
         />
       )
-    },
-    {
-      key: 'discuss',
-      label: `Discuss`,
-      children: <Discusses className='path-player__menu-content' />
-    },
-    {
-      key: 'learners',
-      label: `Learners`,
-      children: <Learners className='path-player__menu-content' />
-    },
-    {
-      key: 'note',
-      label: `Note`,
-      children: <Notes className='path-player__menu-content' />
     }
   ];
 
-  const onChange = (key: string) => {
-    console.log(key);
-  };
+  if (isLoading || !pathData?.path) {
+    return <div>Loading path...</div>;
+  }
 
   return (
     <div className='path-player'>
-      <div className='path-player__wrap'>
-        <Row className='path-player__row'>
-          <Col md={24} lg={6} xl={6}>
-            <div className='path-player__menu'>
-              {/* Menu Header  */}
-              <div className='path-player__menu-header'>
-                <div className='path-player__menu-header-nav'>
-                  <Link className='path-player__menu-header-nav-back' to='/start'>
-                    <ArrowLeftOutlined className='path-player__menu-header-nav-back-icon' /> Back to course page
-                  </Link>
-                  {/* <Button className='path-player__menu-header-nav-collapse'>
-                    <DoubleLeftOutlined className='path-player__menu-header-nav-collapse-btn' />
-                  </Button> */}
-                </div>
-                <h3 className='path-player__menu-header-title'>{data?.course.name}</h3>
-                <div className='path-player__menu-progress'>
-                  <Progress percent={currProgress as unknown as number} status='active' />
-                </div>
-              </div>
-              {/* Menu Content  */}
-              <div className='path-player__menu-tabs'>
-                <Tabs defaultActiveKey='pathsections' items={tabItems} onChange={onChange} />
+      <div className='path-player__wrap container'>
+        <Row gutter={[24, 24]}>
+          <Col xs={24} md={16}>
+            <div className='path-player__main'>
+              <PlayerScreen
+                videoUrl={currVideoUrl}
+                onComplete={handleVideoComplete}
+              />
+              <div className='path-player__info'>
+                <h2 className='path-player__title'>{pathData.path.title}</h2>
+                <p className='path-player__description'>{pathData.path.description}</p>
+                {currProgress > 0 && (
+                  <div className='path-player__progress'>
+                    <LineProgress
+                      percent={currProgress}
+                      size={5}
+                      color="#1890ff"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </Col>
-          <Col md={24} lg={18} xl={18}>
-            <div className='path-player__player'>
-              <div className='path-player__player-nav'>
-                <div className='path-player__player-nav-item'>
-                  <LeftOutlined /> Previous
-                </div>
-                <div className='path-player__player-nav-item'>
-                  Next <RightOutlined />
-                </div>
-              </div>
-              <div className='path-player__player-screen'>
-                {isFetching && <Skeleton />}
-                {!isFetching && <PlayerScreen />}
-              </div>
+
+          <Col xs={24} md={8}>
+            <div className='path-player__sidebar'>
+              <Tabs
+                defaultActiveKey="pathsections"
+                items={tabItems}
+                className="path-player__tabs"
+              />
             </div>
           </Col>
         </Row>
