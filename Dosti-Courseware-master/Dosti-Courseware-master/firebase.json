@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -18,25 +18,7 @@
         "headers": [
           {
             "key": "Content-Type",
-            "value": "application/javascript"
-          }
-        ]
-      },
-      {
-        "source": "**/*.mjs",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript"
-          }
-        ]
-      },
-      {
-        "source": "**/*.js.map",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+            "value": "text/javascript"
           }
         ]
       },
@@ -45,7 +27,34 @@
         "headers": [
           {
             "key": "Content-Type",
-            "value": "text/javascript; charset=utf-8"
+            "value": "application/javascript; charset=utf-8"
+          }
+        ]
+      },
+      {
+        "source": "**/*.mjs",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript; charset=utf-8"
+          }
+        ]
+      },
+      {
+        "source": "/assets/vendor-*.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript; charset=utf-8"
+          }
+        ]
+      },
+      {
+        "source": "/assets/index-*.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript; charset=utf-8"
           }
         ]
       }
