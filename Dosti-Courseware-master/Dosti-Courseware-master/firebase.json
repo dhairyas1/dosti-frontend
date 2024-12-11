@@ -8,22 +8,26 @@
     ],
     "rewrites": [
       {
+        "source": "/courses/**",
+        "destination": "/index.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
     ],
     "headers": [
       {
-        "source": "**/*.js",
+        "source": "**/*.@(js|css|map|ico|jpg|jpeg|png|gif|webp|svg|woff|woff2|ttf|eot)",
         "headers": [
           {
-            "key": "Content-Type",
-            "value": "text/javascript"
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
           }
         ]
       },
       {
-        "source": "/assets/**/*.js",
+        "source": "**/*.@(js|mjs)",
         "headers": [
           {
             "key": "Content-Type",
@@ -32,29 +36,11 @@
         ]
       },
       {
-        "source": "**/*.mjs",
+        "source": "**/*.html",
         "headers": [
           {
-            "key": "Content-Type",
-            "value": "application/javascript; charset=utf-8"
-          }
-        ]
-      },
-      {
-        "source": "/assets/vendor-*.js",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript; charset=utf-8"
-          }
-        ]
-      },
-      {
-        "source": "/assets/index-*.js",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript; charset=utf-8"
+            "key": "Cache-Control",
+            "value": "no-cache"
           }
         ]
       }
