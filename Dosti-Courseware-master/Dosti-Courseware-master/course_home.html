@@ -587,13 +587,31 @@
             return;
         }
 
+        // Add the Python course card
+        const pythonCard = document.createElement('div');
+        pythonCard.className = 'course-card';
+        pythonCard.innerHTML = `
+            <img src="src/assets/images/logo.png" alt="Python Course" class="course-image" onerror="this.src='assets/images/default-course.jpg'" >
+            <div class="course-content">
+                <h2 class="course-title">Python for Beginners</h2>
+                <p class="course-description">This course is designed for beginners who want to learn the basics of Python programming. It covers the fundamental concepts of Python, including data types, variables, control structures, functions, and object-oriented programming. By the end of this course, you will be able to write your own Python programs and understand how to apply Python to real-world problems.</p>
+                <div class="course-meta">
+                    <span>No. of Lessons: 6</span>
+                </div>
+                <br>
+                <a href="/courses/python" class="course-button">Start Learning</a>  
+            </div>
+        `;
+        coursesGrid.appendChild(pythonCard);
+
+        // Render other courses from the API
         courses.forEach(course => {
             const courseCard = document.createElement('div');
             courseCard.className = 'course-card';
             
             // Create the course button based on login status
             const courseButton = isLoggedIn() 
-                ? `<a href="/courses/${course._id}/detail" class="course-button">View Course</a>`
+                ? `<a href="/courses/${course._id}" class="course-button">View Course</a>`
                 : `<a href="/auth/login" class="course-button">Login to View Course</a>`;
 
             courseCard.innerHTML = `
