@@ -31,7 +31,9 @@ app.use(cors({
     'http://127.0.0.1:8000',
     'https://dosti-site.web.app',
     'https://dosti-codey.web.app',
-    'https://dosti-frontend.web.app'
+    'https://dosti-frontend.web.app',
+    'https://216.24.60.0:8000',
+    'http://216.24.60.0:8000'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: [
@@ -49,6 +51,9 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
+// Trust Render's proxy
+app.set('trust proxy', true);
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,7 +62,13 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Health check endpoint for Render
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    mongoConnected: mongoose.connection.readyState === 1,
+    clientIP: req.ip,
+    trustedIP: req.ips
+  });
 });
 
 // Routes

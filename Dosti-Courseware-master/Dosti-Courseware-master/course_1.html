@@ -250,21 +250,43 @@
 </head>
 <body>
     <script>
-        // Simple check for auth token
-        function isAuthenticated() {
-            try {
-                const token = localStorage.getItem('token');
-                return !!token; // Return true if token exists
-            } catch (error) {
-                console.error('Auth check error:', error);
-                return false;
-            }
-        }
-
-        // Redirect if not authenticated
-        if (!isAuthenticated()) {
-            window.location.href = '/course-home';
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get course ID from URL
+            const courseId = window.location.pathname.split('/')[2];
+            
+            // Fetch course details
+            fetch(`http://localhost:9000/courses/${courseId}/detail`)
+                .then(response => response.json())
+                .then(data => {
+                    const course = data.course;
+                    document.querySelector('h1').textContent = course.name;
+                    document.querySelector('header p').textContent = course.description;
+                    
+                    // Fetch sections
+                    return fetch(`http://localhost:9000/sections/${courseId}/course`);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const lessonList = document.getElementById('lessonList');
+                    data.sections.forEach(section => {
+                        const sectionItem = document.createElement('li');
+                        sectionItem.className = 'section-item';
+                        sectionItem.innerHTML = `
+                            <h3>${section.name}</h3>
+                            <ul class="lesson-sublist">
+                                ${section.lessons.map(lesson => `
+                                    <li class="lesson-item">
+                                        <span class="lesson-title">${lesson.name}</span>
+                                        ${!lesson.isFree ? '<span class="premium-badge">Premium</span>' : ''}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                        lessonList.appendChild(sectionItem);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 
     <div class="nav-button-container">
