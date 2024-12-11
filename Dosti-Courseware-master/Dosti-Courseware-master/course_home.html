@@ -541,7 +541,7 @@
     <div id="root"></div>
     <script>
     // API configuration
-    const API_BASE_URL = 'http://localhost:9000'; // Change this to your backend URL
+    const API_BASE_URL = 'https://dosti-backend.onrender.com'; // Updated to use Render deployment URL
 
     // Function to fetch courses
     async function fetchCourses() {
@@ -551,7 +551,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                credentials: 'include'
+                mode: 'cors'
             });
 
             if (!response.ok) {
@@ -559,7 +559,8 @@
             }
 
             const data = await response.json();
-            return data.courses;
+            console.log('Courses data:', data); // Debug log
+            return data.courses || [];
         } catch (error) {
             console.error('Error fetching courses:', error);
             return [];
@@ -569,7 +570,17 @@
     // Function to render courses
     function renderCourses(courses) {
         const coursesGrid = document.querySelector('.courses-grid');
+        if (!coursesGrid) {
+            console.error('Could not find courses-grid element');
+            return;
+        }
+        
         coursesGrid.innerHTML = ''; // Clear existing content
+        
+        if (!courses || courses.length === 0) {
+            coursesGrid.innerHTML = '<p>No courses available at the moment.</p>';
+            return;
+        }
 
         courses.forEach(course => {
             const courseCard = document.createElement('div');
@@ -583,7 +594,7 @@
                     <h2 class="course-title">${course.name}</h2>
                     <p class="course-description">${course.description}</p>
                     <div class="course-meta">
-                        <span class="difficulty ${course.level.toLowerCase()}">${course.level}</span>
+                        <span class="difficulty ${course.level ? course.level.toLowerCase() : 'beginner'}">${course.level || 'Beginner'}</span>
                         <a href="/courses/${course._id}/detail" class="course-button">View Course</a>
                     </div>
                 </div>
@@ -594,9 +605,11 @@
 
     // Initialize when document loads
     document.addEventListener('DOMContentLoaded', async function() {
+        console.log('Page loaded, fetching courses...'); // Debug log
         try {
             // Fetch and render courses
             const courses = await fetchCourses();
+            console.log('Courses fetched:', courses); // Debug log
             renderCourses(courses);
 
             // Handle auth buttons
@@ -616,6 +629,10 @@
             }
         } catch (error) {
             console.error('Error initializing page:', error);
+            const coursesGrid = document.querySelector('.courses-grid');
+            if (coursesGrid) {
+                coursesGrid.innerHTML = '<p>Error loading courses. Please try again later.</p>';
+            }
         }
     });
     </script>
