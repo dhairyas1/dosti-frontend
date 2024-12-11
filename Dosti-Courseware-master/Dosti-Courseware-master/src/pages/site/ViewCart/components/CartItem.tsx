@@ -1,102 +1,51 @@
-import { StarFilled, TagOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Row, Space } from 'antd';
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { BACKEND_URL } from '../../../../constant/backend-domain';
-import { formatVideoLengthToHours } from '../../../../utils/functions';
-import { ICourseDetail } from '../../client.service';
+import { Button, Col, Divider, Row } from 'antd';
 import './CartItem.scss';
 
-type CartItemProps = {
-  courseItem: ICourseDetail;
-  // onTotal: (finalPrice: number) => void;
+interface CartItemProps {
+  courseItem: {
+    _id: string;
+    title: string;
+    thumbnail: string;
+    price: number;
+    author: {
+      name: string;
+    };
+  };
   onRemove: (courseId: string) => void;
-};
+}
 
-const CartItem = (props: CartItemProps) => {
-  const { courseItem } = props;
-
-  const {
-    _id,
-    name,
-    finalPrice,
-    thumbnail,
-    userId: author,
-    avgRatingStars,
-    numOfReviews,
-    lessons,
-    totalVideosLength,
-    level
-  } = courseItem;
-
-  let thumbnailUrl = '';
-
-  if (thumbnail.startsWith('https')) {
-    thumbnailUrl = thumbnail;
-  } else {
-    thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-  }
+const CartItem: React.FC<CartItemProps> = (props) => {
+  const { _id, title, thumbnail, price, author } = props.courseItem;
 
   return (
-    <Fragment>
-      {/* {isFetching && <Skeleton />} */}
-      {/* {!isFetching && ( */}
-      <div className='view-cart__list-item'>
-        <Divider className='view-cart__list-item-divider' />
-        <Row>
-          <Col md={4}>
-            <Link to={`/courses/${_id}`} className='view-cart__list-item-thumb'>
-              <img src={thumbnailUrl} alt='' className='view-cart__list-item-img' />
-            </Link>
-          </Col>
-          <Col md={12}>
-            <div className='view-cart__list-item-info'>
-              <Link to={`/courses/${_id}`} className='view-cart__list-item-info-line view-cart__list-item-info-name'>
-                {name}
-              </Link>
-              <p className='view-cart__list-item-info-line view-cart__list-item-info-author'>
-                By <Link to={`/user/${author._id}`}>{author.name}</Link> and 1 other
-              </p>
-              <div className='view-cart__list-item-info-line view-cart__list-item-info-rating'>
-                <div className='info-rating'>
-                  <div className='info-rating__point'>{avgRatingStars}</div>
-                  <div className='info-rating__icons'>
-                    <StarFilled className='info-rating__icons-item' />
-                    <StarFilled className='info-rating__icons-item' />
-                    <StarFilled className='info-rating__icons-item' />
-                    <StarFilled className='info-rating__icons-item' />
-                    <StarFilled className='info-rating__icons-item' />
-                  </div>
-                  <div className='info-rating__ratings'>({numOfReviews} ratings)</div>
-                </div>
-              </div>
-              <div className='view-cart__list-item-info-line view-cart__list-item-info-statistic'>
-                <span className='view-cart__list-item-info-statistic-item'>
-                  {formatVideoLengthToHours(totalVideosLength)} total hours
-                </span>
-                <span className='view-cart__list-item-info-statistic-item'>{lessons} lectures</span>
-                <span className='view-cart__list-item-info-statistic-item'>{level}</span>
-              </div>
-            </div>
-          </Col>
-          <Col md={4}>
-            <div className='view-cart__list-item-info-line view-cart__list-item-info__btns'>
-              <Space direction='vertical'>
-                <Button onClick={() => props.onRemove(_id)}>Remove</Button>
-                <Button>Save for later</Button>
-              </Space>
-            </div>
-          </Col>
-          <Col md={4}>
-            <div className='view-cart__list-item-price'>
-              <span className='view-cart__list-item-price-text'>${finalPrice}</span>
-              <TagOutlined className='view-cart__list-item-price-icon' />
-            </div>
-          </Col>
-        </Row>
-      </div>
-      {/* )} */}
-    </Fragment>
+    <div className='cart-item'>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={24} md={4}>
+          <div className='cart-item__img'>
+            <img src={thumbnail} alt={title} />
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={12}>
+          <div className='cart-item__info'>
+            <h3 className='cart-item__info-title'>{title}</h3>
+            <div className='cart-item__info-author'>By {author.name}</div>
+            <div className='cart-item__info-price'>${price}</div>
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={4}>
+          <div className='cart-item__actions'>
+            <Button type="text" onClick={() => props.onRemove(_id)}>Remove</Button>
+            <Button type="text">Save for later</Button>
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={4}>
+          <div className='cart-item__price'>
+            <span className='cart-item__price-text'>${price}</span>
+          </div>
+        </Col>
+      </Row>
+      <Divider />
+    </div>
   );
 };
 

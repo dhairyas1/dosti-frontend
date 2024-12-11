@@ -1,20 +1,40 @@
-import React from 'react';
 import { Card, Timeline } from 'antd';
-import { IUser } from '../../../../types/user.type';
+import React from 'react';
+
+interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  courses: any[];
+}
 
 interface ActivitiesTabProps {
-  user: IUser;
+  user?: IUser;
 }
 
 const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ user }) => {
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  const activities = [
+    'Enrolled in Python Course',
+    'Completed JavaScript Basics',
+    'Started Web Development Course'
+  ];
+
   return (
-    <Card title="Recent Activities">
-      <Timeline>
-        {user.activities?.map((activity, index) => (
-          <Timeline.Item key={index}>{activity}</Timeline.Item>
-        ))}
-      </Timeline>
-    </Card>
+    <div className="activities-tab">
+      <Card title="Recent Activities" bordered={false}>
+        <Timeline
+          items={activities.map((activity, index) => ({
+            children: activity,
+            key: index.toString()
+          }))}
+        />
+      </Card>
+    </div>
   );
 };
 
