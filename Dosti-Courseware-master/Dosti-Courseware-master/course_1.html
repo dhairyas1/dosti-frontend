@@ -18,23 +18,29 @@
         }
 
         .course-header {
-            background-color: #1a1a1a;
+            background: #1a1a1a;
             color: white;
             padding: 2rem;
             text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .course-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
         }
 
         .course-content {
             display: flex;
             padding: 2rem;
             gap: 2rem;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .lessons-sidebar {
             width: 300px;
-            background-color: white;
+            background: white;
             border-radius: 8px;
             padding: 1rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -54,20 +60,22 @@
             padding: 1rem;
             border-bottom: 1px solid #eee;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: transform 0.2s ease-in-out;
         }
 
         .lesson-item:hover {
             background-color: #f0f0f0;
+            transform: translateY(-2px);
         }
 
         .lesson-item.active {
-            background-color: #e3f2fd;
+            background-color: #007bff;
+            color: white;
         }
 
         .video-container {
             flex: 1;
-            background-color: white;
+            background: white;
             border-radius: 8px;
             padding: 2rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -89,23 +97,35 @@
         }
 
         .lesson-info {
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: #f8f9fa;
             border-radius: 8px;
         }
 
         .lesson-info h2 {
-            margin-top: 0;
-            color: #1a1a1a;
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .lesson-info p {
+            color: #666;
+            line-height: 1.5;
         }
 
         .lesson-info ul {
             padding-left: 1.5rem;
-            color: #4a4a4a;
+            color: #666;
+            line-height: 1.6;
         }
 
         .lesson-checkbox {
             margin-left: 1rem;
+            accent-color: #007bff;
+        }
+
+        .lesson-title {
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -116,6 +136,10 @@
 
             .lessons-sidebar {
                 width: 100%;
+            }
+
+            .course-header h1 {
+                font-size: 2rem;
             }
         }
     </style>
