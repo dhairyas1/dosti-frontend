@@ -14,29 +14,11 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(js|jsx|ts|tsx)",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/javascript"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(jpg|jpeg|gif|png|avif)",
+        "source": "**/*.@(js|css|map|ico|jpg|jpeg|png|gif|webp|svg|woff|woff2|ttf|eot)",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "public, max-age=31536000"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(css|scss)",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/css"
           }
         ]
       },
