@@ -567,6 +567,11 @@
         }
     }
 
+    // Function to check if user is logged in
+    function isLoggedIn() {
+        return localStorage.getItem('token') !== null;
+    }
+
     // Function to render courses
     function renderCourses(courses) {
         const coursesGrid = document.querySelector('.courses-grid');
@@ -585,6 +590,12 @@
         courses.forEach(course => {
             const courseCard = document.createElement('div');
             courseCard.className = 'course-card';
+            
+            // Create the course button based on login status
+            const courseButton = isLoggedIn() 
+                ? `<a href="/courses/${course._id}/detail" class="course-button">View Course</a>`
+                : `<a href="/auth/login" class="course-button">Login to View Course</a>`;
+
             courseCard.innerHTML = `
                 <img src="${course.thumbnail || 'src/assets/images/logo.png'}" 
                      alt="${course.name}" 
@@ -595,7 +606,7 @@
                     <p class="course-description">${course.description}</p>
                     <div class="course-meta">
                         <span class="difficulty ${course.level ? course.level.toLowerCase() : 'beginner'}">${course.level || 'Beginner'}</span>
-                        <a href="/courses/${course._id}/detail" class="course-button">View Course</a>
+                        ${courseButton}
                     </div>
                 </div>
             `;
@@ -612,20 +623,32 @@
             console.log('Courses fetched:', courses); // Debug log
             renderCourses(courses);
 
-            // Handle auth buttons
+            // Update auth buttons based on login status
             const signInBtn = document.querySelector('.sign-in-btn');
             const signUpBtn = document.querySelector('.sign-up-btn');
             
-            if (signInBtn) {
+            if (isLoggedIn()) {
+                // Show logout button if logged in
+                if (signInBtn) signInBtn.textContent = 'Logout';
+                if (signUpBtn) signUpBtn.style.display = 'none';
+                
                 signInBtn.addEventListener('click', () => {
-                    window.location.href = '/auth/login';
+                    localStorage.removeItem('token');
+                    window.location.reload();
                 });
-            }
-            
-            if (signUpBtn) {
-                signUpBtn.addEventListener('click', () => {
-                    window.location.href = '/auth/signup';
-                });
+            } else {
+                // Show login/signup buttons if not logged in
+                if (signInBtn) {
+                    signInBtn.addEventListener('click', () => {
+                        window.location.href = '/auth/login';
+                    });
+                }
+                
+                if (signUpBtn) {
+                    signUpBtn.addEventListener('click', () => {
+                        window.location.href = '/auth/signup';
+                    });
+                }
             }
         } catch (error) {
             console.error('Error initializing page:', error);
