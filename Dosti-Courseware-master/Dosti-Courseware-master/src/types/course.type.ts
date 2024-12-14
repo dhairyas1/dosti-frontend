@@ -105,3 +105,19 @@ export interface ISection {
 }
 
 // When is use is enrolled ? (bought the course, click enroll if course is free)
+
+export interface ICourse {
+  _id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: number;
+  level: string;
+  author: string;
+  sections: string[];
+  lessons: string[];
+  progress?: number;
+  isBought?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}

@@ -21,10 +21,7 @@ import CancelledSales from './pages/admin/Reports/components/CancelledSales';
 import Certifications from './pages/admin/Reports/components/Certifications';
 import CourseInsights from './pages/admin/Reports/components/CourseInsights';
 import CourseHome from './pages/CourseHome';
-import {
-  default as CoursesRevenue,
-  default as CoursesRevenues
-} from './pages/admin/Reports/components/CoursesReveneue';
+import CoursesRevenue from './pages/admin/Reports/components/CoursesReveneue';
 import InstructorsRevene from './pages/admin/Reports/components/InstructorsRevenue';
 import ReviewsCenter from './pages/admin/Reports/components/ReviewsCenter';
 import UsersProgress from './pages/admin/Reports/components/UsersProgress';
@@ -52,11 +49,6 @@ import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
-
-interface SubscribeCourseProps {
-  courseId: string;
-  onSubscribe: () => void;
-}
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -187,14 +179,12 @@ function App() {
         },
         {
           path: 'courses',
-
           children: [
             {
               index: true,
               element: <CoursesList />
             },
             {
-              id: 'course-detail',
               path: ':courseId',
               element: <AdminCourseDetail />
             }
@@ -259,10 +249,6 @@ function App() {
                   {
                     path: 'cancelled-sales',
                     element: <CancelledSales />
-                  },
-                  {
-                    path: 'courses-revenues',
-                    element: <CoursesRevenues />
                   },
                   {
                     path: 'instructors-revenues',

@@ -15,7 +15,7 @@ interface PathSectionsProps {
 }
 
 const PathSections: React.FC<PathSectionsProps> = ({ sectionData, onVideoChange }) => {
-  const { isFetching } = useGetSectionsByCourseIdQuery(sectionData.courseId);
+  const { isFetching } = useGetSectionsByCourseIdQuery(sectionData.courseId || '');
   const certificatePath = useSelector((state: RootState) => state.client.certificatePath);
   const currentProgress = useSelector((state: RootState) => state.client.currentProgress);
 
@@ -55,11 +55,10 @@ const PathSections: React.FC<PathSectionsProps> = ({ sectionData, onVideoChange 
   }
 
   return (
-    <div className={sectionData.className + ' path-sections'}>
+    <div className={`path-sections ${sectionData.className || ''}`}>
       <div className='path-sections__wrap'>
         <div className='path-sections-item'>
           <div className='section'>
-            {/* <h3 className='section__title'>1. Section 01 - How to deal with SEO page</h3> */}
             <div className='section__content'>
               {isFetching && <Skeleton />}
               {!isFetching && (

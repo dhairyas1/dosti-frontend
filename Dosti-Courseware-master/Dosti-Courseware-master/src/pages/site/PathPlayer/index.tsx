@@ -1,5 +1,4 @@
 import { Col, Row, Tabs, notification } from 'antd';
-import { LineProgress } from '@ant-design/charts';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -8,6 +7,7 @@ import { useGetPathDetailQuery, useUpdateProgressMutation } from '../client.serv
 import PathSections from './components/PathSections';
 import PlayerScreen from './components/PlayerScreen/PlayerScreen';
 import './PathPlayer.scss';
+import LineProgress from '../../../components/LineProgress';
 
 const PathPlayer = () => {
   const { pathId } = useParams();
