@@ -53,6 +53,11 @@ import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 
+interface SubscribeCourseProps {
+  courseId: string;
+  onSubscribe: () => void;
+}
+
 function App() {
   if (!localStorage.getItem('cart')) {
     localStorage.setItem('cart', JSON.stringify({ items: [] }));

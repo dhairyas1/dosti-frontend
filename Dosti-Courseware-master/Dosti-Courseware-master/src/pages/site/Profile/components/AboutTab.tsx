@@ -1,62 +1,21 @@
 import React from 'react';
-import { Card, Descriptions } from 'antd';
-import type { CardProps, DescriptionsProps } from 'antd';
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  courses: any[];
-}
+import { Descriptions } from 'antd';
+import { IUser } from '../../../../types/user.type';
 
 interface AboutTabProps {
-  user?: User;
+  user: IUser;
 }
 
 const AboutTab: React.FC<AboutTabProps> = ({ user }) => {
-  if (!user) {
-    return null;
-  }
-
-  const cardProps: CardProps = {
-    className: 'about-tab',
-  };
-
-  const descriptionItems: DescriptionsProps['items'] = [
-    {
-      key: '1',
-      label: 'Full Name',
-      children: user.name,
-    },
-    {
-      key: '2',
-      label: 'Email',
-      children: user.email,
-    },
-    {
-      key: '3',
-      label: 'Role',
-      children: user.role,
-    },
-    {
-      key: '4',
-      label: 'Enrolled Courses',
-      children: `${user.courses.length} courses`,
-    },
-  ];
-
-  const descriptionsProps: DescriptionsProps = {
-    title: "User Information",
-    items: descriptionItems,
-    layout: "vertical",
-    column: { xs: 1, sm: 2, md: 3 },
-  };
-
   return (
-    <Card {...cardProps}>
-      <Descriptions {...descriptionsProps} />
-    </Card>
+    <Descriptions bordered>
+      <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
+      <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
+      <Descriptions.Item label="Role">{user.role}</Descriptions.Item>
+      {user.address && (
+        <Descriptions.Item label="Address">{user.address}</Descriptions.Item>
+      )}
+    </Descriptions>
   );
 };
 

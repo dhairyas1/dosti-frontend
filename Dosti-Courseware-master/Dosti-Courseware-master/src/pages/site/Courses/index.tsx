@@ -21,6 +21,16 @@ interface SortParams {
   sort: string;
 }
 
+interface CourseListProps {
+  courses: ICourse[];
+  pagination: {
+    _limit: number;
+    _totalRows: number;
+    _page: number;
+  };
+  onPageChange: (page: number) => void;
+}
+
 const Courses: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const userId = useSelector((state: RootState) => state.auth.userId);

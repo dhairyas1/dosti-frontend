@@ -9,6 +9,7 @@ import { IOrder } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { CustomError } from '../../utils/helpers';
+import { RootState } from '../../store/store';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
@@ -163,6 +164,8 @@ export interface IPath {
   description: string;
   sections: ISection[];
   progress?: number;
+  courseId?: string;
+  className?: string;
 }
 
 export interface getPathDetailResponse {
@@ -183,7 +186,7 @@ export const clientApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BACKEND_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
+      const token = (getState() as any).auth.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -244,7 +247,7 @@ export const clientApi = createApi({
       providesTags(result) {
         /**
          * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
+         * Mong muốn là sẽ return về một m���ng kiểu
          * ```ts
          * interface Tags: {
          *    type: "User";
@@ -280,7 +283,7 @@ export const clientApi = createApi({
        * providesTags có thể là array hoặc callback return array
        * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
        * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như c��c tags phía dưới
+       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
        */
       providesTags(result) {
         /**
@@ -414,7 +417,7 @@ export const clientApi = createApi({
       providesTags(result) {
         /**
          * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
+         * Mong muốn là sẽ return về m��t mảng kiểu
          * ```ts
          * interface Tags: {
          *    type: "User";
@@ -454,7 +457,7 @@ export const clientApi = createApi({
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
+       * Nếu có bất kỳ m��t invalidatesTag nào match với providesTags này
        * thì sẽ làm cho Orders method chạy lại
        * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
        */
@@ -652,19 +655,6 @@ export const clientApi = createApi({
         // }
       })
     }),
-    getCart: build.query({
-      query: ({ _userId }) => `/cart/${_userId}`,
-      providesTags: ['Cart'],
-    }),
-
-    removeFromCart: build.mutation({
-      query: ({ _userId, _courseId }) => ({
-        url: `/cart/${_userId}/remove/${_courseId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Cart'],
-    }),
-
     getPathDetail: build.query<getPathDetailResponse, { _pathId: string }>({
       query: (params) => ({
         url: `/paths/${params._pathId}`,
@@ -708,8 +698,6 @@ export const {
   useGetRetrieveCartQuery,
   useGetCertificateQuery,
   useCreateCertificateMutation,
-  useGetCartQuery,
-  useRemoveFromCartMutation,
   useGetPathDetailQuery,
   useUpdateProgressMutation,
   useGetUserEnrolledCoursesQuery

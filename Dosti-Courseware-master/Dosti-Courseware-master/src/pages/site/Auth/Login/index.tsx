@@ -132,9 +132,9 @@ const Login: React.FC<LoginProps> = ({ onClick }) => {
 
         <Form.Item>
           <ButtonCmp
-            disabled={isSubmitting}
+            htmlType='submit'
             className='btn btn-primary btn-sm w-full'
-            type='submit'
+            disabled={isSubmitting}
           >
             {isSubmitting ? (
               <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
