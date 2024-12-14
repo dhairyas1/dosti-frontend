@@ -3,20 +3,10 @@ const ProfileWrapper = () => {
   
   if (!userData) return <Navigate to="/" />;
 
-  const user: IUserDetail = {
+  // Simplified user type without course enrollments
+  const user = {
     ...userData,
-    courses: userData.courses.map(course => {
-      if (typeof course === 'string') {
-        return {
-          _id: course,
-          progress: 0,
-          totalVideosLengthDone: 0,
-          isBought: true,
-          lessonsDone: []
-        } as ICourseEnrolledByUser;
-      }
-      return course;
-    })
+    courses: [] // Simplified to empty array since we removed course functionality
   };
 
   return <Profile user={user} />;

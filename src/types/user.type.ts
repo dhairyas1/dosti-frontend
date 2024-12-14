@@ -13,7 +13,7 @@ export interface IUser {
   avatar?: string;
   address?: string;
   phone?: string;
-  courses: ICourseEnrolledByUser[];
+  courses: string[];
   createdAt?: string;
   updatedAt?: string;
   loginToken?: string;
@@ -23,6 +23,6 @@ export interface IUser {
   fbUserId?: string;
 }
 
-export interface IUserDetail extends Omit<IUser, 'courses'> {
-  courses: ICourseEnrolledByUser[];
+export interface IUserDetail extends IUser {
+  // No need to override courses since we're using simple string array
 } 

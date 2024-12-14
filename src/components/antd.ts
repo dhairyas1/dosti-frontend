@@ -1,0 +1,68 @@
+import {
+  Layout,
+  Menu,
+  Button,
+  Input,
+  Form,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Modal,
+  Drawer,
+  Row,
+  Col,
+  Badge,
+  Avatar,
+  Dropdown,
+  Popover,
+  Skeleton,
+  Result,
+  notification,
+  Radio,
+  Progress,
+  theme,
+  Descriptions,
+  Tabs
+} from 'antd';
+
+const { Header, Content, Footer, Sider } = Layout;
+const { TextArea, Password } = Input;
+const { Item: FormItem } = Form;
+const { Option: SelectOption } = Select;
+
+export {
+  Layout,
+  Header,
+  Content,
+  Footer,
+  Sider,
+  Menu,
+  Button,
+  Input,
+  TextArea,
+  Password,
+  Form,
+  FormItem,
+  Select,
+  SelectOption,
+  Space,
+  Table,
+  Tag,
+  Modal,
+  Drawer,
+  Row,
+  Col,
+  Badge,
+  Avatar,
+  Dropdown,
+  Popover,
+  Skeleton,
+  Result,
+  notification,
+  Radio,
+  Progress,
+  theme,
+  Descriptions,
+  Tabs
+}; 
