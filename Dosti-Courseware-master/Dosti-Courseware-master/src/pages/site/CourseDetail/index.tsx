@@ -94,9 +94,9 @@ const CourseDetail: React.FC = () => {
                 </div>
                 <div className='course-detail__intro-author'>
                   <span>Author</span>
-                  <Link to={`/user/${courseData.author._id}`} className='course-detail__intro-author-name'>
-                    {courseData.author.name}
-                  </Link>
+                  <span className='course-detail__intro-author-name'>
+                    {courseData.author}
+                  </span>
                 </div>
                 <div className='course-detail__intro-updated-at'>
                   Last updated {transformDate(courseData.updatedAt)}
@@ -163,14 +163,7 @@ const CourseDetail: React.FC = () => {
             <Row>
               <Col md={12} className='course-detail__author-info'>
                 <p className='course-detail__author-intro'>Meet the instructor</p>
-                <h2 className='course-detail__author-name'>{courseData.author.name}</h2>
-              </Col>
-              <Col md={12} className='course-detail__author-avatar'>
-                <img
-                  className='course-detail__author-img'
-                  src={courseData.author.avatar}
-                  alt={courseData.author.name}
-                />
+                <h2 className='course-detail__author-name'>{courseData.author}</h2>
               </Col>
             </Row>
           </div>

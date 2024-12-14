@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Progress } from 'antd';
+import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 import { ICourse } from '../../../../types/course.type';
 
@@ -8,7 +8,7 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
-  const { _id, name, thumbnail, progress } = course;
+  const { _id, name, thumbnail } = course;
 
   return (
     <Link to={`/courses/${_id}`}>
@@ -18,9 +18,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         className="course-card"
       >
         <Card.Meta title={name} />
-        {typeof progress === 'number' && (
-          <Progress percent={progress} size="small" />
-        )}
       </Card>
     </Link>
   );
