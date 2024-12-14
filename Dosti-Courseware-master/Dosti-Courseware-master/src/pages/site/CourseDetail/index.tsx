@@ -19,45 +19,7 @@ import { addToCart } from '../client.slice';
 import './CourseDetail.scss';
 import SectionList from './components/SectionList';
 // type Props = {}
-const courseData = [
-  'Will learning some things at this course -- task 1.',
-  'Will learning some things at this course -- task 2',
-  'Will learning some things at this course -- task 3',
-  'Will learning some things at this course -- task 4.',
-  'Will learning some things at this course -- task 5.'
-];
-
-const initCourseDetail = {
-  _id: '',
-  name: '',
-  description: '',
-  price: 0,
-  finalPrice: 0,
-  access: AccessStatus.FREE,
-  level: CourseLevel.BEGINNER,
-  thumbnail: '',
-  courseSlug: '',
-  categoryId: {
-    _id: '646781266859a50acfca8e93',
-    name: 'Web'
-  },
-  userId: {
-    _id: '6468a145401d3810494f4797',
-    name: 'Nguyen Van A',
-    avatar: ''
-  },
-  numOfReviews: 0,
-  totalVideosLength: 0,
-  sections: 0,
-  lessons: 0,
-  students: 0,
-  avgRatingStars: 0,
-  isBought: false,
-  createdAt: '',
-  updatedAt: ''
-};
-
-const CourseDetail = () => {
+const CourseDetail: React.FC = () => {
   // HOOKS HERE
   const params = useParams();
   const dispatch = useDispatch();
@@ -73,37 +35,33 @@ const CourseDetail = () => {
   const [createOrder, createOrderResult] = useCreateOrderMutation();
   const navigate = useNavigate();
 
-  let courseDetail = initCourseDetail;
-
-  if (data && data.course.createdAt) {
-    courseDetail = {
-      ...data.course,
-      createdAt: data.course.createdAt
+  const courseData = useMemo(() => {
+    if (!data?.course) return null;
+    const course = data.course;
+    return {
+      _id: course._id,
+      name: course.title || '',
+      description: course.description,
+      price: course.price,
+      finalPrice: course.finalPrice,
+      access: course.access,
+      level: course.level,
+      thumbnail: course.thumbnail,
+      courseSlug: course.courseSlug,
+      categoryId: course.categoryId,
+      userId: course.userId,
+      sections: course.sections || [],
+      lessons: course.lessons || [],
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt
     };
-  }
-
-  const {
-    name,
-    description,
-    price,
-    finalPrice,
-    thumbnail,
-    userId: author,
-    numOfReviews,
-    totalVideosLength,
-    sections,
-    lessons,
-    avgRatingStars,
-    students,
-    isBought,
-    updatedAt
-  } = courseDetail;
+  }, [data?.course]);
 
   let thumbnailUrl = '';
-  if (thumbnail.startsWith('https')) {
-    thumbnailUrl = thumbnail;
+  if (courseData?.thumbnail.startsWith('https')) {
+    thumbnailUrl = courseData.thumbnail;
   } else {
-    thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
+    thumbnailUrl = `${BACKEND_URL}/${courseData?.thumbnail}`;
   }
 
   const { data: sectionData } = useGetSectionsByCourseIdQuery(courseId || '');
@@ -111,8 +69,8 @@ const CourseDetail = () => {
   const numOfSections = sectionData?.sections.length || 0;
 
   const overviewData = [
-    `${formatVideoLengthToHours(totalVideosLength)} on-demand video`,
-    `${sections} articles.`,
+    `${formatVideoLengthToHours(courseData?.totalVideosLength || 0)} on-demand video`,
+    `${courseData?.sections} articles.`,
     '0 downloadable resources.',
     'Access on mobile and TV.',
     'Full lifetime access.',
@@ -127,9 +85,9 @@ const CourseDetail = () => {
     if (isAuth) {
       const orderItem = {
         courseId: courseId as string,
-        name: name,
-        thumbnail: thumbnail,
-        finalPrice: finalPrice
+        name: courseData?.name,
+        thumbnail: courseData?.thumbnail,
+        finalPrice: courseData?.finalPrice
       };
 
       const newOrder: Omit<IOrder, '_id'> = {
@@ -213,13 +171,13 @@ const CourseDetail = () => {
                   ]}
                 />
 
-                <h2 className='course-detail__title'>{name}</h2>
-                <p className='course-detail__sub-title'>{description}</p>
+                <h2 className='course-detail__title'>{courseData?.name}</h2>
+                <p className='course-detail__sub-title'>{courseData?.description}</p>
                 <div className='course-detail__info'>
                   <div className='course-detail__info-item course-detail__info-status'>Bestseller</div>
                   <div className='course-detail__info-item course-detail__info-rating'>
                     <Space>
-                      <span>{avgRatingStars}</span>
+                      <span>{courseData?.avgRatingStars}</span>
                       <span>
                         <StarFilled className='rating-icon' />
                         <StarFilled className='rating-icon' />
@@ -227,23 +185,23 @@ const CourseDetail = () => {
                         <StarFilled className='rating-icon' />
                         <StarFilled className='rating-icon' />
                       </span>
-                      <Link to='/'>({numOfReviews} ratings)</Link>
+                      <Link to='/'>({courseData?.numOfReviews} ratings)</Link>
                     </Space>
                   </div>
                   <div className='course-detail__info-item course-detail__info-students'>
                     <Space>
-                      <span>{students}</span>
+                      <span>{courseData?.students}</span>
                       <span>students</span>
                     </Space>
                   </div>
                 </div>
                 <div className='course-detail__intro-author'>
                   <span className=''>Author</span>
-                  <Link to={`/user/${author._id}`} className='course-detail__intro-author-name'>
-                    {author.name}
+                  <Link to={`/user/${courseData?.userId._id}`} className='course-detail__intro-author-name'>
+                    {courseData?.userId.name}
                   </Link>
                 </div>
-                <div className='course-detail__intro-updated-at'>Last updated {transformDate(updatedAt)}</div>
+                <div className='course-detail__intro-updated-at'>Last updated {transformDate(courseData?.updatedAt)}</div>
               </Col>
               <Col sm={16} md={8} lg={8}>
                 <div className='course-detail__overview'>
@@ -261,19 +219,19 @@ const CourseDetail = () => {
                     </div>
                   </div>
                   <div className='course-detail__overview-content '>
-                    <div className='course-detail__overview-price'>{finalPrice === 0 && 'FREE'}</div>
-                    {finalPrice !== 0 && !isBought && (
+                    <div className='course-detail__overview-price'>{courseData?.finalPrice === 0 && 'FREE'}</div>
+                    {courseData?.finalPrice !== 0 && !courseData?.isBought && (
                       <div className='course-detail__overview-price'>
                         <div>
-                          <s className='font-light mr-4'>${price}</s> ${finalPrice}
+                          <s className='font-light mr-4'>${courseData?.price}</s> ${courseData?.finalPrice}
                         </div>
                       </div>
                     )}
                     <div className='course-detail__overview-btns'>
-                      {!isBought && (
+                      {!courseData?.isBought && (
                         <>
                           <Space>
-                            {finalPrice !== 0 && (
+                            {courseData?.finalPrice !== 0 && (
                               <ButtonCmp
                                 onClick={addCartHandler}
                                 className='course-detail__overview-add-to-cart btn btn-md btn-secondary'
@@ -287,7 +245,7 @@ const CourseDetail = () => {
                           </Space>
                           <div>
                             <Space>
-                              {finalPrice === 0 && (
+                              {courseData?.finalPrice === 0 && (
                                 <ButtonCmp
                                   onClick={subscribeCourseHandler}
                                   className='course-detail__overview-enroll-btn btn btn-md btn-primary'
@@ -295,7 +253,7 @@ const CourseDetail = () => {
                                   Enroll now
                                 </ButtonCmp>
                               )}
-                              {finalPrice !== 0 && (
+                              {courseData?.finalPrice !== 0 && (
                                 <ButtonCmp
                                   onClick={buyNowHandler}
                                   className='course-detail__overview-enroll-btn btn btn-md btn-primary'
@@ -308,7 +266,7 @@ const CourseDetail = () => {
                         </>
                       )}
 
-                      {isBought && (
+                      {courseData?.isBought && (
                         <Space>
                           <ButtonCmp onClick={gotoCourseHandler} className='btn btn-primary btn-md btn-tertiary'>
                             Go to course
@@ -371,7 +329,7 @@ const CourseDetail = () => {
                 <div className='course-detail__content-summary'>
                   <Row className='course-detail__content-summary-row'>
                     <Col md='12'>
-                      {numOfSections} sections • {lessons} lectures • {formatVideoLengthToHours(totalVideosLength)}{' '}
+                      {numOfSections} sections • {courseData?.lessons} lectures • {formatVideoLengthToHours(courseData?.totalVideosLength || 0)}{' '}
                       total length
                     </Col>
                     <Col className='course-detail__content-summary-col col-right' md='12'>
@@ -393,7 +351,7 @@ const CourseDetail = () => {
             <Row>
               <Col md={12} className='course-detail__author-info'>
                 <p className='course-detail__author-intro'>Meet the intructor</p>
-                <h2 className='course-detail__author-name'>{author.name}</h2>
+                <h2 className='course-detail__author-name'>{courseData?.userId.name}</h2>
                 <p className='course-detail__author-desc'>
                   Patrick Jones is a content marketing professional since 2002. He has a Masters Degree in Digital
                   Marketing and a Bachelors in Education and has been teaching marketing strategies for over 15 years in
@@ -404,8 +362,8 @@ const CourseDetail = () => {
               <Col md={12} className='course-detail__author-avatar'>
                 <img
                   className='course-detail__author-img'
-                  src={author.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
-                  alt={author.name}
+                  src={courseData?.userId.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
+                  alt={courseData?.userId.name}
                 />
               </Col>
             </Row>

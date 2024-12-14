@@ -44,9 +44,10 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
   const userData = data?.user || propUser;
 
   const totalVideoHours = React.useMemo(() => {
-    return userData?.courses?.reduce((acc, course) => {
+    if (!userData?.courses) return 0;
+    return (userData.courses as ICourseEnrolledByUser[]).reduce((acc, course) => {
       return acc + (course.totalVideosLengthDone || 0);
-    }, 0) || 0;
+    }, 0);
   }, [userData?.courses]);
 
   const tabItems = [

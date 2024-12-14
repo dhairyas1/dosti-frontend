@@ -10,6 +10,14 @@ import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery } from
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
+
+interface CheckoutCartItem {
+  _id: string;
+  name: string;
+  thumbnail: string;
+  finalPrice: number;
+}
+
 const text = `
 Name on card
 TRAN NHAT SANG
@@ -74,6 +82,13 @@ const Checkout = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cartItemToDisplay = (item: ICourseDetail): CheckoutCartItem => ({
+    _id: item._id,
+    name: item.title || item.name || '',
+    thumbnail: item.thumbnail,
+    finalPrice: item.finalPrice || item.price
+  });
 
   const checkoutHandler = () => {
     const newOrder = {

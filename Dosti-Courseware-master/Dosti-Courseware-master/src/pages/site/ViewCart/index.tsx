@@ -9,7 +9,13 @@ import CartItem from './components/CartItem';
 import './ViewCart.scss';
 import { ICourseDetail } from '../../../types/course.type';
 
-interface CartItem extends Pick<ICourseDetail, '_id' | 'title' | 'thumbnail' | 'price' | 'author'> {}
+interface CartItem {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  price: number;
+  author: string;
+}
 
 interface Cart {
   items: CartItem[];
@@ -82,6 +88,14 @@ const ViewCart: React.FC = () => {
     style: { flex: 1 },
   };
 
+  const cartItemToDisplay = (item: ICourseDetail): CartItem => ({
+    _id: item._id,
+    title: item.title || '',
+    thumbnail: item.thumbnail,
+    price: item.price,
+    author: item.author || 'Unknown'
+  });
+
   if (isEmpty) {
     return <div>Loading cart...</div>;
   }
@@ -95,10 +109,10 @@ const ViewCart: React.FC = () => {
           <Col {...colProps.list}>
             <div className='view-cart__list'>
               {cartItems.length > 0 ? (
-                cartItems.map((course) => (
+                cartItems.map((item) => (
                   <CartItem
-                    key={course._id}
-                    courseItem={course}
+                    key={item._id}
+                    courseItem={cartItemToDisplay(item)}
                     onRemove={handleRemoveFromCart}
                   />
                 ))

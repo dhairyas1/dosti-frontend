@@ -19,6 +19,10 @@ const orderCreateForm = [
   'course-delivery'
 ];
 
+interface CreateCourseData extends Omit<ICourse, '_id'> {
+  id?: string;
+}
+
 const CreateCourse = () => {
   const isOpen = useSelector((state: RootState) => state.course.isOpenCreateCourse);
   const dispatch = useDispatch();
@@ -74,7 +78,7 @@ const CreateCourse = () => {
         return;
       }
 
-      const courseData: Omit<ICourse, '_id'> = {
+      const courseData: CreateCourseData = {
         name: formData.name || '',
         title: formData.name || '',
         description: formData.description || '',
