@@ -179,6 +179,14 @@ export interface updateProgressRequest {
   progress: number;
 }
 
+export interface getCartResponse {
+  cart: {
+    items: ICourseDetail[];
+    totalPrice: number;
+  };
+  message: string;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
   tagTypes: ['Clients'], // Những kiểu tag cho phép dùng trong blogApi
@@ -247,7 +255,7 @@ export const clientApi = createApi({
       providesTags(result) {
         /**
          * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một m���ng kiểu
+         * Mong muốn là sẽ return về một mảng kiểu
          * ```ts
          * interface Tags: {
          *    type: "User";
@@ -417,7 +425,7 @@ export const clientApi = createApi({
       providesTags(result) {
         /**
          * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về m��t mảng kiểu
+         * Mong muốn là sẽ return về một mảng kiểu
          * ```ts
          * interface Tags: {
          *    type: "User";
@@ -457,7 +465,7 @@ export const clientApi = createApi({
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ m��t invalidatesTag nào match với providesTags này
+       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
        * thì sẽ làm cho Orders method chạy lại
        * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
        */
@@ -675,6 +683,20 @@ export const clientApi = createApi({
     getUserEnrolledCourses: build.query<{ courses: ICourseEnrolledByUser[] }, void>({
       query: () => '/users/enrolled-courses',
       providesTags: ['Clients']
+    }),
+
+    getCart: build.query<getCartResponse, void>({
+      query: () => '/cart',
+      providesTags: ['Clients']
+    }),
+
+    removeFromCart: build.mutation<{ message: string }, { courseId: string }>({
+      query: (body) => ({
+        url: '/cart/remove',
+        method: 'POST',
+        body
+      }),
+      invalidatesTags: ['Clients']
     })
   })
 });
@@ -700,5 +722,7 @@ export const {
   useCreateCertificateMutation,
   useGetPathDetailQuery,
   useUpdateProgressMutation,
-  useGetUserEnrolledCoursesQuery
+  useGetUserEnrolledCoursesQuery,
+  useGetCartQuery,
+  useRemoveFromCartMutation
 } = clientApi;
