@@ -76,27 +76,14 @@ const { Group: RadioGroup } = AntRadio;
 const { Group: CheckboxGroup } = AntCheckbox;
 const { Title, Text, Link } = AntTypography;
 
-// Extended Row props interface
-export interface RowProps extends AntRowProps {
-  children?: React.ReactNode;
-}
-
-// Extended Col props interface
-export interface ColProps extends AntColProps {
-  children?: React.ReactNode;
-}
-
-// Export the components directly
+// Export components directly
 export const Row = AntRow;
 export const Col = AntCol;
-
-// Export components
 export const Avatar = AntAvatar;
 export const Badge = AntBadge;
 export const Button = AntButton;
 export const Card = AntCard;
 export const Checkbox = AntCheckbox;
-export { Col };
 export const Collapse = AntCollapse;
 export const DatePicker = AntDatePicker;
 export const Descriptions = AntDescriptions;
@@ -112,7 +99,6 @@ export const Popover = AntPopover;
 export const Progress = AntProgress;
 export const Radio = AntRadio;
 export const Result = AntResult;
-export { Row };
 export const Select = AntSelect;
 export const Skeleton = AntSkeleton;
 export const Space = AntSpace;
@@ -149,7 +135,7 @@ export type {
   ButtonProps,
   CardProps,
   CheckboxProps,
-  ColProps,
+  AntColProps as ColProps,
   CollapseProps,
   DatePickerProps,
   DescriptionsProps,
@@ -167,7 +153,7 @@ export type {
   ProgressProps,
   RadioProps,
   ResultProps,
-  RowProps,
+  AntRowProps as RowProps,
   SelectProps,
   SkeletonProps,
   SpaceProps,

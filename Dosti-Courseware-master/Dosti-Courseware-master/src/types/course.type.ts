@@ -18,6 +18,7 @@ export enum CourseLevel {
 export interface ICourseBase {
   _id: string;
   name: string;
+  title?: string;  // For backward compatibility
   description: string;
   price: number;
   finalPrice: number;
@@ -25,8 +26,21 @@ export interface ICourseBase {
   level: CourseLevel;
   thumbnail: string;
   courseSlug: string;
+  categoryId: {
+    _id: string;
+    name: string;
+  };
+  userId: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
   author: string;
   willLearns: string[];
+  requirements?: string[];
+  objectives?: string[];
+  forWho?: string[];
+  subTitle?: string;
   totalVideosLength: number;
   avgRatingStars: number;
   numOfReviews: number;

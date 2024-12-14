@@ -10,9 +10,12 @@ export interface IUser {
   _id: string;
   name: string;
   email: string;
+  password?: string;
   avatar?: string;
+  phone?: string;
   courses: ICourseEnrolledByUser[];
   role: string;
+  lastLogin?: string;
   createdAt: string;
   updatedAt: string;
 }
