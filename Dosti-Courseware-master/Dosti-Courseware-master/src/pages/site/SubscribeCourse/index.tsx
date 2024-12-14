@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '../../../components/antd';
+import { Button } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import './SubscribeCourse.scss';
 

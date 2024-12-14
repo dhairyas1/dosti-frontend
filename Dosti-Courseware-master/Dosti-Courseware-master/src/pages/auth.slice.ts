@@ -1,6 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { UserRole } from '../types/user.type';
+
+interface DecodedToken {
+  exp: number;
+  iat: number;
+  userId: string;
+  email: string;
+}
+
+interface AdminDecodedToken extends DecodedToken {
+  adminRole: UserRole;
+}
 
 interface AuthState {
   userId: string;
@@ -33,19 +44,32 @@ const authSlice = createSlice({
       state.isAuth = true;
     },
     setAuthenticated(state, action: PayloadAction<string>) {
-      state.isAuth = true;
-      state.token = action.payload;
-      const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(action.payload);
-      state.userId = decodedToken.userId;
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(action.payload);
+        state.isAuth = true;
+        state.token = action.payload;
+        state.userId = decodedToken.userId;
+      } catch (error) {
+        console.error('Invalid token:', error);
+        state.isAuth = false;
+        state.token = null;
+        state.userId = '';
+      }
     },
     setAdminAuthenticated(state, action: PayloadAction<string>) {
-      state.isAdminAuth = true;
-      state.adminToken = action.payload;
-      const decodedToken: { exp: number; iat: number; userId: string; email: string; adminRole: UserRole } = jwtDecode(
-        action.payload
-      );
-      state.adminId = decodedToken.userId;
-      state.adminRole = decodedToken.adminRole;
+      try {
+        const decodedToken = jwtDecode<AdminDecodedToken>(action.payload);
+        state.isAdminAuth = true;
+        state.adminToken = action.payload;
+        state.adminId = decodedToken.userId;
+        state.adminRole = decodedToken.adminRole;
+      } catch (error) {
+        console.error('Invalid admin token:', error);
+        state.isAdminAuth = false;
+        state.adminToken = null;
+        state.adminId = '';
+        state.adminRole = null;
+      }
     },
     setUnauthenticated(state) {
       state.isAuth = false;
@@ -57,6 +81,7 @@ const authSlice = createSlice({
       state.isAdminAuth = false;
       state.adminToken = null;
       state.adminId = '';
+      state.adminRole = null;
       localStorage.removeItem('adminToken');
     },
     openAuthModal(state) {
@@ -68,10 +93,15 @@ const authSlice = createSlice({
     logout(state) {
       state.userId = '';
       state.isAuth = false;
+      state.token = null;
+      localStorage.removeItem('token');
     },
     adminLogout(state) {
       state.adminId = '';
       state.isAdminAuth = false;
+      state.adminToken = null;
+      state.adminRole = null;
+      localStorage.removeItem('adminToken');
     }
   }
 });
