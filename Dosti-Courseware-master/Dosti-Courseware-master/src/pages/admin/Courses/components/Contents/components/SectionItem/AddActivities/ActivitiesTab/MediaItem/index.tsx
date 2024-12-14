@@ -1,15 +1,26 @@
 import React from 'react';
 import AddLesson from '../../../../AddLesson';
 
-interface MediaItemProps {
+export type ActivityType = 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
+
+export interface MediaItemProps {
   courseId: string;
-  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
+  type: ActivityType;
+  sectionId?: string;
+  onAddSuccess?: () => void;
 }
 
-const MediaItem: React.FC<MediaItemProps> = ({ courseId, type }) => {
+const MediaItem: React.FC<MediaItemProps> = ({ courseId, type, sectionId, onAddSuccess }) => {
+  if (!courseId) return null;
+
   return (
     <div className="media-item">
-      <AddLesson courseId={courseId} activityType={type} />
+      <AddLesson 
+        courseId={courseId} 
+        activityType={type} 
+        sectionId={sectionId}
+        onSuccess={onAddSuccess}
+      />
     </div>
   );
 };

@@ -1,48 +1,50 @@
-import type { TabsProps } from 'antd';
-import { Tabs } from 'antd';
 import React from 'react';
-import MediaItem from './MediaItem';
+import { Tabs } from 'antd';
+import MediaItem, { ActivityType } from './MediaItem';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../../../../store/store';
 
-const acitivityItems: TabsProps['items'] = [
-  {
-    key: 'media',
-    label: `Media`,
-    children: <MediaItem />
-  },
-  {
-    key: 'contents',
-    label: `Contents`,
-    children: <MediaItem />
-  },
-  {
-    key: 'access',
-    label: `Access`,
-    children: <MediaItem />
-  },
-  {
-    key: 'pricing',
-    label: `Pricing`,
-    children: <MediaItem />
-  },
-  {
-    key: 'settings',
-    label: `Settings`,
-    children: <MediaItem />
-  },
-  {
-    key: 'dashboard',
-    label: `Dashboard`,
-    children: <MediaItem />
-  }
-];
 const ActivitiesTab: React.FC = () => {
-  //   const [tabPosition, setTabPosition] = useState<TabPosition>('left');
+  const courseId = useSelector((state: RootState) => state.course.courseId);
+  const sectionId = useSelector((state: RootState) => state.course.sectionId);
+  
+  if (!courseId || !sectionId) {
+    return null;
+  }
 
-  //   const changeTabPosition = (e: RadioChangeEvent) => {
-  //     // setTabPosition(e.target.value);
-  //   };
+  const handleAddSuccess = () => {
+    // Optionally refresh section data or trigger any updates
+  };
 
-  return <Tabs tabPosition={'left'} items={acitivityItems} />;
+  const activities: { key: ActivityType; label: string }[] = [
+    { key: 'media', label: 'Media' },
+    { key: 'quiz', label: 'Quiz' },
+    { key: 'assignment', label: 'Assignment' },
+    { key: 'text', label: 'Text' },
+    { key: 'survey', label: 'Survey' },
+    { key: 'scorm', label: 'Scorm' }
+  ];
+
+  const items = activities.map(activity => ({
+    key: activity.key,
+    label: activity.label,
+    children: (
+      <MediaItem 
+        courseId={courseId}
+        type={activity.key}
+        sectionId={sectionId}
+        onAddSuccess={handleAddSuccess}
+      />
+    )
+  }));
+
+  return (
+    <Tabs
+      items={items}
+      defaultActiveKey="media"
+      destroyInactiveTabPane
+    />
+  );
 };
 
 export default ActivitiesTab;
