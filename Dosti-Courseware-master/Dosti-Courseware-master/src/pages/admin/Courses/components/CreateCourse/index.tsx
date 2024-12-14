@@ -19,10 +19,6 @@ const orderCreateForm = [
   'course-delivery'
 ];
 
-interface CreateCourseData extends Omit<ICourse, '_id'> {
-  // Additional fields specific to course creation
-}
-
 const CreateCourse = () => {
   const isOpen = useSelector((state: RootState) => state.course.isOpenCreateCourse);
   const dispatch = useDispatch();
@@ -78,7 +74,7 @@ const CreateCourse = () => {
         return;
       }
 
-      const courseData: CreateCourseData = {
+      const courseData: Omit<ICourse, '_id'> = {
         name: formData.name || '',
         title: formData.name || '',
         description: formData.description || '',
@@ -99,18 +95,18 @@ const CreateCourse = () => {
         },
         sections: [],
         lessons: [],
-        numOfLessons: 0,
-        totalTime: 0,
-        rating: 0,
-        reviews: 0,
-        students: 0,
+        author: formData.author || 'Admin',
+        willLearns: formData.willLearns || [],
         requirements: formData.requirements || [],
         objectives: formData.objectives || [],
         forWho: formData.forWho || [],
-        willLearns: formData.willLearns || [],
+        subTitle: formData.subTitle || '',
         totalVideosLength: 0,
         avgRatingStars: 0,
         numOfReviews: 0,
+        students: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
       await addCourse(courseData).unwrap();
@@ -185,4 +181,4 @@ const CreateCourse = () => {
   );
 };
 
-export default CreateCourse;
+export default CreateCourse; 

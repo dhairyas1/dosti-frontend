@@ -2,65 +2,43 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICourse } from '../../../types/course.type';
 
 interface CourseState {
-  isOpenCreateCourse: boolean;
-  formData: Partial<ICourse>;
-  courseId: string;
-  sectionId: string;
-  currentStep: number;
+  courses: ICourse[];
+  course: ICourse | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: CourseState = {
-  isOpenCreateCourse: false,
-  formData: {},
-  courseId: '',
-  sectionId: '',
-  currentStep: 0
+  courses: [],
+  course: null,
+  isLoading: false,
+  error: null,
 };
 
 const courseSlice = createSlice({
   name: 'course',
   initialState,
   reducers: {
-    openCreateCourse(state, action: PayloadAction<boolean>) {
-      state.isOpenCreateCourse = action.payload;
-      if (!action.payload) {
-        state.formData = {};
-        state.currentStep = 0;
-      }
+    setCourses(state, action: PayloadAction<ICourse[]>) {
+      state.courses = action.payload;
     },
-    handleFormData(state, action: PayloadAction<Partial<ICourse>>) {
-      state.formData = {
-        ...state.formData,
-        ...action.payload
-      };
+    setCourse(state, action: PayloadAction<ICourse>) {
+      state.course = action.payload;
     },
-    setCourseId(state, action: PayloadAction<string>) {
-      state.courseId = action.payload;
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
     },
-    setSectionId(state, action: PayloadAction<string>) {
-      state.sectionId = action.payload;
+    setError(state, action: PayloadAction<string | null>) {
+      state.error = action.payload;
     },
-    startAddSection(state, action: PayloadAction<string>) {
-      state.sectionId = action.payload;
-    },
-    setCurrentStep(state, action: PayloadAction<number>) {
-      state.currentStep = action.payload;
-    },
-    resetCourseForm(state) {
-      state.formData = {};
-      state.currentStep = 0;
-    }
-  }
+  },
 });
 
-export const { 
-  openCreateCourse, 
-  handleFormData, 
-  setCourseId, 
-  setSectionId,
-  startAddSection,
-  setCurrentStep,
-  resetCourseForm 
+export const {
+  setCourses,
+  setCourse,
+  setLoading,
+  setError,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

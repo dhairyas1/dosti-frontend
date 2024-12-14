@@ -1,9 +1,9 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout } from '../../components/antd';
 
 const { Header } = Layout;
 
-const TopHeader = () => {
+const TopHeader: React.FC = () => {
   return (
     <Header className="top-header">
       {/* Header content goes here */}

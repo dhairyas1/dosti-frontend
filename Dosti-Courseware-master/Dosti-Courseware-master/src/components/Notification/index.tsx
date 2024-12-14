@@ -1,8 +1,22 @@
 import React from 'react';
-import { Button, notification, Space } from 'antd';
+import { notification, type NotificationArgsProps } from '../antd';
 
-const close = () => {
-  console.log('Notification was closed. Either the close button was clicked or duration time elapsed.');
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
+interface NotificationProps {
+  type: NotificationType;
+  message: string;
+  description?: string;
+}
+
+export const openNotification = ({ type, message, description = '' }: NotificationProps) => {
+  const args: NotificationArgsProps = {
+    message,
+    description,
+    duration: 3,
+  };
+
+  notification[type](args);
 };
 
 const Notification: React.FC = () => {

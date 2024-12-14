@@ -13,11 +13,12 @@ export interface IUser {
   password?: string;
   avatar?: string;
   phone?: string;
-  courses: ICourseEnrolledByUser[];
-  role: string;
+  courses: string[] | ICourseEnrolledByUser[];
+  role: UserRole;
   lastLogin?: string;
   createdAt: string;
   updatedAt: string;
+  providerId: string;
 }
 
 export interface IUserDetail extends IUser {

@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../constant/backend-domain';
 import { RootState } from '../../../../store/store';
 import { ICourse, ICourseEnrolledByUser } from '../../../../types/course.type';
-import { addToCart } from '../../client.slice';
 import { openAuthModal } from '../../site.slice';
 import { notification } from 'antd';
 import './CourseItem.scss';
@@ -17,119 +16,94 @@ interface CourseItemProps {
 }
 
 const CourseItem: React.FC<CourseItemProps> = ({ course, onEnroll, onBuy }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
-
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
 
-  const isEnrolled = 'isBought' in course && course.isBought;
-  const progress = isEnrolled && 'progress' in course ? course.progress : 0;
-  const status = course.courseState || course.access || 'DRAFT';
+  let thumbnailUrl = '';
+  if (course.thumbnail.startsWith('https')) {
+    thumbnailUrl = course.thumbnail;
+  } else {
+    thumbnailUrl = `${BACKEND_URL}/${course.thumbnail}`;
+  }
 
-  if (!course) return null;
-
-  const viewCourseDetail = () => {
-    onBuy && onBuy(course._id);
-  };
-
-  const handleEnrollOrBuy = () => {
+  const handleEnroll = () => {
     if (!isAuth) {
-      notification.warning({ 
-        message: 'You need to login to enroll/buy this course',
-        description: 'Please login or register to continue'
-      });
       dispatch(openAuthModal());
       return;
     }
 
-    if (course.finalPrice === 0) {
-      onEnroll?.(course._id);
+    if (onEnroll) {
+      onEnroll(course._id);
     } else {
-      dispatch(addToCart(course._id));
-      navigate('/checkout');
+      navigate(`/courses/${course._id}`);
     }
   };
 
-  let thumbnailUrl = '';
-  if (course.thumbnail.startsWith('http')) {
-    thumbnailUrl = encodeURI(course.thumbnail);
-  } else {
-    thumbnailUrl = encodeURI(`${BACKEND_URL}/${course.thumbnail}`);
-  }
+  const handleBuy = () => {
+    if (!isAuth) {
+      dispatch(openAuthModal());
+      return;
+    }
+
+    if (onBuy) {
+      onBuy(course._id);
+    } else {
+      navigate(`/courses/${course._id}`);
+    }
+  };
+
+  const isEnrolled = 'progress' in course;
 
   return (
-    <Col
-      lg={location.pathname === '/start' || location.pathname === '/' ? 6 : 8}
-      md={location.pathname === '/start' || location.pathname === '/' ? 8 : 12}
-      sm={12}
-      xs={24}
-    >
-      <div className='course-item'>
-        <div
-          className='course-item__img'
-          onClick={viewCourseDetail}
-          style={{
-            backgroundImage: `url(${thumbnailUrl})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover'
-          }}
-        ></div>
-        <div className='course-item__content'>
-          <h3 onClick={viewCourseDetail} className='course-item__title'>
-            {course.name}
-          </h3>
+    <Col xs={24} md={12} lg={8} className='course-item'>
+      <div className='course-item__wrapper'>
+        <div className='course-item__thumbnail'>
+          <img src={thumbnailUrl} alt={course.name} />
           {isEnrolled && (
-            <Progress className='course-item__progress' percent={progress * 100} />
+            <div className='course-item__progress'>
+              <Progress
+                type='circle'
+                percent={Math.round((course as ICourseEnrolledByUser).progress * 100)}
+                width={50}
+              />
+            </div>
           )}
-          <div className='course-item__desc'>{course.description}</div>
-          <div className='course-item__author'>
-            <img
-              src={course.userId.avatar || 'https://joeschmoe.io/api/v1/random'}
-              alt=''
-              className='course-item__author-img'
-            />
-            <div className='course-item__author-name'>{course.userId.name}</div>
-          </div>
-          <div className='course-item__enrolls'>
-            <div className='course-item__enrolls-row'>
-              <div className='course-item__button-wrapper'>
-                {!isEnrolled && (
-                  <Button
-                    type="primary"
-                    onClick={handleEnrollOrBuy}
-                    className="course-item__button"
-                  >
-                    {course.finalPrice === 0 ? 'Enroll Now' : 'Buy Now'}
-                  </Button>
-                )}
-                {isEnrolled && (
-                  <Button
-                    onClick={() => navigate(`/path-player?courseId=${course._id}`)}
-                    className="course-item__button"
-                  >
-                    Go to Course
-                  </Button>
-                )}
-              </div>
-              <div className='course-item__price-wrapper'>
-                {!isEnrolled && (
-                  <div className='course-item__prices'>
-                    {course.finalPrice === 0 ? (
-                      <div className='course-item__prices-free'>FREE</div>
-                    ) : (
-                      <>
-                        <span className='course-item__prices-old'>${course.price}</span>
-                        <span className='course-item__prices-new'>${course.finalPrice}</span>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
+        </div>
+        <div className='course-item__content'>
+          <h3 className='course-item__title'>{course.name}</h3>
+          <p className='course-item__description'>{course.description}</p>
+          <div className='course-item__meta'>
+            <div className='course-item__author'>
+              <img src={course.userId.avatar} alt={course.userId.name} />
+              <span>{course.userId.name}</span>
+            </div>
+            <div className='course-item__price'>
+              {course.finalPrice > 0 ? (
+                <>
+                  <span className='course-item__price--original'>${course.price}</span>
+                  <span className='course-item__price--final'>${course.finalPrice}</span>
+                </>
+              ) : (
+                <span className='course-item__price--free'>Free</span>
+              )}
             </div>
           </div>
-          <div className='course-item__status'>
-            {status}
+          <div className='course-item__actions'>
+            {isEnrolled ? (
+              <Button type='primary' onClick={handleEnroll}>
+                Continue Learning
+              </Button>
+            ) : course.finalPrice > 0 ? (
+              <Button type='primary' onClick={handleBuy}>
+                Buy Now
+              </Button>
+            ) : (
+              <Button type='primary' onClick={handleEnroll}>
+                Enroll Now
+              </Button>
+            )}
           </div>
         </div>
       </div>

@@ -95,8 +95,8 @@ const UsersList: React.FC<UserListProps> = ({ onEditUser, searchValue }) => {
     createdAt: user.createdAt || 'Unknown',
     courses: (
       <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-        {user.courses?.map((courseId) => (
-          <Avatar key={courseId} />
+        {Array.isArray(user.courses) && user.courses.map((course) => (
+          <Avatar key={typeof course === 'string' ? course : course._id} />
         ))}
         <Tooltip title='Courses' placement='top'>
           <span>{user.courses?.length || 0} courses</span>
