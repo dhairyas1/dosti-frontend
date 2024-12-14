@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import type { RadioChangeEvent } from 'antd';
-import { Button, Col, Drawer, Form, Input, Radio, Row, Select, Space, notification } from 'antd';
+import { Button, Col, Drawer, Form, Input, Radio, Row, Select, Space, notification } from '../../../../../../../components/antd';
 import React, { useState } from 'react';
 import { ISection } from '../../../../../../../types/lesson.type';
 import { useAddSectionMutation } from '../../../../course.service';

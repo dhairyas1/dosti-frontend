@@ -1,5 +1,5 @@
-import type { TabsProps } from 'antd';
-import { Tabs } from 'antd';
+import type { TabsProps } from '../../../../../components/antd';
+import { Tabs } from '../../../../../components/antd';
 import './CourseIngishts.scss';
 import AllCourses from './components/AllCourses';
 import Insights from './components/Insights';

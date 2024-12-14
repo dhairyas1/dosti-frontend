@@ -1,4 +1,4 @@
-import { Button, Col, Input, InputNumber, Row, Select } from 'antd';
+import { Button, Col, Input, InputNumber, Row, Select } from '../../../../../components/antd';
 import './UsersProgress.scss';
 import UsersProgressTable from './components/UserProgressTable';
 const UsersProgress = () => {

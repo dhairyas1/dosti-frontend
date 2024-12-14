@@ -11,7 +11,7 @@ import {
   UsergroupAddOutlined,
   WechatOutlined
 } from '@ant-design/icons';
-import { Button, Col, Row, Select, Statistic } from 'antd';
+import { Button, Col, Row, Select, Statistic } from '../../../components/antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';

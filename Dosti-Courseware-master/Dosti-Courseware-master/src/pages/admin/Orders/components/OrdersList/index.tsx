@@ -1,12 +1,10 @@
-import { Avatar, Table, Tooltip } from 'antd';
-import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
-import type { FilterValue } from 'antd/es/table/interface';
+import { Avatar, Table, Tooltip, type TableProps } from '../../../../../components/antd';
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './OrdersList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { DownloadOutlined } from '@ant-design/icons';
 import { IOrder } from '../../../../../types/order.type';
+
 interface DataOrderType {
   key: React.Key;
   name: JSX.Element;
@@ -20,13 +18,13 @@ interface DataOrderType {
 }
 
 interface TableParams {
-  pagination?: TablePaginationConfig;
+  pagination?: TableProps<DataOrderType>['pagination'];
   sortField?: string;
   sortOrder?: string;
-  filters?: Record<string, FilterValue>;
+  filters?: Record<string, any>;
 }
 
-const columns: ColumnsType<DataOrderType> = [
+const columns: TableProps<DataOrderType>['columns'] = [
   {
     title: 'Learners',
     dataIndex: 'name',

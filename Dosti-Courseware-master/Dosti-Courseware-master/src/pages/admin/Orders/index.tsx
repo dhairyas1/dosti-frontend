@@ -1,4 +1,4 @@
-import { Input, Select, Skeleton, Space } from 'antd';
+import { Input, Select, Skeleton, Space } from '../../../components/antd';
 import { useState } from 'react';
 import './Orders.scss';
 import OrdersList from './components/OrdersList';

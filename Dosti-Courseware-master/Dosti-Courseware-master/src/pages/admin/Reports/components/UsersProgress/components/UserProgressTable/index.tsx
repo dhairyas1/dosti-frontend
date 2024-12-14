@@ -1,5 +1,5 @@
-import { Skeleton, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Skeleton, Table, type TableProps } from '../../../../../../../components/antd';
+import React from 'react';
 import { formatVideoLengthToHours } from '../../../../../../../utils/functions';
 import { useGetReportsUserProgressQuery } from '../../../../../report.service';
 
@@ -11,7 +11,6 @@ interface DataType {
   lastLogin: string;
   lastEnrollment: string;
   studyTime: string;
-  //   totalTimeOnPlatform: number;
   allCourses: number;
   completedCourses: number;
   inCompletedCourses: number;
@@ -19,7 +18,7 @@ interface DataType {
   avgScore: number;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: TableProps<DataType>['columns'] = [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -51,11 +50,6 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'studyTime',
     key: 'studyTime'
   },
-  //   {
-  //     title: 'Total time on platform',
-  //     dataIndex: 'totalTimeOnPlatform',
-  //     key: 'totalTimeOnPlatform'
-  //   },
   {
     title: 'All Courses',
     dataIndex: 'allCourses',

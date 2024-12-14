@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Select, Skeleton, Space } from 'antd';
+import { Button, Input, Select, Skeleton, Space } from '../../../components/antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useGetAllCategoriesQuery, useGetCategoriesQuery } from './category.service';

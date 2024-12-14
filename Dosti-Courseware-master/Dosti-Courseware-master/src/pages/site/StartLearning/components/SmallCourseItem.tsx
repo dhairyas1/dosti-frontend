@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Progress } from 'antd';
+import { Card, Progress } from '../../../../components/antd';
 import { Link } from 'react-router-dom';
 
 export interface SmallCourseItemProps {

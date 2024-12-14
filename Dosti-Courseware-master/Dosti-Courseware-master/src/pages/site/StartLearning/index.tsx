@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row } from '../../../../components/antd';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useGetUserEnrolledCoursesQuery } from '../client.service';

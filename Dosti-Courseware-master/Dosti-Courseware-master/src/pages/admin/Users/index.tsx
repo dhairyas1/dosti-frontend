@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, Space } from 'antd';
+import { Button, Input, Space } from '../../../components/antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import UsersList from './components/UsersList';
 import AddUser from './components/AddUser';

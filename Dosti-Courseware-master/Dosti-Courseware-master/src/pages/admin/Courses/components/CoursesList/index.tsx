@@ -1,6 +1,6 @@
-import { Table } from 'antd';
-import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
-import type { FilterValue } from 'antd/es/table/interface';
+import { Table } from '../../../../../components/antd';
+import type { TablePaginationConfig, TableProps } from '../../../../../components/antd';
+import type { FilterValue } from '../../../../../components/antd';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';

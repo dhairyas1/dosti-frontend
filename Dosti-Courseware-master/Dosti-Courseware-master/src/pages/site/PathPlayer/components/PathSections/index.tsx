@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapse, CollapseProps, Skeleton } from 'antd';
+import { Collapse, CollapseProps, Skeleton } from '../../../../../../components/antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';

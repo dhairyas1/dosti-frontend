@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Pagination } from 'antd';
+import { Col, Row, Pagination } from '../../../../components/antd';
 import { ICourse } from '../../../../types/course.type';
 import CourseCard from '../CourseCard';
 

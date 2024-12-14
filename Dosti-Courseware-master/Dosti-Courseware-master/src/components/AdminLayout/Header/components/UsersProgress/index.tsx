@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space } from 'antd';
+import { Space } from '../../../../../components/antd';
 import { useDispatch } from 'react-redux';
 
 const UsersProgress: React.FC = () => {

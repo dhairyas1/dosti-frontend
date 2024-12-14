@@ -1,4 +1,4 @@
-import { Space } from 'antd';
+import { Space } from '../../../../../components/antd';
 import { Fragment } from 'react';
 
 const CategoriesHeader = () => {

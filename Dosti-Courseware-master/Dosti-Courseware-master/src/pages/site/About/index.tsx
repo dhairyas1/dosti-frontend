@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Col, Row } from 'antd';
-import type { ColProps, RowProps } from 'antd/es/grid';
+import { Col, Row } from '../../../components/antd';
+import type { ColProps, RowProps } from '../../../components/antd';
 import './About.scss';
 import dhairyaPhoto from '../../../assets/images/dhairyaphoto.jpg';
 import priyalPhoto from '../../../assets/images/Priyalphoto.jpeg';

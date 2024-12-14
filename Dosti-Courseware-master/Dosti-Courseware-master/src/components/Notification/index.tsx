@@ -1,5 +1,5 @@
 import React from 'react';
-import { notification, type NotificationArgsProps } from '../antd';
+import { notification, type NotificationArgsProps, Space, Button } from '../antd';
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
@@ -39,17 +39,9 @@ const Notification: React.FC = () => {
       description:
         'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
       btn,
-      key,
-      onClose: close
+      key
     });
   };
-
-  // notification.open({
-  //   message: 'Notification Title',
-  //   description:
-  //     'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
-  //   key: 'openNotify'
-  // });
 
   return (
     <>

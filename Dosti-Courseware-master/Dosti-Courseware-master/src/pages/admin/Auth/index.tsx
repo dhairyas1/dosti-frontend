@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Row } from '../../../components/antd';
 import './Auth.scss';
 import AdminLogin from './Login';
 const AdminAuth = () => {

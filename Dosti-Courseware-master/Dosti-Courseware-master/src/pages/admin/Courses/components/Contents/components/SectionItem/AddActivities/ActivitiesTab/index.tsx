@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from 'antd';
+import { Tabs } from '../../../../../../../../../components/antd';
 import MediaItem, { ActivityType } from './MediaItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../../../store/store';

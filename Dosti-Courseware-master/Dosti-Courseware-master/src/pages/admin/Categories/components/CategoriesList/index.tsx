@@ -1,11 +1,8 @@
-import { Button, Popover, Space, Table, notification } from 'antd';
-import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
-import type { FilterValue } from 'antd/es/table/interface';
+import { Button, Popover, Space, Table, notification, type TableProps } from '../../../../../components/antd';
 import React, { useState } from 'react';
 import './CategoriesList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import Link from 'antd/es/typography/Link';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ICategory } from '../../../../../types/category.type';
 import { CategoryError } from '../../../../../utils/helpers';
@@ -17,16 +14,16 @@ interface DataCategoryType {
   name: any;
   courses: number;
   tags: string[];
-  createdAt: string; // Convert to date: Example: 18 jun 2023
+  createdAt: string;
   description: string;
   actions?: any;
 }
 
 interface TableParams {
-  pagination?: TablePaginationConfig;
+  pagination?: TableProps<DataCategoryType>['pagination'];
   sortField?: string;
   sortOrder?: string;
-  filters?: Record<string, FilterValue>;
+  filters?: Record<string, any>;
 }
 
 interface CategoryListProps {
@@ -75,7 +72,7 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
   //     setOpen(true);
   //   };
 
-  const columns: ColumnsType<DataCategoryType> = [
+  const columns: TableProps<DataCategoryType>['columns'] = [
     {
       title: 'Category',
       dataIndex: 'name',

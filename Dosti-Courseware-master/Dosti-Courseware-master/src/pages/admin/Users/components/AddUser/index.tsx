@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input, Select, Button, notification } from 'antd';
+import { Modal, Form, Input, Select, Button, notification } from '../../../../../components/antd';
 import { useAddUserMutation } from '../../user.service';
 import { IUser, UserRole } from '../../../../../types/user.type';
 

@@ -1,5 +1,5 @@
 import { InstagramOutlined, LinkedinFilled } from '@ant-design/icons';
-import { Col, Row } from 'antd';
+import { Row, Col } from '../../../components/antd';
 import { Link } from 'react-router-dom';
 import './Footer.scss';
 import Logo from '../../../assets/images/logo.png';

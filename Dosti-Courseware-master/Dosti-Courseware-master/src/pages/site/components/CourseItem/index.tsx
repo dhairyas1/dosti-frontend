@@ -5,9 +5,9 @@ import { BACKEND_URL } from '../../../../constant/backend-domain';
 import { RootState } from '../../../../store/store';
 import { ICourse, ICourseEnrolledByUser } from '../../../../types/course.type';
 import { openAuthModal } from '../../site.slice';
-import { notification } from 'antd';
+import { notification } from '../../../../components/antd';
 import './CourseItem.scss';
-import { Button, Col, Progress } from 'antd';
+import { Button, Col, Progress } from '../../../../components/antd';
 
 interface CourseItemProps {
   course: ICourse | ICourseEnrolledByUser;

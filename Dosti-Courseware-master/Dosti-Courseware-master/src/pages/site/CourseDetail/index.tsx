@@ -6,6 +6,8 @@ import { useGetCourseDetailQuery } from '../client.service';
 import { BACKEND_URL } from '../../../constant/backend-domain';
 import { ICourseDetail } from '../../../types/course.type';
 import './CourseDetail.scss';
+import { Row, Col, Button, Breadcrumb } from '../../../../components/antd';
+import type { RowProps, ColProps, BreadcrumbProps } from '../../../../components/antd';
 
 const CourseDetail: React.FC = () => {
   const params = useParams();

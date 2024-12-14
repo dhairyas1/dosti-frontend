@@ -1,4 +1,4 @@
-import { Button, Modal, Spin } from 'antd';
+import { Button, Modal, Spin } from '../antd';
 
 // type Props = {}
 

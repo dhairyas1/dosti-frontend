@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card } from '../../../../components/antd';
 import { Link } from 'react-router-dom';
 import { ICourse } from '../../../../types/course.type';
 

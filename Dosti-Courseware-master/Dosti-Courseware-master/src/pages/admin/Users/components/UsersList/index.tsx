@@ -1,4 +1,4 @@
-import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, notification } from '../../../../../../components/antd';
+import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, notification, type TableProps } from '../../../../../../components/antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { Fragment } from 'react';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -41,7 +41,7 @@ const UsersList: React.FC<UserListProps> = ({ onEditUser, searchValue }) => {
     }
   };
 
-  const columns: ColumnsType<DataUserType> = [
+  const columns: TableProps<DataUserType>['columns'] = [
     {
       title: 'User',
       dataIndex: 'name',
