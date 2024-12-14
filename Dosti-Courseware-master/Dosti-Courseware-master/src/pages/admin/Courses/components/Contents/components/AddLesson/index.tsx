@@ -1,6 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Form, Input, Radio, Row, Space, notification } from '../../../../../../../../../components/antd';
-import type { RadioChangeEvent } from '../../../../../../../../../components/antd';
+import { Button, Col, Drawer, Form, Input, Radio, Row, Space, notification, type RadioChangeEvent } from '../../../../../../../components/antd';
 import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';

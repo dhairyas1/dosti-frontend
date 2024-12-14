@@ -33,7 +33,8 @@ interface CategoryListProps {
 const SettingContent = (cateId: string) => {
   const [deleteCategory, deleteCategoryResult] = useDeleteCategoryMutation();
 
-  const deleteCateHandler = () => {
+  const deleteCateHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
     console.log(cateId);
 
     deleteCategory(cateId)
@@ -59,7 +60,7 @@ const SettingContent = (cateId: string) => {
   return (
     <div>
       <p>Content</p>
-      <Link onClick={deleteCateHandler}>Delete</Link>
+      <Link to={`/admin/categories/${cateId}`} onClick={deleteCateHandler}>Delete</Link>
     </div>
   );
 };
