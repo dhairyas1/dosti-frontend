@@ -14,11 +14,40 @@ export enum CourseLevel {
   ADVANCED = 'ADVANCED'
 }
 
+export interface ILesson {
+  _id: string;
+  name: string;
+  title?: string;
+  videoUrl?: string;
+  description?: string;
+  isDone?: boolean;
+  content?: string;
+  access: string;
+  videoLength?: number;
+  order?: number;
+  sectionId: string;
+  courseId: string;
+  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
+  duration?: number;
+  isCompleted?: boolean;
+}
+
+export interface ISection {
+  _id: string;
+  name: string;
+  description?: string;
+  lessons: ILesson[];
+  courseId: string;
+  order?: number;
+  access?: string;
+  totalVideosLength?: number;
+}
+
 // Base interface with required fields
 export interface ICourseBase {
   _id: string;
   name: string;
-  title?: string;  // For backward compatibility
+  title?: string;
   description: string;
   price: number;
   finalPrice: number;
@@ -50,10 +79,10 @@ export interface ICourseBase {
   updatedAt: string;
 }
 
-// Main course interface extending base with optional fields
+// Main course interface extending base with sections and lessons
 export interface ICourse extends ICourseBase {
-  sections: ISection[];
-  lessons: ILesson[];
+  sections?: ISection[];
+  lessons?: ILesson[];
 }
 
 // Interface for enrolled courses
@@ -70,36 +99,6 @@ export interface ICourseDetail extends ICourse {
   avgRatingStars: number;
   students: number;
   isBought: boolean;
-}
-
-export interface ILesson {
-  _id: string;
-  name: string;
-  title?: string; // For backward compatibility
-  videoUrl?: string;
-  description?: string;
-  isDone?: boolean;
-  content?: string;
-  access: string;
-  videoLength?: number;
-  order?: number;
-  sectionId: string;
-  courseId: string;
-  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
-  duration?: number;
-  isCompleted?: boolean;
-}
-
-export interface ISection {
-  _id: string;
-  name: string;
-  description?: string;
-  lessons: ILesson[];
-  courseId: string;
-  order?: number;
-  access?: string;
-  numOfLessons?: number;
-  totalVideosLength?: number;
 }
 
 export interface IsLessonDone {
