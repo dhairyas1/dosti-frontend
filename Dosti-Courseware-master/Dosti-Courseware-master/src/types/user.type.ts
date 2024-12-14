@@ -1,4 +1,4 @@
-import { ICourse } from './course.type';
+import { ICourse, ICourseEnrolledByUser } from './course.type';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -23,4 +23,20 @@ export interface IUser {
   lastLogin?: string;
   providerId?: string;
   fbUserId?: string;
+}
+
+export interface IUserDetail extends Omit<IUser, 'courses'> {
+  courses: ICourseEnrolledByUser[];
+}
+
+export interface AuthState {
+  userId: string;
+  adminId: string;
+  isAuth: boolean;
+  isAdminAuth: boolean;
+  token: string | null;
+  adminToken: string | null;
+  isOpenAuthModal: boolean;
+  adminRole: UserRole | null;
+  user?: IUserDetail;
 }

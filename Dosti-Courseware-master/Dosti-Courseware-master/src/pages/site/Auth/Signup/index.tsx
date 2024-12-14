@@ -21,6 +21,7 @@ const Signup: React.FC<SignupProps> = ({ onClick }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onFinish = async (values: SignupFormValues) => {
+    const currentDate = new Date().toISOString();
     const userData: Omit<IUser, '_id'> = {
       email: values.email,
       password: values.password,
@@ -29,9 +30,9 @@ const Signup: React.FC<SignupProps> = ({ onClick }) => {
       courses: [],
       avatar: '',
       providerId: 'local',
-      lastLogin: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      lastLogin: currentDate,
+      createdAt: currentDate,
+      updatedAt: currentDate
     };
     
     setIsSubmitting(true);

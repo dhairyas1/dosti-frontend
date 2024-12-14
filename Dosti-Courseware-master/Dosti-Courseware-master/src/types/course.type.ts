@@ -17,7 +17,8 @@ export enum CourseLevel {
 // Base interface with required fields
 export interface ICourseBase {
   _id: string;
-  name: string;
+  title: string;
+  name?: string; // For backward compatibility
   description: string;
   thumbnail: string;
   price: number;
@@ -34,6 +35,7 @@ export interface ICourseBase {
     name: string;
     avatar: string;
   };
+  author?: string;
 }
 
 // Main course interface extending base with optional fields
@@ -64,6 +66,7 @@ export interface ICourse extends ICourseBase {
   isPublished?: boolean;
   status?: string;
   totalSections?: number;
+  totalVideosLengthDone?: number;
 }
 
 // Interface for enrolled courses
@@ -90,6 +93,7 @@ export interface ICourseDetail extends ICourse {
 export interface ILesson {
   _id: string;
   name: string;
+  title?: string; // For backward compatibility
   videoUrl?: string;
   description?: string;
   isDone?: boolean;

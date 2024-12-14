@@ -13,6 +13,7 @@ const AddUser: React.FC<AddUserProps> = ({ onClose }) => {
 
   const handleSubmit = async (values: Partial<IUser>) => {
     try {
+      const currentDate = new Date().toISOString();
       const userData: Omit<IUser, '_id'> = {
         name: values.name || '',
         email: values.email || '',
@@ -21,9 +22,9 @@ const AddUser: React.FC<AddUserProps> = ({ onClose }) => {
         courses: [],
         avatar: '',
         providerId: 'local',
-        lastLogin: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date()
+        lastLogin: currentDate,
+        createdAt: currentDate,
+        updatedAt: currentDate
       };
 
       await addUser(userData).unwrap();
