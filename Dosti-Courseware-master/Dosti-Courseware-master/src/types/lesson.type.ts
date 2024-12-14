@@ -1,16 +1,16 @@
 export interface ILesson {
   _id: string;
   name: string;
-  videoUrl: string;
+  videoUrl?: string;
   description?: string;
   isDone?: boolean;
   content?: string;
-  access?: string;
+  access: string;
   videoLength?: number;
   order?: number;
   sectionId: string;
   courseId: string;
-  type?: string;
+  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
   duration?: number;
   isCompleted?: boolean;
 }

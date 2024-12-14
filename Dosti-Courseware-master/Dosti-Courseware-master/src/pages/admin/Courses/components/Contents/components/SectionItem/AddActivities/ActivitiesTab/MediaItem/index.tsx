@@ -1,14 +1,15 @@
+import React from 'react';
 import AddLesson from '../../../../AddLesson';
-import YoutubeMedia from './Youtube';
 
 interface MediaItemProps {
   courseId: string;
+  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
 }
 
-const MediaItem: React.FC<MediaItemProps> = ({ courseId }) => {
+const MediaItem: React.FC<MediaItemProps> = ({ courseId, type }) => {
   return (
     <div className="media-item">
-      <AddLesson courseId={courseId} />
+      <AddLesson courseId={courseId} activityType={type} />
     </div>
   );
 };

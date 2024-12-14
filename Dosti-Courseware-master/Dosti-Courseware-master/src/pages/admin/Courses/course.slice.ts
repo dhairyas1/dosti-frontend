@@ -1,78 +1,62 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AccessStatus, CourseLevel, ICourse } from '../../../types/course.type';
+import { ICourse } from '../../../types/course.type';
 
 interface CourseState {
-  courseId: string;
   isOpenCreateCourse: boolean;
-  formData: ICourse;
+  formData: Partial<ICourse>;
+  courseId: string;
   sectionId: string;
-  isOpenAddSectionModal: boolean;
+  currentStep: number;
 }
 
 const initialState: CourseState = {
-  courseId: '',
   isOpenCreateCourse: false,
-  formData: {
-    _id: '',
-    name: '',
-    title: '',
-    description: '',
-    price: 0,
-    finalPrice: 0,
-    access: AccessStatus.FREE,
-    level: CourseLevel.BEGINNER,
-    thumbnail: '',
-    courseSlug: '',
-    author: '',
-    topics: [],
-    duration: 0,
-    categoryId: {
-      _id: '',
-      name: ''
-    },
-    userId: {
-      _id: '6468a145401d3810494f4797',
-      name: 'Nguyen Van A',
-      avatar: ''
-    },
-    willLearns: [],
-    requirements: [],
-    tags: [],
-    subTitle: ''
-  },
+  formData: {},
+  courseId: '',
   sectionId: '',
-  isOpenAddSectionModal: false
+  currentStep: 0
 };
 
 const courseSlice = createSlice({
   name: 'course',
   initialState,
   reducers: {
-    openCreateCourse: (state, action: PayloadAction<boolean>) => {
+    openCreateCourse(state, action: PayloadAction<boolean>) {
       state.isOpenCreateCourse = action.payload;
+      if (!action.payload) {
+        state.formData = {};
+        state.currentStep = 0;
+      }
     },
-    startEditCourse: (state, action: PayloadAction<string>) => {
+    handleFormData(state, action: PayloadAction<Partial<ICourse>>) {
+      state.formData = {
+        ...state.formData,
+        ...action.payload
+      };
+    },
+    setCourseId(state, action: PayloadAction<string>) {
       state.courseId = action.payload;
     },
-    startAddSection: (state, action: PayloadAction<string>) => {
+    setSectionId(state, action: PayloadAction<string>) {
       state.sectionId = action.payload;
     },
-    cancelEditCourse: (state) => {
-      state.courseId = '';
+    setCurrentStep(state, action: PayloadAction<number>) {
+      state.currentStep = action.payload;
     },
-    handleFormData: (state, action: PayloadAction<ICourse>) => {
-      state.formData = action.payload;
-    },
-    openAddSectionModal: (state) => {
-      state.isOpenAddSectionModal = true;
-    },
-    closeAddSectionModal: (state) => {
-      state.isOpenAddSectionModal = false;
+    resetCourseForm(state) {
+      state.formData = {};
+      state.currentStep = 0;
     }
   }
 });
 
-const courseReducer = courseSlice.reducer;
-export const { cancelEditCourse, startEditCourse, openCreateCourse, handleFormData, startAddSection } =
-  courseSlice.actions;
-export default courseReducer;
+export const { 
+  openCreateCourse, 
+  handleFormData, 
+  setCourseId, 
+  setSectionId,
+  setCurrentStep,
+  resetCourseForm 
+} = courseSlice.actions;
+
+export default courseSlice.reducer;
