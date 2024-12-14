@@ -29,7 +29,6 @@
     "sass": "^1.62.1"
   },
   "devDependencies": {
-    "@types/antd": "^0.12.32",
     "@types/react": "^18.3.16",
     "@types/react-dom": "^18.3.5",
     "@typescript-eslint/eslint-plugin": "^5.59.0",

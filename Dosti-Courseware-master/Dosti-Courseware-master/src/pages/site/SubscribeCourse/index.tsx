@@ -1,13 +1,15 @@
 import React from 'react';
-import { Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button } from '../../../components/antd';
+import { Link, useParams } from 'react-router-dom';
 import './SubscribeCourse.scss';
 
-interface SubscribeCourseProps {
-  courseId: string;
-}
+const SubscribeCourse: React.FC = () => {
+  const { courseId } = useParams<{ courseId: string }>();
 
-const SubscribeCourse: React.FC<SubscribeCourseProps> = ({ courseId }) => {
+  if (!courseId) {
+    return <div>Course not found</div>;
+  }
+
   return (
     <div className='subscribe-course'>
       <Link to={`/courses/${courseId}`}>

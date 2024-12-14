@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -50,6 +50,13 @@ import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 
+interface DecodedToken {
+  exp: number;
+  iat: number;
+  userId: string;
+  email: string;
+}
+
 function App() {
   if (!localStorage.getItem('cart')) {
     localStorage.setItem('cart', JSON.stringify({ items: [] }));
@@ -61,18 +68,25 @@ function App() {
     // Check if the token is stored in local storage
     const token = localStorage.getItem('token');
     if (token) {
-      // Decode the token to check for expiration and other details (optional)
-      const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(token);
-      const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
+      try {
+        // Decode the token to check for expiration and other details
+        const decodedToken = jwtDecode<DecodedToken>(token);
+        const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
 
-      // Check if the token has not expired (optional)
-      if (Date.now() < expirationTime) {
-        // Token is valid, dispatch action to set authentication state
-        dispatch(setAuthenticated(token));
-      } else {
-        // Token has expired, handle accordingly (e.g., prompt user to log in again)
-        console.log('Token has expired. Please log in again.');
-        // Optionally, you can clear the token from local storage and dispatch a logout action:
+        // Check if the token has not expired
+        if (Date.now() < expirationTime) {
+          // Token is valid, dispatch action to set authentication state
+          dispatch(setAuthenticated(token));
+        } else {
+          // Token has expired, handle accordingly
+          console.log('Token has expired. Please log in again.');
+          localStorage.removeItem('token');
+          dispatch(setUnauthenticated());
+        }
+      } catch (error) {
+        // Invalid token
+        console.error('Invalid token:', error);
+        localStorage.removeItem('token');
         dispatch(setUnauthenticated());
       }
     }
@@ -82,18 +96,25 @@ function App() {
     // Check if the adminToken is stored in local storage
     const adminToken = localStorage.getItem('adminToken');
     if (adminToken) {
-      // Decode the token to check for expiration and other details (optional)
-      const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(adminToken);
-      const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
+      try {
+        // Decode the token to check for expiration and other details
+        const decodedToken = jwtDecode<DecodedToken>(adminToken);
+        const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
 
-      // Check if the token has not expired (optional)
-      if (Date.now() < expirationTime) {
-        // Token is valid, dispatch action to set authentication state
-        dispatch(setAdminAuthenticated(adminToken));
-      } else {
-        // Token has expired, handle accordingly (e.g., prompt user to log in again)
-        console.log('Admin Token has expired. Please log in again.');
-        // Optionally, you can clear the token from local storage and dispatch a logout action:
+        // Check if the token has not expired
+        if (Date.now() < expirationTime) {
+          // Token is valid, dispatch action to set authentication state
+          dispatch(setAdminAuthenticated(adminToken));
+        } else {
+          // Token has expired, handle accordingly
+          console.log('Admin Token has expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          dispatch(setAdminUnauthenticated());
+        }
+      } catch (error) {
+        // Invalid token
+        console.error('Invalid admin token:', error);
+        localStorage.removeItem('adminToken');
         dispatch(setAdminUnauthenticated());
       }
     }
