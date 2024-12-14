@@ -1,4 +1,4 @@
-import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, notification } from 'antd';
+import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, notification } from '../../../../../../components/antd';
 
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 const { Meta } = Card;

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Form, Input, notification } from 'antd';
+import { Form, Input, notification } from '../../../../../components/antd';
 import ButtonCmp from '../../../../components/Button';
 import { IUser, UserRole } from '../../../../types/user.type';
 import { useSignupMutation } from '../../../auth.service';

@@ -1,4 +1,4 @@
-import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, notification } from 'antd';
+import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, notification } from '../../../../../../components/antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { Fragment } from 'react';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
