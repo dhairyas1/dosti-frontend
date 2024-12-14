@@ -106,9 +106,9 @@ export interface getCourseEnrolledByUserResponse {
   message: string;
 }
 
-export interface ICourseDetail extends ICourse {
-  lessons: number;
-  sections: number;
+export interface ICourseDetail extends Omit<ICourse, 'sections' | 'lessons'> {
+  lessons: ILesson[];
+  sections: ISection[];
   numOfReviews: number;
   totalVideosLength: number;
   avgRatingStars: number;
@@ -381,7 +381,7 @@ export const clientApi = createApi({
       providesTags(result) {
         /**
          * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
+         * Mong muốn là sẽ return về một m��ng kiểu
          * ```ts
          * interface Tags: {
          *    type: "User";

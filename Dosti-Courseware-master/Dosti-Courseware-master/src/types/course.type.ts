@@ -3,7 +3,9 @@ export enum AccessStatus {
   PRIVATE = 'PRIVATE',
   FREE = 'FREE',
   PAID = 'PAID',
-  DRAFT = 'DRAFT'
+  DRAFT = 'DRAFT',
+  COMMING_SOON = 'COMMING_SOON',
+  ENROLLMENT_CLOSED = 'ENROLLMENT_CLOSED'
 }
 
 export enum CourseLevel {
@@ -15,14 +17,12 @@ export enum CourseLevel {
 // Base interface with required fields
 export interface ICourseBase {
   _id: string;
-  title: string;
   name: string;
   description: string;
   thumbnail: string;
   price: number;
   finalPrice: number;
   level: CourseLevel;
-  author: string;
   access: AccessStatus;
   courseSlug: string;
   categoryId: {
@@ -54,6 +54,16 @@ export interface ICourse extends ICourseBase {
   reviews?: number;
   students?: number;
   avgRatingStars?: number;
+  totalTime?: number;
+  objectives?: string[];
+  forWho?: string[];
+  courseState?: string;
+  numOfReviews?: number;
+  totalStudents?: number;
+  totalReviews?: number;
+  isPublished?: boolean;
+  status?: string;
+  totalSections?: number;
 }
 
 // Interface for enrolled courses
@@ -80,21 +90,34 @@ export interface ICourseDetail extends ICourse {
 export interface ILesson {
   _id: string;
   name: string;
-  sectionId: string;
-  type: string;
-  content: string;
-  access: string;
-  description: string;
-  videoLength: number;
+  videoUrl?: string;
+  description?: string;
   isDone?: boolean;
+  content?: string;
+  access: string;
+  videoLength?: number;
+  order?: number;
+  sectionId: string;
+  courseId: string;
+  type: 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
+  duration?: number;
+  isCompleted?: boolean;
 }
 
 export interface ISection {
   _id: string;
   name: string;
+  description?: string;
+  lessons: ILesson[];
   courseId: string;
-  description: string;
-  access: string;
+  order?: number;
+  access?: string;
   numOfLessons?: number;
   totalVideosLength?: number;
+}
+
+export interface IsLessonDone {
+  userId: string;
+  lessonId: string;
+  isDone: boolean;
 }

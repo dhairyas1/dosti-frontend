@@ -40,6 +40,9 @@ const courseSlice = createSlice({
     setSectionId(state, action: PayloadAction<string>) {
       state.sectionId = action.payload;
     },
+    startAddSection(state, action: PayloadAction<string>) {
+      state.sectionId = action.payload;
+    },
     setCurrentStep(state, action: PayloadAction<number>) {
       state.currentStep = action.payload;
     },
@@ -55,6 +58,7 @@ export const {
   handleFormData, 
   setCourseId, 
   setSectionId,
+  startAddSection,
   setCurrentStep,
   resetCourseForm 
 } = courseSlice.actions;

@@ -5,6 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RootState } from '../../../store/store';
+import { ICourse } from '../../../types/course.type';
 import { useGetAuthorsQuery, useGetCategoriesQuery, useGetCoursesQuery } from '../client.service';
 import CourseList from '../components/CourseList';
 import './Courses.scss';

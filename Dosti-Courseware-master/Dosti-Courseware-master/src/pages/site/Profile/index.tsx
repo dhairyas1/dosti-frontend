@@ -1,31 +1,13 @@
-import { Col, Row, Tabs, Avatar, Space, Card, Button } from 'antd';
-import { EditOutlined, ReadOutlined, TrophyOutlined, MessageOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { EditOutlined, ReadOutlined, TrophyOutlined, MessageOutlined } from '@ant-design/icons';
 import { RootState } from '../../../store/store';
 import { formatVideoLengthToHours } from '../../../utils/functions';
 import { useGetUserDetailQuery } from '../client.service';
 import AboutTab from './components/AboutTab';
-import ActivitiesTab from './components/ActivitiesTab';
 import './Profile.scss';
 import { IUser, UserRole } from '../../../types/user.type';
-
-interface Course {
-  _id: string;
-  title: string;
-  totalVideosLengthDone: number;
-}
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  avatar?: string;
-  courses: Course[];
-  posts?: any[];
-  achievements?: any[];
-}
+import { Avatar, Button, Card, Col, Row, Space, Tabs } from '../../../components/antd';
 
 interface StatItemProps {
   icon: React.ReactNode;
@@ -58,27 +40,24 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
     }
   );
 
-  const userRole = propUser.role as UserRole;
+  const userRole = propUser?.role || UserRole.USER;
+  const userData = data?.user || propUser;
 
-  const user = data?.user as User | undefined;
-  const totalVideoHours = user?.courses.reduce((acc, course) => {
-    return acc + (course.totalVideosLengthDone || 0);
-  }, 0) || 0;
+  const totalVideoHours = React.useMemo(() => {
+    return userData?.courses?.reduce((acc, course) => {
+      return acc + (course.totalVideosLengthDone || 0);
+    }, 0) || 0;
+  }, [userData?.courses]);
 
   const tabItems = [
     {
       key: '1',
       label: 'About',
-      children: <AboutTab user={user} />
-    },
-    {
-      key: '2',
-      label: 'Activities',
-      children: <ActivitiesTab user={user} />
+      children: <AboutTab user={userData} />
     }
   ];
 
-  if (isFetching || !user) {
+  if (isFetching || !userData) {
     return <div>Loading profile...</div>;
   }
 
@@ -91,7 +70,7 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
               <Col xs={24} sm={12} md={4}>
                 <StatItem 
                   icon={<ReadOutlined className="text-primary" />}
-                  number={user.courses.length}
+                  number={userData.courses?.length || 0}
                   text="Courses"
                 />
               </Col>
@@ -109,12 +88,12 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
                   <Space size="large" align="center">
                     <Avatar
                       size={80}
-                      src={user.avatar || 'https://joeschmoe.io/api/v1/random'}
-                      alt={user.name}
+                      src={userData.avatar || 'https://joeschmoe.io/api/v1/random'}
+                      alt={userData.name}
                     />
                     <div>
                       <h3 className='profile__user-name'>
-                        {user.name}
+                        {userData.name}
                         <span className='profile__user-badge'>
                           {userRole}
                         </span>
@@ -134,7 +113,7 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
               <Col xs={24} sm={12} md={4}>
                 <StatItem 
                   icon={<MessageOutlined className="text-warning" />}
-                  number={user.posts?.length || 0}
+                  number={0}
                   text="Posts"
                 />
               </Col>
@@ -142,7 +121,7 @@ const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
               <Col xs={24} sm={12} md={4}>
                 <StatItem 
                   icon={<TrophyOutlined className="text-danger" />}
-                  number={user.achievements?.length || 0}
+                  number={0}
                   text="Achievements"
                 />
               </Col>

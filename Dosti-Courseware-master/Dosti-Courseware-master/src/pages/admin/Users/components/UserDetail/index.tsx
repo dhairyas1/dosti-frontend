@@ -24,7 +24,14 @@ const UserDetail: React.FC<UserDetailProps> = ({ user, onClose }) => {
 
   const handleSubmit = async (values: Partial<IUser>) => {
     try {
-      await updateUser({ ...values, _id: user._id }).unwrap();
+      await updateUser({
+        _id: user._id,
+        body: {
+          ...user,
+          ...values,
+          courses: user.courses // Preserve existing courses
+        }
+      }).unwrap();
       notification.success({
         message: 'Success',
         description: 'User updated successfully'

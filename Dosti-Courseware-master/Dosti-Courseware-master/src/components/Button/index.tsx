@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from 'antd';
-import type { ButtonProps as AntButtonProps } from 'antd';
+import type { ButtonProps } from 'antd';
 
-interface ButtonCmpProps extends AntButtonProps {
+interface ButtonCmpProps extends ButtonProps {
   children: React.ReactNode;
   className?: string;
 }

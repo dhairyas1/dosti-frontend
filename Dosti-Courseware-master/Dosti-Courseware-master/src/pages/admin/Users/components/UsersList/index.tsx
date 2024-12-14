@@ -135,16 +135,20 @@ const UsersList: React.FC<UserListProps> = ({ onEditUser, searchValue }) => {
     return <Skeleton active />;
   }
 
+  const pagination = {
+    total: usersData?.pagination?._totalRows || 0,
+    pageSize: usersData?.pagination?._limit || 10,
+    current: usersData?.pagination?._page || 1,
+    showSizeChanger: true,
+    showTotal: (total: number) => `Total ${total} users`
+  };
+
   return (
     <div className='users-list'>
       <Table 
         columns={columns} 
         dataSource={userData}
-        pagination={{
-          total: usersData?.pagination?._totalRows,
-          pageSize: usersData?.pagination?._limit || 10,
-          current: usersData?.pagination?._page || 1
-        }}
+        pagination={pagination}
       />
     </div>
   );

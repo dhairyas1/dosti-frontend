@@ -49,6 +49,7 @@ import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
+import { useGetUserQuery } from './pages/site/client.service';
 
 interface DecodedToken {
   exp: number;
@@ -123,6 +124,11 @@ function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const isAdminAuth = useSelector((state: RootState) => state.auth.isAdminAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
+  const userId = useSelector((state: RootState) => state.auth.userId);
+
+  const { data: userData } = useGetUserQuery(userId, {
+    skip: !userId
+  });
 
   const router = createBrowserRouter([
     {
@@ -156,7 +162,23 @@ function App() {
         },
         {
           path: 'profile',
-          element: isAuth ? <Profile /> : <ErrorPage page='/' />
+          element: isAuth ? (
+            <Profile user={{
+              _id: userData?.user?._id || '',
+              name: userData?.user?.name || '',
+              email: userData?.user?.email || '',
+              role: userData?.user?.role || UserRole.USER,
+              courses: userData?.user?.courses || [],
+              password: '',
+              avatar: userData?.user?.avatar,
+              address: userData?.user?.address,
+              phone: userData?.user?.phone,
+              createdAt: userData?.user?.createdAt,
+              updatedAt: userData?.user?.updatedAt
+            }} />
+          ) : (
+            <ErrorPage page='/' />
+          )
         },
         {
           path: 'view-cart',

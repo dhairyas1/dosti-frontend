@@ -1,6 +1,5 @@
-import { LoadingOutlined } from '@ant-design/icons';
-import { Form, Input, Spin, notification } from 'antd';
 import React, { Fragment, useState } from 'react';
+import { Form, Input, notification } from 'antd';
 import ButtonCmp from '../../../../components/Button';
 import { IUser, UserRole } from '../../../../types/user.type';
 import { useSignupMutation } from '../../../auth.service';
@@ -21,12 +20,20 @@ const Signup: React.FC<SignupProps> = ({ onClick }) => {
   const [signup] = useSignupMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onFinish = async (values: Omit<IUser, '_id'>) => {
-    const userData = {
-      ...values,
+  const onFinish = async (values: SignupFormValues) => {
+    const userData: Omit<IUser, '_id'> = {
+      email: values.email,
+      password: values.password,
+      name: values.name,
       role: UserRole.USER,
-      courses: []
+      courses: [],
+      avatar: '',
+      providerId: 'local',
+      lastLogin: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
+    
     setIsSubmitting(true);
 
     try {

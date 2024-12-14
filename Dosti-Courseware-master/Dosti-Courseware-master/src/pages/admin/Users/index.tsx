@@ -63,7 +63,11 @@ const Users: React.FC = () => {
           />
         </div>
       </div>
-      {isAddUserOpen && <AddUser onClose={closeAddUser} />}
+      {isAddUserOpen && (
+        <AddUser 
+          onClose={closeAddUser}
+        />
+      )}
       {isUserDetailOpen && selectedUser && (
         <UserDetail 
           user={selectedUser} 

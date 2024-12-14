@@ -63,13 +63,14 @@ const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media' 
       const lessonData: Omit<ILesson, '_id'> = {
         name: formData.name,
         content: formData.content,
-        access: formData.access,
+        access: formData.access || 'PRIVATE',
         sectionId: sectionId,
         type: activityType,
         description: formData.description,
         videoLength: activityType === 'media' ? playerRef.current?.getDuration() || 0 : undefined,
         courseId: courseId,
-        videoUrl: activityType === 'media' ? formData.content : undefined
+        videoUrl: activityType === 'media' ? formData.content : undefined,
+        order: 0
       };
 
       await addLesson(lessonData).unwrap();
