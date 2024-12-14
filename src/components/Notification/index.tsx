@@ -1,14 +1,14 @@
 import React from 'react';
-import { Space, Button } from '../antd';
+import { Button, Space, notification } from '../antd';
 import { useDispatch } from 'react-redux';
 import { closeNotification } from '../../pages/site/site.slice';
 import { useAppSelector } from '../../hooks/useRedux';
 
 const Notification: React.FC = () => {
   const dispatch = useDispatch();
-  const { notification } = useAppSelector((state) => state.site);
+  const { notification: notificationState } = useAppSelector((state) => state.site);
 
-  if (!notification) return null;
+  if (!notificationState) return null;
 
   const handleClose = () => {
     dispatch(closeNotification());
@@ -17,11 +17,11 @@ const Notification: React.FC = () => {
   return (
     <div className='notification'>
       <div className='notification-content'>
-        <h3>{notification.title}</h3>
-        <p>{notification.message}</p>
+        <h3>{notificationState.title}</h3>
+        <p>{notificationState.message}</p>
         <Space>
           <Button onClick={handleClose}>Close</Button>
-          {notification.actions?.map((action, index) => (
+          {notificationState.actions?.map((action, index) => (
             <Button
               key={index}
               onClick={() => {

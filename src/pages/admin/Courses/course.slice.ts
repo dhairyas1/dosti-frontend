@@ -7,6 +7,7 @@ interface CourseState {
   isLoading: boolean;
   error: string | null;
   selectedSection: ISection | null;
+  formData: any;
 }
 
 const initialState: CourseState = {
@@ -15,6 +16,7 @@ const initialState: CourseState = {
   isLoading: false,
   error: null,
   selectedSection: null,
+  formData: {},
 };
 
 const courseSlice = createSlice({
@@ -36,6 +38,17 @@ const courseSlice = createSlice({
     setSelectedSection(state, action: PayloadAction<ISection | null>) {
       state.selectedSection = action.payload;
     },
+    handleFormData(state, action: PayloadAction<{ field: string; value: any }>) {
+      state.formData = {
+        ...state.formData,
+        [action.payload.field]: action.payload.value,
+      };
+    },
+    startAddSection(state, action: PayloadAction<ISection>) {
+      if (state.course) {
+        state.course.sections = [...(state.course.sections || []), action.payload];
+      }
+    },
   },
 });
 
@@ -45,6 +58,8 @@ export const {
   setLoading,
   setError,
   setSelectedSection,
+  handleFormData,
+  startAddSection,
 } = courseSlice.actions;
 
 export default courseSlice.reducer; 
