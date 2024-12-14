@@ -20,7 +20,7 @@ const orderCreateForm = [
 ];
 
 interface CreateCourseData extends Omit<ICourse, '_id'> {
-  id?: string;
+  // Additional fields specific to course creation
 }
 
 const CreateCourse = () => {
@@ -106,7 +106,11 @@ const CreateCourse = () => {
         students: 0,
         requirements: formData.requirements || [],
         objectives: formData.objectives || [],
-        forWho: formData.forWho || []
+        forWho: formData.forWho || [],
+        willLearns: formData.willLearns || [],
+        totalVideosLength: 0,
+        avgRatingStars: 0,
+        numOfReviews: 0,
       };
 
       await addCourse(courseData).unwrap();

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Avatar as AntAvatar,
   Badge as AntBadge,
@@ -37,7 +38,7 @@ import {
   type ButtonProps,
   type CardProps,
   type CheckboxProps,
-  type ColProps,
+  type ColProps as AntColProps,
   type CollapseProps,
   type DatePickerProps,
   type DescriptionsProps,
@@ -55,7 +56,7 @@ import {
   type ProgressProps,
   type RadioProps,
   type ResultProps,
-  type RowProps,
+  type RowProps as AntRowProps,
   type SelectProps,
   type SkeletonProps,
   type SpaceProps,
@@ -75,13 +76,33 @@ const { Group: RadioGroup } = AntRadio;
 const { Group: CheckboxGroup } = AntCheckbox;
 const { Title, Text, Link } = AntTypography;
 
+// Extended Row props interface
+export interface RowProps extends AntRowProps {
+  children?: React.ReactNode;
+}
+
+// Extended Col props interface
+export interface ColProps extends AntColProps {
+  children?: React.ReactNode;
+}
+
+// Row component with proper typing
+const Row: React.FC<RowProps> = ({ children, ...props }) => {
+  return <AntRow {...props}>{children}</AntRow>;
+};
+
+// Col component with proper typing
+const Col: React.FC<ColProps> = ({ children, ...props }) => {
+  return <AntCol {...props}>{children}</AntCol>;
+};
+
 // Export components
 export const Avatar = AntAvatar;
 export const Badge = AntBadge;
 export const Button = AntButton;
 export const Card = AntCard;
 export const Checkbox = AntCheckbox;
-export const Col = AntCol;
+export { Col };
 export const Collapse = AntCollapse;
 export const DatePicker = AntDatePicker;
 export const Descriptions = AntDescriptions;
@@ -97,7 +118,7 @@ export const Popover = AntPopover;
 export const Progress = AntProgress;
 export const Radio = AntRadio;
 export const Result = AntResult;
-export const Row = AntRow;
+export { Row };
 export const Select = AntSelect;
 export const Skeleton = AntSkeleton;
 export const Space = AntSpace;

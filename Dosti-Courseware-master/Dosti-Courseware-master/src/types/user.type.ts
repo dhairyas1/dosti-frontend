@@ -1,4 +1,4 @@
-import { ICourse, ICourseEnrolledByUser } from './course.type';
+import { ICourseEnrolledByUser } from './course.type';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -10,22 +10,14 @@ export interface IUser {
   _id: string;
   name: string;
   email: string;
-  password?: string;
-  role: UserRole;
   avatar?: string;
-  address?: string;
-  phone?: string;
-  courses: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  loginToken?: string;
-  loginTokenExpiration?: string;
-  lastLogin?: string;
-  providerId?: string;
-  fbUserId?: string;
+  courses: ICourseEnrolledByUser[];
+  role: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface IUserDetail extends Omit<IUser, 'courses'> {
+export interface IUserDetail extends IUser {
   courses: ICourseEnrolledByUser[];
 }
 

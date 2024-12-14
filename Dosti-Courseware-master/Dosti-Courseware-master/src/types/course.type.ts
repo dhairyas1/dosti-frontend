@@ -17,63 +17,35 @@ export enum CourseLevel {
 // Base interface with required fields
 export interface ICourseBase {
   _id: string;
-  title: string;
-  name?: string; // For backward compatibility
+  name: string;
   description: string;
-  thumbnail: string;
   price: number;
   finalPrice: number;
-  level: CourseLevel;
   access: AccessStatus;
+  level: CourseLevel;
+  thumbnail: string;
   courseSlug: string;
-  categoryId: {
-    _id: string;
-    name: string;
-  };
-  userId: {
-    _id: string;
-    name: string;
-    avatar: string;
-  };
-  author?: string;
+  author: string;
+  willLearns: string[];
+  totalVideosLength: number;
+  avgRatingStars: number;
+  numOfReviews: number;
+  students: number;
+  isBought?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Main course interface extending base with optional fields
 export interface ICourse extends ICourseBase {
-  progress?: number;
-  isBought?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  sections?: ISection[];
-  lessons?: ILesson[];
-  numOfLessons?: number;
-  totalVideosLength?: number;
-  subTitle?: string;
-  willLearns?: string[];
-  requirements?: string[];
-  tags?: string[];
-  rating?: number;
-  reviews?: number;
-  students?: number;
-  avgRatingStars?: number;
-  totalTime?: number;
-  objectives?: string[];
-  forWho?: string[];
-  courseState?: string;
-  numOfReviews?: number;
-  totalStudents?: number;
-  totalReviews?: number;
-  isPublished?: boolean;
-  status?: string;
-  totalSections?: number;
-  totalVideosLengthDone?: number;
+  sections: ISection[];
+  lessons: ILesson[];
 }
 
 // Interface for enrolled courses
 export interface ICourseEnrolledByUser extends ICourse {
   progress: number;
   totalVideosLengthDone: number;
-  isBought: boolean;
   lessonsDone: string[];
 }
 
@@ -84,10 +56,6 @@ export interface ICourseDetail extends ICourse {
   avgRatingStars: number;
   students: number;
   isBought: boolean;
-  createdAt: string;
-  updatedAt: string;
-  sections: ISection[];
-  lessons: ILesson[];
 }
 
 export interface ILesson {
@@ -124,4 +92,22 @@ export interface IsLessonDone {
   userId: string;
   lessonId: string;
   isDone: boolean;
+}
+
+export interface CartItemDisplay {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  price: number;
+  author: string;
+}
+
+export interface CartItem extends CartItemDisplay {
+  courseId: string;
+}
+
+export interface CreateCourseData extends Omit<ICourseBase, '_id'> {
+  _id?: string;
+  sections?: ISection[];
+  lessons?: ILesson[];
 }

@@ -41,7 +41,7 @@ const CourseDetail: React.FC = () => {
     const course = data.course;
     return {
       _id: course._id,
-      name: course.title || '',
+      name: course.name,
       description: course.description,
       price: course.price,
       finalPrice: course.finalPrice,
@@ -49,10 +49,15 @@ const CourseDetail: React.FC = () => {
       level: course.level,
       thumbnail: course.thumbnail,
       courseSlug: course.courseSlug,
-      categoryId: course.categoryId,
-      userId: course.userId,
+      author: course.author,
       sections: course.sections || [],
       lessons: course.lessons || [],
+      totalVideosLength: course.totalVideosLength,
+      avgRatingStars: course.avgRatingStars,
+      numOfReviews: course.numOfReviews,
+      students: course.students,
+      isBought: course.isBought,
+      willLearns: course.willLearns || [],
       createdAt: course.createdAt,
       updatedAt: course.updatedAt
     };
@@ -198,8 +203,8 @@ const CourseDetail: React.FC = () => {
                 </div>
                 <div className='course-detail__intro-author'>
                   <span className=''>Author</span>
-                  <Link to={`/user/${courseData?.userId._id}`} className='course-detail__intro-author-name'>
-                    {courseData?.userId.name}
+                  <Link to={`/user/${courseData?.author._id}`} className='course-detail__intro-author-name'>
+                    {courseData?.author.name}
                   </Link>
                 </div>
                 <div className='course-detail__intro-updated-at'>Last updated {transformDate(courseData?.updatedAt)}</div>
@@ -352,7 +357,7 @@ const CourseDetail: React.FC = () => {
             <Row>
               <Col md={12} className='course-detail__author-info'>
                 <p className='course-detail__author-intro'>Meet the intructor</p>
-                <h2 className='course-detail__author-name'>{courseData?.userId.name}</h2>
+                <h2 className='course-detail__author-name'>{courseData?.author.name}</h2>
                 <p className='course-detail__author-desc'>
                   Patrick Jones is a content marketing professional since 2002. He has a Masters Degree in Digital
                   Marketing and a Bachelors in Education and has been teaching marketing strategies for over 15 years in
@@ -363,8 +368,8 @@ const CourseDetail: React.FC = () => {
               <Col md={12} className='course-detail__author-avatar'>
                 <img
                   className='course-detail__author-img'
-                  src={courseData?.userId.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
-                  alt={courseData?.userId.name}
+                  src={courseData?.author.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
+                  alt={courseData?.author.name}
                 />
               </Col>
             </Row>

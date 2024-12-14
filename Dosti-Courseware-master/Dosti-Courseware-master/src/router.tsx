@@ -29,38 +29,15 @@ import SiteCourses from './pages/site/Courses';
 import HomePage from './pages/site/Home';
 import OrderCompleted from './pages/site/OrderCompleted';
 import PathPlayer from './pages/site/PathPlayer';
-import Profile from './pages/site/Profile';
 import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
-import { IUser, UserRole } from './types/user.type';
+import { UserRole } from './types/user.type';
 
-// Create a wrapper component to handle auth state and user data
+// Create a wrapper component to handle auth state
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   return isAuth ? <>{children}</> : <Navigate to="/" />;
-};
-
-const ProfileWrapper = () => {
-  const userData = useSelector((state: RootState) => state.auth.user);
-  
-  if (!userData) return <Navigate to="/" />;
-
-  const user: IUser = {
-    _id: userData._id || '',
-    name: userData.name || '',
-    email: userData.email || '',
-    role: userData.role || UserRole.USER,
-    courses: userData.courses || [],
-    password: '',
-    avatar: userData.avatar || '',
-    address: userData.address || '',
-    phone: userData.phone || '',
-    createdAt: userData.createdAt || '',
-    updatedAt: userData.updatedAt || ''
-  };
-
-  return <Profile user={user} />;
 };
 
 export const router = createBrowserRouter([
@@ -88,10 +65,6 @@ export const router = createBrowserRouter([
       {
         path: 'start',
         element: <ProtectedRoute><StartLearning /></ProtectedRoute>
-      },
-      {
-        path: 'profile',
-        element: <ProtectedRoute><ProfileWrapper /></ProtectedRoute>
       },
       {
         path: 'view-cart',
