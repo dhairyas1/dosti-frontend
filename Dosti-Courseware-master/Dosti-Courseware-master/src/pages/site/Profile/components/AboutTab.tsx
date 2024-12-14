@@ -1,7 +1,8 @@
-import { Card } from 'antd';
 import React from 'react';
+import { Card, Descriptions } from 'antd';
+import type { CardProps, DescriptionsProps } from 'antd';
 
-interface IUser {
+interface User {
   _id: string;
   name: string;
   email: string;
@@ -10,23 +11,52 @@ interface IUser {
 }
 
 interface AboutTabProps {
-  user?: IUser;
+  user?: User;
 }
 
 const AboutTab: React.FC<AboutTabProps> = ({ user }) => {
   if (!user) {
-    return <div>Loading...</div>;
+    return null;
   }
 
+  const cardProps: CardProps = {
+    className: 'about-tab',
+  };
+
+  const descriptionItems: DescriptionsProps['items'] = [
+    {
+      key: '1',
+      label: 'Full Name',
+      children: user.name,
+    },
+    {
+      key: '2',
+      label: 'Email',
+      children: user.email,
+    },
+    {
+      key: '3',
+      label: 'Role',
+      children: user.role,
+    },
+    {
+      key: '4',
+      label: 'Enrolled Courses',
+      children: `${user.courses.length} courses`,
+    },
+  ];
+
+  const descriptionsProps: DescriptionsProps = {
+    title: "User Information",
+    items: descriptionItems,
+    layout: "vertical",
+    column: { xs: 1, sm: 2, md: 3 },
+  };
+
   return (
-    <div className="about-tab">
-      <Card title="About Me" bordered={false}>
-        <p>Name: {user.name}</p>
-        <p>Email: {user.email}</p>
-        <p>Role: {user.role}</p>
-        <p>Courses Enrolled: {user.courses.length}</p>
-      </Card>
-    </div>
+    <Card {...cardProps}>
+      <Descriptions {...descriptionsProps} />
+    </Card>
   );
 };
 

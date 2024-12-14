@@ -1,155 +1,160 @@
-import { Col, Row, Tabs, TabsProps } from 'antd';
-import './Profile.scss';
-// type Props = {}
-import { ReadOutlined, StockOutlined, UserOutlined } from '@ant-design/icons';
+import { Col, Row, Tabs, Avatar, Space, Card, Button } from 'antd';
+import { EditOutlined, ReadOutlined, TrophyOutlined, MessageOutlined } from '@ant-design/icons';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import Button from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { formatVideoLengthToHours } from '../../../utils/functions';
 import { useGetUserDetailQuery } from '../client.service';
+import AboutTab from './components/AboutTab';
+import ActivitiesTab from './components/ActivitiesTab';
+import './Profile.scss';
 
-const profileItems: TabsProps['items'] = [
-  {
-    key: 'about',
-    label: (
-      <div className='tab-item'>
-        <p className='tab-item__text'>
-          <UserOutlined className='tab-item__icon' />
-        </p>
-        <p>About</p>
-      </div>
-    ),
-    children: `Content of Tab Pane 1`
-  },
-  {
-    key: 'activity',
-    label: (
-      <div className='tab-item'>
-        <p className='tab-item__text'>
-          <StockOutlined className='tab-item__icon' />
-        </p>
-        <p>Activities</p>
-      </div>
-    ),
-    children: `Content of Tab Pane 2`
-  }
-];
+interface Course {
+  _id: string;
+  title: string;
+  totalVideosLengthDone: number;
+}
 
-const tabBarStyleCss = {
-  padding: '2rem',
-  fontSize: '2.4rem',
-  bacgroundColor: '#194583'
-};
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+  courses: Course[];
+  posts?: any[];
+  achievements?: any[];
+}
 
-const Profile = () => {
+interface StatItemProps {
+  icon: React.ReactNode;
+  number: number | string;
+  text: string;
+}
+
+const StatItem: React.FC<StatItemProps> = ({ icon, number, text }) => (
+  <Card className='profile__stat-card'>
+    <div className='profile__stat-icon'>{icon}</div>
+    <div className='profile__stat-number'>{number}</div>
+    <div className='profile__stat-text'>{text}</div>
+  </Card>
+);
+
+const Profile: React.FC = () => {
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const { data, isFetching } = useGetUserDetailQuery(
+    {
+      _userId: userId,
+      _limit: 12,
+      _page: 1
+    },
+    {
+      skip: !userId
+    }
+  );
 
-  console.log('user id: ', userId);
+  const user = data?.user as User | undefined;
+  const totalVideoHours = user?.courses.reduce((acc, course) => {
+    return acc + (course.totalVideosLengthDone || 0);
+  }, 0) || 0;
 
-  const params = {
-    _userId: userId,
-    _limit: 12,
-    _page: 1
-  };
+  const tabItems = [
+    {
+      key: '1',
+      label: 'About',
+      children: <AboutTab user={user} />
+    },
+    {
+      key: '2',
+      label: 'Activities',
+      children: <ActivitiesTab user={user} />
+    }
+  ];
 
-  const { data, isFetching } = useGetUserDetailQuery(params, {
-    skip: !userId
-  });
-
-  const sumTotalVideosLengthDone = data?.user.courses.reduce((acc, course) => {
-    return acc + course.totalVideosLengthDone;
-  }, 0);
-
-  const onChange = (key: string) => {
-    console.log(key);
-  };
+  if (isFetching || !user) {
+    return <div>Loading profile...</div>;
+  }
 
   return (
     <div className='profile'>
-      <div className='profile__wrap '>
+      <div className='profile__wrap'>
         <div className='profile__header'>
           <div className='container profile__header-wrap'>
-            <Row>
-              <Col md={4} xs={24}>
-                <div className='profile__header-item'>
-                  <div className='profile__header-item-icon'>
-                    <ReadOutlined />
-                  </div>
-                  <div className='profile__header-item-number'>{data?.user.courses.length}</div>
-                  <div className='profile__header-item-text'>Courses</div>
-                </div>
+            <Row gutter={[24, 24]} align="middle">
+              <Col xs={24} sm={12} md={4}>
+                <StatItem 
+                  icon={<ReadOutlined className="text-primary" />}
+                  number={user.courses.length}
+                  text="Courses"
+                />
               </Col>
-              <Col md={4} xs={24}>
-                <div className='profile__header-item'>
-                  <div className='profile__header-item-icon'>
-                    <ReadOutlined />
-                  </div>
-                  <div className='profile__header-item-number'>
-                    {formatVideoLengthToHours(sumTotalVideosLengthDone || 0)}
-                  </div>
-                  <div className='profile__header-item-text'>Hours</div>
-                </div>
+
+              <Col xs={24} sm={12} md={4}>
+                <StatItem 
+                  icon={<ReadOutlined className="text-success" />}
+                  number={formatVideoLengthToHours(totalVideoHours)}
+                  text="Hours"
+                />
               </Col>
-              <Col md={8} xs={24}>
-                <div className='profile__header-item'>
-                  <div className='profile__header-item-icon'>
-                    <img
-                      src='https://lwfiles.mycourse.app/648eaf1c0c0c35ee7db7e0a2-public/avatars/648eaf1c0c0c35ee7db7e0a3.jpg?version=2023-07-16%2010%3A02%3A03'
-                      alt=''
-                      className='profile__header-item-img'
+
+              <Col xs={24} md={8}>
+                <Card className='profile__user-card'>
+                  <Space size="large" align="center">
+                    <Avatar
+                      size={80}
+                      src={user.avatar || 'https://joeschmoe.io/api/v1/random'}
+                      alt={user.name}
                     />
-                  </div>
-                  <div className='profile__header-item-name'>
-                    <div className='profile__header-item-name-text'>Tran Nhat Sang</div>
-                    <div className='profile__header-item-name-badge'>Staff</div>
-                  </div>
-                  <div className='profile__header-item-btn-wrap'>
-                    <Button className=' profile__header-item-btn btn btn-sm btn-primary'>Edit</Button>
-                  </div>
-                </div>
+                    <div>
+                      <h3 className='profile__user-name'>
+                        {user.name}
+                        <span className='profile__user-badge'>
+                          {user.role}
+                        </span>
+                      </h3>
+                      <Button 
+                        type="primary"
+                        icon={<EditOutlined />}
+                        size="small"
+                      >
+                        Edit Profile
+                      </Button>
+                    </div>
+                  </Space>
+                </Card>
               </Col>
-              <Col md={4} xs={24}>
-                <div className='profile__header-item'>
-                  <div className='profile__header-item-icon'>
-                    <ReadOutlined />
-                  </div>
-                  <div className='profile__header-item-number'>0</div>
-                  <div className='profile__header-item-text'>POSTS</div>
-                </div>
+
+              <Col xs={24} sm={12} md={4}>
+                <StatItem 
+                  icon={<MessageOutlined className="text-warning" />}
+                  number={user.posts?.length || 0}
+                  text="Posts"
+                />
               </Col>
-              <Col md={4} xs={24}>
-                <div className='profile__header-item'>
-                  <div className='profile__header-item-icon'>
-                    <ReadOutlined />
-                  </div>
-                  <div className='profile__header-item-number'>3</div>
-                  <div className='profile__header-item-text'>Achievement</div>
-                </div>
+
+              <Col xs={24} sm={12} md={4}>
+                <StatItem 
+                  icon={<TrophyOutlined className="text-danger" />}
+                  number={user.achievements?.length || 0}
+                  text="Achievements"
+                />
               </Col>
             </Row>
           </div>
-        </div>
-        <div className='profile__tabs'>
-          <Tabs
-            tabBarStyle={tabBarStyleCss}
-            className='profile__tabs-bar'
-            defaultActiveKey='1'
-            items={profileItems}
-            onChange={onChange}
-            centered
-          />
         </div>
 
-        <div className='profile__courses-taken'>
-          <div className='profile__courses-taken-list'>
-            <Row>
-              <Col></Col>
-            </Row>
-          </div>
-        </div>
-        <div className='profile__networks'>
-          <div className='profile__followers'></div>
-          <div className='profile__followings'></div>
+        <div className='profile__content'>
+          <Tabs
+            defaultActiveKey="1"
+            items={tabItems}
+            centered
+            size="large"
+            className="profile-tabs"
+            tabBarStyle={{
+              marginBottom: 24,
+              fontWeight: 500
+            }}
+          />
         </div>
       </div>
     </div>

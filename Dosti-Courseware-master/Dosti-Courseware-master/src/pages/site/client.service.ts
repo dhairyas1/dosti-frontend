@@ -157,28 +157,38 @@ export interface getCertificateResponse {
   message: string;
 }
 
+export interface IPath {
+  _id: string;
+  title: string;
+  description: string;
+  sections: ISection[];
+  progress?: number;
+}
+
+export interface getPathDetailResponse {
+  path: IPath;
+  message: string;
+}
+
+export interface updateProgressRequest {
+  _pathId: string;
+  _userId: string;
+  progress: number;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
   tagTypes: ['Clients'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BACKEND_URL}`,
-    prepareHeaders(headers) {
-      headers.set('authorization', 'Bearer ABCXYZ');
-
-      const token = localStorage.getItem('token');
-
+    baseUrl: BACKEND_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
       if (token) {
-        const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(token);
-
-        headers.set('UserId', decodedToken.userId);
+        headers.set('Authorization', `Bearer ${token}`);
       }
-
-      // Add the userId header
-
-      // Set some headers here !
       return headers;
-    }
+    },
   }),
   endpoints: (build) => ({
     // Generic type theo thứ tự là kiểu response trả về và argument
@@ -270,7 +280,7 @@ export const clientApi = createApi({
        * providesTags có thể là array hoặc callback return array
        * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
        * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
+       * và cập nhật lại danh sách các bài post cũng như c��c tags phía dưới
        */
       providesTags(result) {
         /**
@@ -641,6 +651,40 @@ export const clientApi = createApi({
         //   hello: 'Im Sang'
         // }
       })
+    }),
+    getCart: build.query({
+      query: ({ _userId }) => `/cart/${_userId}`,
+      providesTags: ['Cart'],
+    }),
+
+    removeFromCart: build.mutation({
+      query: ({ _userId, _courseId }) => ({
+        url: `/cart/${_userId}/remove/${_courseId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Cart'],
+    }),
+
+    getPathDetail: build.query<getPathDetailResponse, { _pathId: string }>({
+      query: (params) => ({
+        url: `/paths/${params._pathId}`,
+        method: 'GET'
+      }),
+      providesTags: ['Clients']
+    }),
+
+    updateProgress: build.mutation<{ message: string }, updateProgressRequest>({
+      query: (body) => ({
+        url: `/paths/${body._pathId}/progress`,
+        method: 'PUT',
+        body
+      }),
+      invalidatesTags: ['Clients']
+    }),
+
+    getUserEnrolledCourses: build.query<{ courses: ICourseEnrolledByUser[] }, void>({
+      query: () => '/users/enrolled-courses',
+      providesTags: ['Clients']
     })
   })
 });
@@ -663,5 +707,10 @@ export const {
   useUpdateLessonDoneByUserMutation,
   useGetRetrieveCartQuery,
   useGetCertificateQuery,
-  useCreateCertificateMutation
+  useCreateCertificateMutation,
+  useGetCartQuery,
+  useRemoveFromCartMutation,
+  useGetPathDetailQuery,
+  useUpdateProgressMutation,
+  useGetUserEnrolledCoursesQuery
 } = clientApi;

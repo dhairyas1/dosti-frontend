@@ -6,99 +6,120 @@ import { IUser, UserRole } from '../../../../types/user.type';
 import { useSignupMutation } from '../../../auth.service';
 import '../Auth.scss';
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 interface SignupProps {
   onClick: (authState: string) => void;
 }
 
-const Signup: React.FC<SignupProps> = (props) => {
-  const [form] = Form.useForm();
-  const [signup, signupResult] = useSignupMutation();
+interface SignupFormValues {
+  email: string;
+  password: string;
+  name: string;
+}
+
+const Signup: React.FC<SignupProps> = ({ onClick }) => {
+  const [form] = Form.useForm<SignupFormValues>();
+  const [signup] = useSignupMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onFinish = (formValues: { email: string; password: string; name: string }) => {
+  const onFinish = async (values: SignupFormValues) => {
     setIsSubmitting(true);
-    console.log('Starting signup process with values:', formValues);
 
     const userInfo: Omit<IUser, '_id'> = {
-      email: formValues.email,
-      password: formValues.password,
-      name: formValues.name,
+      email: values.email,
+      password: values.password,
+      name: values.name,
       role: UserRole.USER,
       providerId: 'local',
       fbUserId: ''
     };
-    console.log('Prepared user info:', userInfo);
 
-    signup(userInfo)
-      .unwrap()
-      .then((result) => {
-        console.log('Signup success:', result);
-        notification.success({ message: result.message });
-        form.resetFields();
-        props.onClick('login');
-      })
-      .catch((error) => {
-        console.error('Signup error:', error);
-        notification.error({ message: 'Signup failed', description: error.data?.message || 'Please try again' });
-      })
-      .finally(() => {
-        console.log('Signup process completed');
-        setIsSubmitting(false);
+    try {
+      const result = await signup(userInfo).unwrap();
+      notification.success({
+        message: 'Signup Success',
+        description: result.message
       });
+      form.resetFields();
+      onClick('login');
+    } catch (error: any) {
+      notification.error({
+        message: 'Signup Failed',
+        description: error.data?.message || 'Please try again'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.error('Form validation failed:', errorInfo);
-  };
-
-  const navigateSignupHandler = (e: React.MouseEvent) => {
+  const navigateToLogin = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    props.onClick('login');
+    onClick('login');
   };
 
   return (
     <Fragment>
       <div className='auth__title'>
-        <h2 className='auth__title-heading'>Create your account</h2>
+        <h2 className='auth__title-heading'>Create Your Account</h2>
       </div>
 
-      <Form
+      <Form<SignupFormValues>
         form={form}
-        name='basic'
+        name='signup'
         layout='vertical'
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 800 }}
-        initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
+        requiredMark={false}
       >
-        <Form.Item wrapperCol={{ span: 24 }} label='Full Name' name='name' rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item wrapperCol={{ span: 24 }} label='Email' name='email' rules={[{ required: true, type: 'email' }]}>
-          <Input />
-        </Form.Item>
         <Form.Item
-          wrapperCol={{ span: 24 }}
-          label='Password'
-          name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          label='Full Name'
+          name='name'
+          rules={[
+            { required: true, message: 'Please enter your full name' },
+            { min: 2, message: 'Name must be at least 2 characters' }
+          ]}
         >
-          <Input.Password />
+          <Input placeholder='Enter your full name' />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ span: 24 }}>
-          <ButtonCmp disabled={isSubmitting} className='btn btn-primary btn-sm w-full'>
-            {isSubmitting ? <Spin indicator={antIcon} /> : 'Sign Up'}
+        <Form.Item
+          label='Email'
+          name='email'
+          rules={[
+            { required: true, message: 'Please enter your email' },
+            { type: 'email', message: 'Please enter a valid email' }
+          ]}
+        >
+          <Input placeholder='Enter your email' />
+        </Form.Item>
+
+        <Form.Item
+          label='Password'
+          name='password'
+          rules={[
+            { required: true, message: 'Please enter your password' },
+            { min: 6, message: 'Password must be at least 6 characters' }
+          ]}
+        >
+          <Input.Password placeholder='Enter your password' />
+        </Form.Item>
+
+        <Form.Item>
+          <ButtonCmp
+            disabled={isSubmitting}
+            className='btn btn-primary btn-sm w-full'
+            type='submit'
+          >
+            {isSubmitting ? (
+              <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+            ) : (
+              'Sign Up'
+            )}
           </ButtonCmp>
         </Form.Item>
       </Form>
+
       <div className='auth__footer'>
-        <a onClick={navigateSignupHandler} href='#' className='auth__footer-link'>
+        <a onClick={navigateToLogin} href='#' className='auth__footer-link'>
           Already have an account? Login
         </a>
       </div>

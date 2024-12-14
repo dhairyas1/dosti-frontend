@@ -1,22 +1,21 @@
+import React from 'react';
 import { Collapse, CollapseProps, Skeleton } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';
 import { RootState } from '../../../../../store/store';
 import { ICertificate } from '../../../../../types/certificate';
-import { useGetSectionsByCourseIdQuery } from '../../../client.service';
+import { useGetSectionsByCourseIdQuery, IPath } from '../../../client.service';
 import './PathSections.scss';
 import PathPlayerLessonList from './components/LessonList';
 
-type Props = {
-  className: string;
-  courseId: string;
-  progressPercent: string;
-  certificate: ICertificate | undefined;
-};
+interface PathSectionsProps {
+  sectionData: IPath;
+  onVideoChange: (url: string) => void;
+}
 
-const PathSections = (props: Props) => {
-  const { data: sectionData, isFetching } = useGetSectionsByCourseIdQuery(props.courseId);
+const PathSections: React.FC<PathSectionsProps> = ({ sectionData, onVideoChange }) => {
+  const { isFetching } = useGetSectionsByCourseIdQuery(sectionData.courseId);
   const certificatePath = useSelector((state: RootState) => state.client.certificatePath);
   const currentProgress = useSelector((state: RootState) => state.client.currentProgress);
 
@@ -56,7 +55,7 @@ const PathSections = (props: Props) => {
   }
 
   return (
-    <div className={props.className + ' path-sections'}>
+    <div className={sectionData.className + ' path-sections'}>
       <div className='path-sections__wrap'>
         <div className='path-sections-item'>
           <div className='section'>

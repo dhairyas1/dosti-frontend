@@ -10,10 +10,10 @@ import {
   UserAddOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, MenuProps } from 'antd';
+import { Layout, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { UserRole } from '../../../types/user.type';
@@ -21,90 +21,63 @@ import './SideBar.scss';
 
 const { Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
-function getItem(
+
+const getItem = (
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
   type?: 'group'
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type
-  } as MenuItem;
-}
+): MenuItem => ({
+  key,
+  icon,
+  children,
+  label,
+  type
+});
 
-const SideBar = () => {
+const SideBar: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
-  const [openDrawer, setOpenDrawer] = useState(false);
-
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
 
   const navigateHandler: MenuProps['onClick'] = (e) => {
-    console.log('click', e);
     navigate(e.key);
-    setOpenDrawer(true);
   };
 
   const items: MenuItem[] = [
-    getItem('sangtrandev', 'myprofile', <BorderOuterOutlined />),
+    getItem('My Profile', 'myprofile', <BorderOuterOutlined />),
     getItem('Dashboard', 'dashboard', <PieChartOutlined />),
-    getItem('Categories', 'categories', <UnorderedListOutlined />, [getItem('Categories', 'categories')]),
-    getItem('Courses', 'courses', <DesktopOutlined />, [getItem('Course Manager', 'courses')]),
-    (adminRole === UserRole.ADMIN &&
-      getItem('Orders', 'orders', <ShoppingCartOutlined />, [getItem('Order Manager', 'orders')])) as MenuItem,
-    (adminRole === UserRole.ADMIN &&
+    getItem('Categories', 'categories', <UnorderedListOutlined />),
+    getItem('Courses', 'courses', <DesktopOutlined />),
+    ...(adminRole === UserRole.ADMIN ? [
+      getItem('Orders', 'orders', <ShoppingCartOutlined />),
       getItem('Users', 'users', <UserOutlined />, [
         getItem('All Users', 'users'),
         getItem('Admins', 'admins'),
-        getItem('Intructors', 'intructors')
-      ])) as MenuItem,
-    (adminRole === UserRole.ADMIN &&
+        getItem('Instructors', 'instructors')
+      ]),
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
-        getItem(
-          'User Analytics',
-          'user-analytics',
-          null,
-          [
-            getItem('User Progress', 'reports/users-progress'),
-            // getItem('User Segment', 'reports/users-segment'),
-            getItem('Course Insights', 'reports/course-insights')
-          ],
-          'group'
-        ),
-        getItem(
-          'Exams',
-          'exams',
-          null,
-          [
-            getItem('Certifications', 'reports/certifications'),
-            getItem('Review center', 'reports/reviews-center')
-            // getItem('Question bank', 'reports/questions-bank')
-          ],
-          'group'
-        ),
-        getItem(
-          'Sales',
-          'sales',
-          null,
-          [
-            getItem('Orders', 'reports/orders'),
-            getItem('Courses revenues', 'reports/courses-revenue'),
-            getItem('Instructors Revenues', 'reports/instructors-revenue'),
-            getItem('Cancelled Sales', 'reports/cancelled-sales')
-          ],
-          'group'
-        )
-      ])) as MenuItem,
-    getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
-    getItem('My account', 'account', <UserAddOutlined />),
-    getItem('Need Help ?', 'help', <FileOutlined />)
-  ];
+        getItem('User Analytics', 'user-analytics', null, [
+          getItem('User Progress', 'reports/users-progress'),
+          getItem('Course Insights', 'reports/course-insights')
+        ]),
+        getItem('Exams', 'exams', null, [
+          getItem('Certifications', 'reports/certifications'),
+          getItem('Review Center', 'reports/reviews-center')
+        ]),
+        getItem('Sales', 'sales', null, [
+          getItem('Orders', 'reports/orders'),
+          getItem('Courses Revenues', 'reports/courses-revenue'),
+          getItem('Instructors Revenues', 'reports/instructors-revenue'),
+          getItem('Cancelled Sales', 'reports/cancelled-sales')
+        ])
+      ])
+    ] : []),
+    getItem('Settings', 'settings', <SettingOutlined />),
+    getItem('My Account', 'account', <UserAddOutlined />),
+    getItem('Need Help?', 'help', <FileOutlined />)
+  ].filter(Boolean) as MenuItem[];
 
   return (
     <Sider
@@ -112,14 +85,14 @@ const SideBar = () => {
       style={{ backgroundColor: '#fff' }}
       collapsible
       collapsed={collapsed}
-      onCollapse={(value) => setCollapsed(value)}
+      onCollapse={setCollapsed}
     >
       <div className='demo-logo-vertical' />
       <Menu
         className='sidebar__menu'
         onClick={navigateHandler}
         theme='light'
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={['dashboard']}
         mode='inline'
         items={items}
       />

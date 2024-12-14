@@ -1,25 +1,43 @@
-import { Button, Result } from 'antd';
+import { Button } from 'antd';
+import type { ButtonProps } from 'antd';
+import { CheckCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './OrderCompleted.scss';
-const OrderCompleted: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const orderId = searchParams.get('orderId');
+const OrderCompleted: React.FC = () => {
+  const primaryButtonProps: ButtonProps = {
+    type: 'primary',
+  };
+
+  const secondaryButtonProps: ButtonProps = {
+    type: 'default',
+  };
 
   return (
-    <Result
-      className='order-completed'
-      status='success'
-      title='Successfully Orderd Courses'
-      subTitle={`Order number: ${orderId as string} Cloud server configuration takes 1-5 minutes, please wait.`}
-      extra={[
-        <Button type='primary' key='console'>
-          <Link to='/start'>Go To My Learning</Link>
-        </Button>,
-        <Button key='buy'>Buy Again</Button>
-      ]}
-    />
+    <div className='order-completed'>
+      <div className='order-completed__wrap container'>
+        <div className='order-completed__content'>
+          <CheckCircleOutlined className='order-completed__icon' />
+          <h2 className='order-completed__title'>Order Completed!</h2>
+          <p className='order-completed__text'>
+            Thank you for your purchase. You can now start learning from your courses.
+          </p>
+          <div className='order-completed__actions'>
+            <Link to="/profile">
+              <Button {...primaryButtonProps}>
+                Go to My Learning
+              </Button>
+            </Link>
+            <Link to="/courses">
+              <Button {...secondaryButtonProps}>
+                Browse More Courses
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

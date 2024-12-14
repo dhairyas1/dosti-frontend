@@ -8,115 +8,148 @@ import { useLoginMutation, useUpdateLastLoginMutation } from '../../../auth.serv
 import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
 import '../Auth.scss';
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 interface LoginProps {
   onClick: (authState: string) => void;
 }
 
-const Login: React.FC<LoginProps> = (props) => {
-  const [form] = Form.useForm();
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  token: string;
+  message: string;
+  userId: string;
+}
+
+interface DecodedToken {
+  exp: number;
+  iat: number;
+  userId: string;
+  email: string;
+}
+
+const Login: React.FC<LoginProps> = ({ onClick }) => {
+  const [form] = Form.useForm<LoginFormValues>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [login, loginResult] = useLoginMutation();
+  const [login] = useLoginMutation();
   const [updateLastLogin] = useUpdateLastLoginMutation();
   const dispatch = useDispatch();
 
-  const onFinish = (formValues: { email: string; password: string }) => {
+  const onFinish = async (values: LoginFormValues) => {
     setIsSubmitting(true);
 
-    login(formValues)
-      .unwrap()
-      .then((result) => {
-        const loginResponse: { token: string; message: string; userId: string } = result;
-        const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(
-          loginResponse.token
-        );
+    try {
+      const result = await login(values).unwrap() as LoginResponse;
+      const decodedToken = jwtDecode(result.token) as DecodedToken;
 
-        // Update last login at database
-        const currentDate = new Date();
-        updateLastLogin({
+      // Update last login
+      const currentDate = new Date();
+      try {
+        await updateLastLogin({
           userId: decodedToken.userId,
           lastLogin: currentDate
-        })
-          .unwrap()
-          .then(() => {
-            notification.success({ type: 'success', message: 'Login successful!', duration: 2 });
-          })
-          .catch((error) => {
-            console.log('error: ', error);
-          });
+        }).unwrap();
+        
+        notification.success({
+          message: 'Login Status',
+          description: 'Login successful!',
+          duration: 2
+        });
+      } catch (error) {
+        console.error('Failed to update last login:', error);
+      }
 
-        localStorage.setItem('token', loginResponse.token);
-        const expirationTime = decodedToken.exp * 1000;
+      localStorage.setItem('token', result.token);
+      const expirationTime = decodedToken.exp * 1000;
 
-        if (Date.now() < expirationTime) {
-          dispatch(setAuthenticated(loginResponse.token));
-          dispatch(closeAuthModal());
-          form.resetFields();
-          notification.success({ type: 'success', message: loginResponse.message, duration: 2 });
-        } else {
-          notification.error({ message: 'Session expired. Please log in again.' });
-        }
-      })
-      .catch((error) => {
-        notification.error({ message: 'Login failed', description: 'Email or password incorrect' });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+      if (Date.now() < expirationTime) {
+        dispatch(setAuthenticated(result.token));
+        dispatch(closeAuthModal());
+        form.resetFields();
+        notification.success({
+          message: 'Login Status',
+          description: result.message,
+          duration: 2
+        });
+      } else {
+        notification.error({
+          message: 'Session Expired',
+          description: 'Please log in again.'
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: 'Login Failed',
+        description: 'Email or password incorrect'
       });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const navigateLoginHandler = (e: React.MouseEvent) => {
+  const navigateToSignup = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    props.onClick('signup');
+    onClick('signup');
   };
 
   return (
     <Fragment>
       <div className='auth__title'>
-        <h2 className='auth__title-heading'>Login to start learning</h2>
+        <h2 className='auth__title-heading'>Login to Start Learning</h2>
       </div>
 
-      <Form
+      <Form<LoginFormValues>
         form={form}
-        name='basic'
+        name='login'
         layout='vertical'
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 800 }}
-        initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
+        requiredMark={false}
       >
-        <Form.Item wrapperCol={{ span: 24 }} label='Email' name='email' rules={[{ type: 'email', required: true }]}>
-          <Input className='' />
+        <Form.Item
+          label='Email'
+          name='email'
+          rules={[
+            { required: true, message: 'Please enter your email' },
+            { type: 'email', message: 'Please enter a valid email' }
+          ]}
+        >
+          <Input placeholder='Enter your email' />
         </Form.Item>
 
         <Form.Item
-          wrapperCol={{ span: 24 }}
           label='Password'
           name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[
+            { required: true, message: 'Please enter your password' },
+            { min: 6, message: 'Password must be at least 6 characters' }
+          ]}
         >
-          <Input.Password className='' />
+          <Input.Password placeholder='Enter your password' />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ span: 24 }}>
-          <ButtonCmp disabled={isSubmitting} className='btn btn-primary btn-sm w-full'>
-            {isSubmitting ? <Spin indicator={antIcon} /> : 'Login'}
+        <Form.Item>
+          <ButtonCmp
+            disabled={isSubmitting}
+            className='btn btn-primary btn-sm w-full'
+            type='submit'
+          >
+            {isSubmitting ? (
+              <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+            ) : (
+              'Login'
+            )}
           </ButtonCmp>
         </Form.Item>
       </Form>
+
       <div className='auth__footer'>
-        <a onClick={navigateLoginHandler} href='#' className='auth__footer-link'>
+        <a onClick={navigateToSignup} href='#' className='auth__footer-link'>
           Create Account
         </a>
-        <a href='' className='auth__footer-link'>
+        <a href='#' className='auth__footer-link'>
           Forgot Password
         </a>
       </div>

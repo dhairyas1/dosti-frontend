@@ -1,115 +1,148 @@
 import { Button, Col, Input, Row, notification } from 'antd';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import type { ButtonProps, ColProps, InputProps, RowProps } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ButtonCmp from '../../../components/Button';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { openAuthModal } from '../../auth.slice';
-import { useGetRetrieveCartQuery } from '../client.service';
-import { removeCart } from '../client.slice';
-import './ViewCart.scss';
+import { useGetCartQuery, useRemoveFromCartMutation } from '../client.service';
 import CartItem from './components/CartItem';
+import './ViewCart.scss';
 
-interface CartItem {
+interface CartCourse {
   _id: string;
-  courseId: string;
   title: string;
   thumbnail: string;
   price: number;
   author: string;
 }
 
-interface CartData {
-  cart: {
-    totalPrice: number;
-    items: CartItem[];
-  };
-}
-
 const ViewCart: React.FC = () => {
-  const cart = useSelector((state: RootState) => state.client.cart);
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-  const courseIds = cart.items.map((item) => item.courseId);
-
-  const { data: cartData, isFetching } = useGetRetrieveCartQuery({ courseIds });
-
-  const totalPrice = cartData?.cart.totalPrice || 0;
-  const cartItems = cartData?.cart.items || [];
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = useSelector((state: RootState) => state.auth.userId);
+  const [removeFromCart] = useRemoveFromCartMutation();
+  const { data: cartData, isLoading } = useGetCartQuery(
+    { _userId: userId },
+    { skip: !userId }
+  );
 
-  const removeCartHandler = (courseId: string) => {
-    dispatch(removeCart(courseId));
-    notification.success({
-      message: 'Course removed from cart',
-      description: 'The course has been removed from your cart successfully'
-    });
+  const [cartItems, setCartItems] = useState<CartCourse[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (cartData?.cart) {
+      setCartItems(cartData.cart.courses);
+      const total = cartData.cart.courses.reduce(
+        (acc: number, course: CartCourse) => acc + course.price,
+        0
+      );
+      setTotalPrice(total);
+    }
+  }, [cartData]);
+
+  const handleRemoveFromCart = async (courseId: string) => {
+    try {
+      await removeFromCart({
+        _userId: userId,
+        _courseId: courseId
+      }).unwrap();
+
+      notification.success({
+        message: 'Course removed from cart successfully',
+        description: 'The course has been removed from your cart'
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Failed to remove course',
+        description: 'There was an error removing the course from your cart'
+      });
+    }
   };
 
-  const checkoutHandler = () => {
-    if (courseIds.length === 0) {
-      notification.error({
-        message: 'Please add courses to cart',
-        description: 'Your cart is empty. Please add some courses before proceeding.'
-      });
-      return;
-    }
-
-    if (isAuth) {
-      navigate('/checkout');
-    } else {
-      notification.error({
-        message: 'Please login to checkout',
-        description: 'You need to be logged in to complete the checkout process.'
-      });
-      dispatch(openAuthModal());
-    }
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
+
+  const rowProps: RowProps = {
+    gutter: [24, 24],
+  };
+
+  const colProps = {
+    list: { xs: 24, md: 16 } as ColProps,
+    checkout: { xs: 24, md: 8 } as ColProps,
+  };
+
+  const checkoutButtonProps: ButtonProps = {
+    type: 'primary',
+    size: 'large',
+    onClick: handleCheckout,
+    disabled: cartItems.length === 0,
+    style: { width: '100%' },
+  };
+
+  const applyButtonProps: ButtonProps = {
+    type: 'primary',
+    size: 'large',
+  };
+
+  const couponInputProps: InputProps = {
+    placeholder: "Enter coupon code",
+    size: 'large',
+    id: "coupon-input",
+    style: { flex: 1 },
+  };
+
+  if (isLoading) {
+    return <div>Loading cart...</div>;
+  }
 
   return (
     <div className='view-cart'>
-      <div className='view-cart__wrap container spacing-h-sm'>
-        <h2 className='view-cart__title'>Shopping Cart</h2>
-        <div className='view-cart__content'>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={18}>
-              <div className='view-cart__list'>
-                <h4 className='view-cart__list-title'>{cart?.items?.length || 0} Courses in Cart</h4>
-                <div className='view-cart__list-wrap'>
-                  {isFetching && <div>Loading...</div>}
-                  {!isFetching &&
-                    cartItems.map((cartItem) => (
-                      <CartItem
-                        key={cartItem._id}
-                        courseItem={cartItem}
-                        onRemove={removeCartHandler}
-                      />
-                    ))}
+      <div className='view-cart__wrap container'>
+        <h2 className='view-cart__heading'>Shopping Cart</h2>
+
+        <Row {...rowProps}>
+          <Col {...colProps.list}>
+            <div className='view-cart__list'>
+              {cartItems.length > 0 ? (
+                cartItems.map((course) => (
+                  <CartItem
+                    key={course._id}
+                    courseItem={course}
+                    onRemove={handleRemoveFromCart}
+                  />
+                ))
+              ) : (
+                <div className='view-cart__empty'>
+                  <h3>Your cart is empty</h3>
+                  <p>Browse our courses and find something you like!</p>
+                </div>
+              )}
+            </div>
+          </Col>
+
+          <Col {...colProps.checkout}>
+            <div className='view-cart__checkout'>
+              <div className='view-cart__total'>
+                <h3>Total:</h3>
+                <h3>${totalPrice.toFixed(2)}</h3>
+              </div>
+
+              <Button {...checkoutButtonProps}>
+                Checkout
+              </Button>
+
+              <div className='view-cart__coupon'>
+                <h4>Promotions</h4>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <Input {...couponInputProps} />
+                  <Button {...applyButtonProps}>
+                    Apply
+                  </Button>
                 </div>
               </div>
-            </Col>
-            <Col xs={24} sm={24} md={6}>
-              <div className='view-cart__summary'>
-                <h4 className='view-cart__summary-title'>Total: </h4>
-                <h3 className='view-cart__summary-price'>${totalPrice}</h3>
-                <div onClick={checkoutHandler}>
-                  <div className='view-cart__summary-btn btn btn-md'>Checkout</div>
-                </div>
-                <hr className="view-cart__divider" />
-                <div className='view-cart__summary-promo'>
-                  <span className='view-cart__summary-promo-title'>Promo code</span>
-                  <div className='view-cart__summary-promo-input-group'>
-                    <div className="view-cart__input-wrapper">
-                      <Input placeholder="Enter Coupon" />
-                      <Button type="primary" size="small">Apply</Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
+            </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );

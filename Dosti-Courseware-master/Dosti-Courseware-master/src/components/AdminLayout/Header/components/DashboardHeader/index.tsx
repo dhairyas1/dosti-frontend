@@ -10,64 +10,50 @@ import { useGetUserQuery } from '../../../../../pages/admin/Users/user.service';
 import { useAdminLogoutMutation } from '../../../../../pages/auth.service';
 import { setAdminUnauthenticated } from '../../../../../pages/auth.slice';
 import { RootState } from '../../../../../store/store';
+
 const DashboardHeader = () => {
   const adminId = useSelector((state: RootState) => state.auth.adminId);
-  const [adminLogout, adminLogoutResult] = useAdminLogoutMutation();
+  const [adminLogout] = useAdminLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data, isFetching } = useGetUserQuery(adminId, {
     skip: !adminId
   });
 
-  let avatarThumnailUrl = '';
+  let avatarThumbnailUrl = '';
 
   if (data?.user.avatar) {
-    if (data?.user.avatar.startsWith('http')) {
-      avatarThumnailUrl = data?.user.avatar;
-    } else {
-      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar}`;
-    }
+    avatarThumbnailUrl = data.user.avatar.startsWith('http') 
+      ? data.user.avatar 
+      : `${BACKEND_URL}/${data.user.avatar}`;
   }
 
-  const adminLogoutHandler = () => {
-    // Logout at db
-    adminLogout()
-      .unwrap()
-      .then((result) => {
-        console.log('result: ', result);
-
-        notification.success({
-          message: result.message
-        });
-      })
-      .catch((error) => {
-        console.log('error: ', error);
+  const adminLogoutHandler = async () => {
+    try {
+      const result = await adminLogout().unwrap();
+      notification.success({
+        message: result.message
       });
-
-    navigate('/author-login');
-    dispatch(setAdminUnauthenticated());
+      navigate('/author-login');
+      dispatch(setAdminUnauthenticated());
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
-  const adminInfoItems: MenuProps['items'] = [
+  const items: MenuProps['items'] = [
     {
       key: '1',
-      label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.antgroup.com'>
-          {data?.user.name || 'Admin author Name'}
-        </a>
-      )
+      label: data?.user.name || 'Admin Author Name'
     },
     {
       key: '2',
-      label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
-          2nd menu item
-        </a>
-      )
+      label: 'Settings'
     },
     {
       key: 'logout',
-      label: <a onClick={adminLogoutHandler}>Logout</a>
+      label: 'Logout',
+      onClick: adminLogoutHandler
     }
   ];
 
@@ -79,31 +65,28 @@ const DashboardHeader = () => {
     <Fragment>
       <Space>
         <h3 className='admin-header__page-title'>Dashboard</h3>
-
-        <Button onClick={openCreateCourseHandler}>
-          <PlusCircleOutlined />
+        <Button type="primary" onClick={openCreateCourseHandler} icon={<PlusCircleOutlined />}>
           Create Course
         </Button>
-        <Button>
-          <PlusCircleOutlined />
-          Preview Hompage
+        <Button icon={<PlusCircleOutlined />}>
+          Preview Homepage
         </Button>
-        <Button>
-          <PlusCircleOutlined />
-          Preview Hompage after login
+        <Button icon={<PlusCircleOutlined />}>
+          Preview Homepage after login
         </Button>
       </Space>
       <Space className='admin-header__notify'>
-        <Button>
-          <BellOutlined />
-          <span>What's new</span>
+        <Button icon={<BellOutlined />}>
+          What's new
         </Button>
-        <Button>
-          <QuestionOutlined />
-          <span>Help</span>
+        <Button icon={<QuestionOutlined />}>
+          Help
         </Button>
-        <Dropdown menu={{ items: adminInfoItems }} placement='bottom' arrow>
-          <Avatar style={{ backgroundColor: '#87d068', cursor: 'pointer' }} src={avatarThumnailUrl} />
+        <Dropdown menu={{ items }} placement='bottom' arrow>
+          <Avatar 
+            style={{ backgroundColor: '#87d068', cursor: 'pointer' }} 
+            src={avatarThumbnailUrl} 
+          />
         </Dropdown>
       </Space>
     </Fragment>

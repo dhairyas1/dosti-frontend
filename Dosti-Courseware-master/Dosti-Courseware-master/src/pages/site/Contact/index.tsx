@@ -1,38 +1,94 @@
-import { Button, Checkbox, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
+import React from 'react';
+import './Contact.scss';
+
 const { TextArea } = Input;
 
-import './Contact.scss';
-const Contact = () => {
+interface ContactFormValues {
+  name: string;
+  email: string;
+  message: string;
+  remember: boolean;
+}
+
+const Contact: React.FC = () => {
+  const [form] = Form.useForm<ContactFormValues>();
+
+  const handleSubmit = (values: ContactFormValues) => {
+    console.log('Form values:', values);
+    // Add your form submission logic here
+  };
+
   return (
     <div className='contact'>
-      {/* Container for demo purpose */}
       <div className='container my-24 mx-auto md:px-6 spacing-h-sm'>
-        {/* Section: Design Block */}
         <section className='mb-32 text-center'>
           <div className='mx-auto max-w-[700px] md:px-3'>
             <h2 className='contact__title mb-12 text-3xl font-bold'>Contact us</h2>
-            <form>
-              <div className='relative mb-6' data-te-input-wrapper-init>
-                <Input placeholder='Enter your name' />
-              </div>
-              <div className='relative mb-6' data-te-input-wrapper-init>
-                <Input placeholder='Enter your email' />
-              </div>
-              <div className='relative mb-6' data-te-input-wrapper-init>
-                <TextArea placeholder='Your message' />
-              </div>
-              <div className='mb-6 inline-block min-h-[1.5rem] justify-center pl-[1.5rem] md:flex'>
-                <Checkbox style={{ color: 'white' }}>Remember</Checkbox>
-              </div>
-              <Button type='primary' className='' size='middle' style={{ width: '100%' }}>
-                Send
-              </Button>
-            </form>
+            
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleSubmit}
+              requiredMark={false}
+            >
+              <Form.Item
+                name="name"
+                rules={[{ required: true, message: 'Please enter your name' }]}
+              >
+                <Input 
+                  placeholder='Enter your name'
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Please enter your email' },
+                  { type: 'email', message: 'Please enter a valid email' }
+                ]}
+              >
+                <Input 
+                  placeholder='Enter your email'
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="message"
+                rules={[{ required: true, message: 'Please enter your message' }]}
+              >
+                <TextArea 
+                  placeholder='Your message'
+                  rows={4}
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="remember"
+                valuePropName="checked"
+              >
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  block
+                  icon={<SendOutlined />}
+                >
+                  Send Message
+                </Button>
+              </Form.Item>
+            </Form>
           </div>
         </section>
-        {/* Section: Design Block */}
       </div>
-      {/* Container for demo purpose */}
     </div>
   );
 };
