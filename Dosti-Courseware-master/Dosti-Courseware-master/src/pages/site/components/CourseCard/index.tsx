@@ -8,17 +8,17 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
-  const { _id, title, thumbnail, progress } = course;
+  const { _id, name, thumbnail, progress } = course;
 
   return (
     <Link to={`/courses/${_id}`}>
       <Card
         hoverable
-        cover={<img alt={title} src={thumbnail} />}
+        cover={<img alt={name} src={thumbnail} />}
         className="course-card"
       >
-        <Card.Meta title={title} />
-        {progress !== undefined && (
+        <Card.Meta title={name} />
+        {typeof progress === 'number' && (
           <Progress percent={progress} size="small" />
         )}
       </Card>
