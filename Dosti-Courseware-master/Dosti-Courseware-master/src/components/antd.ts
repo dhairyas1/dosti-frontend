@@ -86,15 +86,9 @@ export interface ColProps extends AntColProps {
   children?: React.ReactNode;
 }
 
-// Row component with proper typing
-const Row: React.FC<RowProps> = (props) => {
-  return <AntRow {...props}>{props.children}</AntRow>;
-};
-
-// Col component with proper typing
-const Col: React.FC<ColProps> = (props) => {
-  return <AntCol {...props}>{props.children}</AntCol>;
-};
+// Export the components directly
+export const Row = AntRow;
+export const Col = AntCol;
 
 // Export components
 export const Avatar = AntAvatar;
