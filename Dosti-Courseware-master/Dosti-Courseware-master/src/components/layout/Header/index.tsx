@@ -1,7 +1,6 @@
+import type { MenuProps } from '../../../components/antd';
+import { Avatar, Badge, Drawer, Dropdown, Modal, Space, notification } from '../../../components/antd';
 import { MenuOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Avatar, Badge, Drawer, Dropdown, Modal, Space, notification } from 'antd';
-import type { NotificationInstance } from 'antd/es/notification/interface';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
