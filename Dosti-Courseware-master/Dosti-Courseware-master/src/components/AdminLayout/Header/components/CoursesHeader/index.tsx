@@ -1,24 +1,16 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Space } from '../../../../antd';
-import { Fragment } from 'react';
+import React from 'react';
+import { Button, Space } from 'antd';
 import { useDispatch } from 'react-redux';
-import { openCreateCourse } from '../../../../../pages/admin/Courses/course.slice';
 
 const CoursesHeader: React.FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <Fragment>
+    <div className='courses-header'>
       <Space>
-        <Button
-          type="primary"
-          icon={<PlusCircleOutlined />}
-          onClick={() => dispatch(openCreateCourse())}
-        >
-          Add Course
-        </Button>
+        <h2>Courses</h2>
       </Space>
-    </Fragment>
+    </div>
   );
 };
 

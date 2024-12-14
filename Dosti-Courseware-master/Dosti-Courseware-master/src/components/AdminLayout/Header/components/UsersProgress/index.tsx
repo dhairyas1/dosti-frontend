@@ -1,25 +1,17 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Space } from '../../../../antd';
-import { Fragment } from 'react';
+import React from 'react';
+import { Space } from 'antd';
 import { useDispatch } from 'react-redux';
-import { openCreateCourse } from '../../../../../pages/admin/Courses/course.slice';
 
-const UsersProgressHeader: React.FC = () => {
+const UsersProgress: React.FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <Fragment>
+    <div className='users-progress'>
       <Space>
-        <Button
-          type="primary"
-          icon={<PlusCircleOutlined />}
-          onClick={() => dispatch(openCreateCourse())}
-        >
-          Add Course
-        </Button>
+        <h2>Users Progress</h2>
       </Space>
-    </Fragment>
+    </div>
   );
 };
 
-export default UsersProgressHeader;
+export default UsersProgress;
