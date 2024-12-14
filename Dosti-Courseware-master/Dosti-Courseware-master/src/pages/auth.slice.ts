@@ -13,6 +13,19 @@ interface AdminDecodedToken extends DecodedToken {
   adminRole: UserRole;
 }
 
+interface IUserDetail {
+  _id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  avatar?: string;
+  address?: string;
+  phone?: string;
+  courses: ICourseEnrolledByUser[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 interface AuthState {
   userId: string;
   adminId: string;
@@ -22,6 +35,7 @@ interface AuthState {
   adminToken: string | null;
   isOpenAuthModal: boolean;
   adminRole: UserRole | null;
+  user?: IUserDetail;
 }
 
 const initialState: AuthState = {

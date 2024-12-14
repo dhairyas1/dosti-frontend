@@ -14,6 +14,8 @@ type AccessType = 'DRAFT' | 'FREE' | 'PAID';
 interface AddLessonProps {
   courseId: string;
   activityType?: ActivityType;
+  sectionId?: string;
+  onSuccess?: () => void;
 }
 
 interface LessonFormData {
@@ -23,13 +25,12 @@ interface LessonFormData {
   description: string;
 }
 
-const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media' }) => {
+const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media', sectionId, onSuccess }) => {
   const [open, setOpen] = useState(false);
   const playerRef = useRef<ReactPlayer | null>(null);
   const [contentLink, setContentLink] = useState('');
   const [form] = Form.useForm<LessonFormData>();
   const [addLesson] = useAddLessonMutation();
-  const sectionId = useSelector((state: RootState) => state.course.sectionId);
   const [access, setAccess] = useState<AccessType>('FREE');
 
   const showDrawer = () => {
@@ -84,6 +85,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media' 
       setOpen(false);
       form.resetFields();
       setContentLink('');
+      onSuccess?.();
     } catch (error: any) {
       notification.error({
         message: 'Failed to add lesson',

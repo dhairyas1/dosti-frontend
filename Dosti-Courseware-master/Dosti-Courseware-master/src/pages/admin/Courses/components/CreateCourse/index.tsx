@@ -76,6 +76,7 @@ const CreateCourse = () => {
 
       const courseData: Omit<ICourse, '_id'> = {
         name: formData.name || '',
+        title: formData.name || '',
         description: formData.description || '',
         thumbnail: formData.thumbnail || '',
         price: Number(formData.price) || 0,
@@ -97,8 +98,8 @@ const CreateCourse = () => {
         numOfLessons: 0,
         totalTime: 0,
         rating: 0,
-        numOfRatings: 0,
-        numOfStudents: 0,
+        reviews: 0,
+        students: 0,
         requirements: formData.requirements || [],
         objectives: formData.objectives || [],
         forWho: formData.forWho || []

@@ -18,7 +18,7 @@ import { CustomError } from '../../../utils/helpers';
  *
  *
  * Cách 2: Đây là cách thường dùng với RTK query
- * 1. Sau khi thêm 1 bài post thì server sẽ trả về data của bài post đó
+ * 1. Sau khi thêm 1 bài post thì server s��� trả về data của bài post đó
  * 2. Chúng ta sẽ tiến hành fetch lại API get Users để cập nhật state redux
  * 3. Lúc này UI chúng ta sẽ được sync
  *
@@ -29,6 +29,11 @@ import { CustomError } from '../../../utils/helpers';
 interface getUsersResponse {
   users: IUser[];
   message: string;
+  pagination: {
+    _limit: number;
+    _totalRows: number;
+    _page: number;
+  };
 }
 
 interface getUserResponse {
