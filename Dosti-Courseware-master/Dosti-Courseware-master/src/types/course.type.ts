@@ -107,21 +107,3 @@ export interface IsLessonDone {
   lessonId: string;
   isDone: boolean;
 }
-
-export interface CartItemDisplay {
-  _id: string;
-  title: string;
-  thumbnail: string;
-  price: number;
-  author: string;
-}
-
-export interface CartItem extends CartItemDisplay {
-  courseId: string;
-}
-
-export interface CreateCourseData extends Omit<ICourseBase, '_id'> {
-  _id?: string;
-  sections?: ISection[];
-  lessons?: ILesson[];
-}

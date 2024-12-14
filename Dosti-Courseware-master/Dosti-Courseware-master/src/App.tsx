@@ -36,7 +36,6 @@ import {
 } from './pages/auth.slice';
 import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
-import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
 import CourseDetail from './pages/site/CourseDetail';
 import SiteCourses from './pages/site/Courses';
@@ -45,7 +44,6 @@ import OrderCompleted from './pages/site/OrderCompleted';
 import PathPlayer from './pages/site/PathPlayer';
 import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
-import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 
@@ -57,10 +55,6 @@ interface DecodedToken {
 }
 
 function App() {
-  if (!localStorage.getItem('cart')) {
-    localStorage.setItem('cart', JSON.stringify({ items: [] }));
-  }
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -152,14 +146,6 @@ function App() {
         {
           path: 'start',
           element: isAuth ? <StartLearning /> : <ErrorPage page='/' />
-        },
-        {
-          path: 'view-cart',
-          element: <ViewCart />
-        },
-        {
-          path: 'checkout',
-          element: isAuth ? <Checkout /> : <ErrorPage page='/' />
         },
         {
           path: 'order-completed',
@@ -295,15 +281,6 @@ function App() {
     {
       path: 'author-login',
       element: <AdminAuth />
-    },
-    {
-      path: 'cart/subscribe/course/',
-      children: [
-        {
-          path: ':courseId',
-          element: isAuth ? <SubsribeCourse /> : <ErrorPage page='/' />
-        }
-      ]
     }
   ]);
 

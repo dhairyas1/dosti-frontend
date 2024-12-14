@@ -22,7 +22,6 @@ import Settings from './pages/admin/Settings';
 import Users from './pages/admin/Users';
 import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
-import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
 import CourseDetail from './pages/site/CourseDetail';
 import SiteCourses from './pages/site/Courses';
@@ -31,7 +30,6 @@ import OrderCompleted from './pages/site/OrderCompleted';
 import PathPlayer from './pages/site/PathPlayer';
 import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
-import ViewCart from './pages/site/ViewCart';
 import { UserRole } from './types/user.type';
 
 // Create a wrapper component to handle auth state
@@ -65,14 +63,6 @@ export const router = createBrowserRouter([
       {
         path: 'start',
         element: <ProtectedRoute><StartLearning /></ProtectedRoute>
-      },
-      {
-        path: 'view-cart',
-        element: <ViewCart />
-      },
-      {
-        path: 'checkout',
-        element: <ProtectedRoute><Checkout /></ProtectedRoute>
       },
       {
         path: 'order-completed',
