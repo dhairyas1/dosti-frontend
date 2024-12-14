@@ -22,6 +22,14 @@ interface Cart {
   totalPrice: number;
 }
 
+interface CartItemDisplay {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  price: number;
+  author?: string;
+}
+
 const ViewCart: React.FC = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -88,12 +96,12 @@ const ViewCart: React.FC = () => {
     style: { flex: 1 },
   };
 
-  const cartItemToDisplay = (item: ICourseDetail): CartItem => ({
+  const cartItemToDisplay = (item: ICourseDetail): CartItemDisplay => ({
     _id: item._id,
     title: item.title || '',
     thumbnail: item.thumbnail,
     price: item.price,
-    author: item.author || 'Unknown'
+    author: item.userId?.name
   });
 
   if (isEmpty) {

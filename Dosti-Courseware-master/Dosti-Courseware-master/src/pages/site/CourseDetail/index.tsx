@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { CheckOutlined, HeartOutlined, RightCircleFilled, StarFilled } from '@ant-design/icons';
 import { Breadcrumb, Button, Col, List, Row, Space, Typography, notification } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -304,8 +305,8 @@ const CourseDetail: React.FC = () => {
                   header={<div className='course-detail__includes-header'>What you'll learn</div>}
                   footer={<div className='course-detail__includes-footer'>Show more</div>}
                   //   bordered
-                  dataSource={courseData}
-                  renderItem={(item) => (
+                  dataSource={courseData?.willLearns || []}
+                  renderItem={(item: string) => (
                     <List.Item>
                       <Space>
                         <Typography.Text>

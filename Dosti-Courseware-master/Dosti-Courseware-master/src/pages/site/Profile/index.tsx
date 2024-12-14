@@ -6,7 +6,8 @@ import { formatVideoLengthToHours } from '../../../utils/functions';
 import { useGetUserDetailQuery } from '../client.service';
 import AboutTab from './components/AboutTab';
 import './Profile.scss';
-import { IUser, UserRole } from '../../../types/user.type';
+import { ICourseEnrolledByUser } from '../../../types/course.type';
+import { IUser, IUserDetail, UserRole } from '../../../types/user.type';
 import { Avatar, Button, Card, Col, Row, Space, Tabs } from '../../../components/antd';
 
 interface StatItemProps {
@@ -24,7 +25,7 @@ const StatItem: React.FC<StatItemProps> = ({ icon, number, text }) => (
 );
 
 interface ProfileProps {
-  user: IUser;
+  user: IUserDetail;
 }
 
 const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {

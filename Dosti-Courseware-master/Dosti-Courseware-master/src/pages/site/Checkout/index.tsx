@@ -10,8 +10,9 @@ import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery } from
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
+import { ICourseDetail } from '../../../types/course.type';
 
-interface CheckoutCartItem {
+interface CartItemDisplay {
   _id: string;
   name: string;
   thumbnail: string;
@@ -83,7 +84,7 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const cartItemToDisplay = (item: ICourseDetail): CheckoutCartItem => ({
+  const cartItemToDisplay = (item: ICourseDetail): CartItemDisplay => ({
     _id: item._id,
     name: item.title || item.name || '',
     thumbnail: item.thumbnail,
@@ -171,8 +172,14 @@ const Checkout = () => {
                 <h3 className='checkout__orders-detail-title'>Order details</h3>
                 {isCartFetching && <Skeleton />}
                 {!isCartFetching &&
-                  cartItems.map((cartItem: { _id: string; name: string; thumbnail: string; finalPrice: number }) => {
-                    return <DetailItem key={cartItem._id} courseItem={cartItem} />;
+                  cartItems.map((cartItem: ICourseDetail) => {
+                    const displayItem: CartItemDisplay = {
+                      _id: cartItem._id,
+                      name: cartItem.title || cartItem.name || '',
+                      thumbnail: cartItem.thumbnail,
+                      finalPrice: cartItem.finalPrice || cartItem.price
+                    };
+                    return <DetailItem key={cartItem._id} courseItem={displayItem} />;
                   })}
               </div>
             </div>
