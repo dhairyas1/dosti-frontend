@@ -87,13 +87,13 @@ export interface ColProps extends AntColProps {
 }
 
 // Row component with proper typing
-const Row: React.FC<RowProps> = ({ children, ...props }) => {
-  return <AntRow {...props}>{children}</AntRow>;
+const Row: React.FC<RowProps> = (props) => {
+  return <AntRow {...props}>{props.children}</AntRow>;
 };
 
 // Col component with proper typing
-const Col: React.FC<ColProps> = ({ children, ...props }) => {
-  return <AntCol {...props}>{children}</AntCol>;
+const Col: React.FC<ColProps> = (props) => {
+  return <AntCol {...props}>{props.children}</AntCol>;
 };
 
 // Export components
