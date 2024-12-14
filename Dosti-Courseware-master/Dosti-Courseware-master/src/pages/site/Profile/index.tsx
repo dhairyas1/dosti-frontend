@@ -8,6 +8,7 @@ import { useGetUserDetailQuery } from '../client.service';
 import AboutTab from './components/AboutTab';
 import ActivitiesTab from './components/ActivitiesTab';
 import './Profile.scss';
+import { IUser, UserRole } from '../../../types/user.type';
 
 interface Course {
   _id: string;
@@ -40,7 +41,11 @@ const StatItem: React.FC<StatItemProps> = ({ icon, number, text }) => (
   </Card>
 );
 
-const Profile: React.FC = () => {
+interface ProfileProps {
+  user: IUser;
+}
+
+const Profile: React.FC<ProfileProps> = ({ user: propUser }) => {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const { data, isFetching } = useGetUserDetailQuery(
     {
@@ -52,6 +57,8 @@ const Profile: React.FC = () => {
       skip: !userId
     }
   );
+
+  const userRole = propUser.role as UserRole;
 
   const user = data?.user as User | undefined;
   const totalVideoHours = user?.courses.reduce((acc, course) => {
@@ -109,7 +116,7 @@ const Profile: React.FC = () => {
                       <h3 className='profile__user-name'>
                         {user.name}
                         <span className='profile__user-badge'>
-                          {user.role}
+                          {userRole}
                         </span>
                       </h3>
                       <Button 

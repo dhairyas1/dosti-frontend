@@ -21,20 +21,16 @@ const Signup: React.FC<SignupProps> = ({ onClick }) => {
   const [signup] = useSignupMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onFinish = async (values: SignupFormValues) => {
+  const onFinish = async (values: Omit<IUser, '_id'>) => {
+    const userData = {
+      ...values,
+      role: UserRole.USER,
+      courses: []
+    };
     setIsSubmitting(true);
 
-    const userInfo: Omit<IUser, '_id'> = {
-      email: values.email,
-      password: values.password,
-      name: values.name,
-      role: UserRole.USER,
-      providerId: 'local',
-      fbUserId: ''
-    };
-
     try {
-      const result = await signup(userInfo).unwrap();
+      const result = await signup(userData).unwrap();
       notification.success({
         message: 'Signup Success',
         description: result.message
@@ -105,15 +101,13 @@ const Signup: React.FC<SignupProps> = ({ onClick }) => {
 
         <Form.Item>
           <ButtonCmp
+            type="primary"
+            htmlType="submit"
+            className="btn btn-primary btn-sm w-full"
             disabled={isSubmitting}
-            className='btn btn-primary btn-sm w-full'
-            type='submit'
+            loading={isSubmitting}
           >
-            {isSubmitting ? (
-              <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-            ) : (
-              'Sign Up'
-            )}
+            {!isSubmitting && 'Sign Up'}
           </ButtonCmp>
         </Form.Item>
       </Form>

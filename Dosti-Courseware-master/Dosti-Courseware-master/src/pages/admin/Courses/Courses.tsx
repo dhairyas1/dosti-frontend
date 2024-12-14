@@ -13,6 +13,8 @@ import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
 import { useDeleteCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
+import { ColumnsType } from 'antd/es/table';
+import { ICourse } from '../../../types/course.type';
 
 enum Access {
   PAID = 'PAID',
@@ -326,6 +328,34 @@ const Courses = () => {
       });
     }
   };
+
+  const columns: ColumnsType<ICourse> = [
+    {
+      title: 'Course',
+      dataIndex: 'title',
+      key: 'title',
+      render: (_, record) => (
+        <div className="course-info">
+          <img src={record.thumbnail} alt={record.title} />
+          <div>
+            <h4>{record.title}</h4>
+            <p>{record.description}</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Category',
+      dataIndex: ['categoryId', 'name'],
+      key: 'category'
+    },
+    {
+      title: 'Author',
+      dataIndex: ['userId', 'name'],
+      key: 'author'
+    }
+    // ... rest of columns
+  ];
 
   return (
     <Fragment>

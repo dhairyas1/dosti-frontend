@@ -2,7 +2,8 @@ export enum AccessStatus {
   PUBLIC = 'PUBLIC',
   PRIVATE = 'PRIVATE',
   FREE = 'FREE',
-  PAID = 'PAID'
+  PAID = 'PAID',
+  DRAFT = 'DRAFT'
 }
 
 export enum CourseLevel {
@@ -15,42 +16,56 @@ export enum CourseLevel {
 export interface ICourseBase {
   _id: string;
   title: string;
+  name: string;
   description: string;
   thumbnail: string;
   price: number;
+  finalPrice: number;
   level: CourseLevel;
   author: string;
   access: AccessStatus;
+  courseSlug: string;
+  categoryId: {
+    _id: string;
+    name: string;
+  };
+  userId: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
 }
 
 // Main course interface extending base with optional fields
 export interface ICourse extends ICourseBase {
-  finalPrice?: number;
-  courseSlug?: string;
   progress?: number;
   isBought?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  sections?: string[];
-  lessons?: string[];
+  sections?: ISection[];
+  lessons?: ILesson[];
   numOfLessons?: number;
   totalVideosLength?: number;
+  subTitle?: string;
+  willLearns?: string[];
+  requirements?: string[];
+  tags?: string[];
+  rating?: number;
+  reviews?: number;
+  students?: number;
+  avgRatingStars?: number;
 }
 
 // Interface for enrolled courses
-export interface ICourseEnrolledByUser extends Omit<ICourse, 'lessons' | 'sections'> {
+export interface ICourseEnrolledByUser extends ICourse {
   progress: number;
   totalVideosLengthDone: number;
   isBought: boolean;
-  lessons: ILesson[];
   lessonsDone: string[];
-  sections: ISection[];
 }
 
 // Interface for course details
 export interface ICourseDetail extends ICourse {
-  lessons: number;
-  sections: number;
   numOfReviews: number;
   totalVideosLength: number;
   avgRatingStars: number;
@@ -58,6 +73,8 @@ export interface ICourseDetail extends ICourse {
   isBought: boolean;
   createdAt: string;
   updatedAt: string;
+  sections: ISection[];
+  lessons: ILesson[];
 }
 
 export interface ILesson {

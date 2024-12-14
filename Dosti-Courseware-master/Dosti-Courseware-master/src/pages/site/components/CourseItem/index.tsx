@@ -11,15 +11,15 @@ import { openAuthModal } from '../../../auth.slice';
 import { ICourseEnrolledByUser, useGetUserDetailQuery } from '../../client.service';
 import { addToCart } from '../../client.slice';
 import './CourseItem.scss';
+import { ButtonCmp } from '../../../../components/antd';
 
-type CourseItemProps = {
-  courseItem: ICourseEnrolledByUser | ICourse;
-  courseState?: string;
-  onClick: (_id: string) => void | ((e: React.MouseEvent<HTMLButtonElement>) => void);
-  onEnroll?: (courseItem: IOrderItem) => void;
-};
+interface CourseItemProps {
+  course: ICourse | ICourseEnrolledByUser;
+  onEnroll?: (courseId: string) => void;
+  onBuy?: (courseId: string) => void;
+}
 
-const CourseItem = (props: CourseItemProps) => {
+const CourseItem: React.FC<CourseItemProps> = ({ course, onEnroll, onBuy }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const CourseItem = (props: CourseItemProps) => {
 
   let hasBought = false;
 
-  if ((props.courseItem as ICourseEnrolledByUser).isBought) {
+  if ((course as ICourseEnrolledByUser).isBought) {
     hasBought = true;
   }
 
@@ -51,21 +51,21 @@ const CourseItem = (props: CourseItemProps) => {
 
     if (isAuth) {
       if (dataAction === 'buynow') {
-        dispatch(addToCart(props.courseItem._id));
+        dispatch(addToCart(course._id));
 
         navigate('/checkout');
       } else if (dataAction === 'enroll') {
         console.log('go to enroll page');
 
         const newOrderItem: IOrderItem = {
-          courseId: props.courseItem._id,
-          name: props.courseItem.name,
-          thumbnail: props.courseItem.thumbnail,
-          finalPrice: props.courseItem.finalPrice
+          courseId: course._id,
+          name: course.name,
+          thumbnail: course.thumbnail,
+          finalPrice: course.finalPrice
         };
 
         if (newOrderItem) {
-          props.onEnroll && props.onEnroll(newOrderItem);
+          onEnroll && onEnroll(course._id);
         }
       }
     } else {
@@ -79,35 +79,35 @@ const CourseItem = (props: CourseItemProps) => {
     // console.log('enrolled or buy now!');
   };
 
-  if (!props.courseItem) return null;
+  if (!course) return null;
 
   let progressPercent: string | number;
-  if (props.courseState === 'ordered') {
-    progressPercent = ((props.courseItem as ICourseEnrolledByUser).progress * 100).toFixed(2);
+  if (course.courseState === 'ordered') {
+    progressPercent = ((course as ICourseEnrolledByUser).progress * 100).toFixed(2);
   } else {
     progressPercent = 0;
   }
 
   // Go to course handler
   const gotoCourseHandler = () => {
-    navigate(`/path-player?courseId=${props.courseItem._id}`);
+    navigate(`/path-player?courseId=${course._id}`);
   };
 
   const viewCourseDetail = () => {
-    props?.onClick(props.courseItem._id);
+    onBuy && onBuy(course._id);
   };
 
   let backgroundImageUrl = '';
 
-  if (props.courseItem.thumbnail.startsWith('http')) {
-    backgroundImageUrl = encodeURI(props.courseItem.thumbnail);
+  if (course.thumbnail.startsWith('http')) {
+    backgroundImageUrl = encodeURI(course.thumbnail);
   } else {
-    backgroundImageUrl = encodeURI(`${BACKEND_URL}/${props.courseItem.thumbnail}`);
+    backgroundImageUrl = encodeURI(`${BACKEND_URL}/${course.thumbnail}`);
   }
 
   let badgeCourse = 'new';
 
-  if (props.courseItem.finalPrice < props.courseItem.price) {
+  if (course.finalPrice < course.price) {
     badgeCourse = 'Special Offer';
   }
 
@@ -131,55 +131,50 @@ const CourseItem = (props: CourseItemProps) => {
           ></div>
           <div className='course-item__content'>
             <h3 onClick={viewCourseDetail} className='course-item__title course-item__title--courses-page'>
-              {props.courseItem.name}
+              {course.name}
             </h3>
-            {props.courseState === 'ordered' && (
+            {course.courseState === 'ordered' && (
               <Progress className='course-item__process' percent={progressPercent as number} />
             )}
-            <div className='course-item__desc'>{props.courseItem.description}</div>
+            <div className='course-item__desc'>{course.description}</div>
             <div className='course-item__author'>
               <img
-                src={props.courseItem.userId.avatar || 'https://via.placeholder.com/150'}
+                src={course.userId.avatar || 'https://via.placeholder.com/150'}
                 alt=''
                 className='course-item__author-img'
               />
-              <div className='course-item__author-name'>{props.courseItem.userId.name}</div>
+              <div className='course-item__author-name'>{course.userId.name}</div>
             </div>
             <div className='course-item__enrolls'>
               <Row className='course-item__enrolls-row' justify='space-around' align='middle'>
                 <Col md={12}>
-                  {!hasBought && props.courseState !== 'ordered' && (
-                    <Button
-                      onClick={btnClickHandler}
-                      action={props.courseItem.finalPrice === 0 ? 'enroll' : 'buynow'}
-                      className={`course-item__enrolls-btn btn btn-secondary btn-sm ${
-                        props.courseItem.finalPrice === 0 && props.courseState !== 'ordered'
-                          ? 'course-item__enrolls-btn--free'
-                          : ''
-                      }`}
+                  {!hasBought && course.courseState !== 'ordered' && (
+                    <ButtonCmp
+                      type="primary"
+                      onClick={() => course.finalPrice === 0 ? onEnroll?.(course._id) : onBuy?.(course._id)}
+                      className="course-item__button"
                     >
-                      {props.courseState !== 'ordered' && (props.courseItem.finalPrice === 0 ? 'Enroll' : 'Buy Now')}
-                    </Button>
+                      {course.finalPrice === 0 ? 'Enroll Now' : 'Buy Now'}
+                    </ButtonCmp>
                   )}
                   {hasBought && (
-                    <Button
-                      onClick={gotoCourseHandler}
-                      className='btn btn-secondary btn-sm course-item__enrolls-btn--free'
-                      action='goto-course'
+                    <ButtonCmp
+                      onClick={() => navigate(`/path-player?courseId=${course._id}`)}
+                      className="course-item__button"
                     >
-                      Goto Course
-                    </Button>
+                      Go to Course
+                    </ButtonCmp>
                   )}
                 </Col>
                 <Col md={12}>
-                  {props.courseState !== 'ordered' && (
+                  {course.courseState !== 'ordered' && (
                     <div className='course-item__prices'>
-                      {props.courseItem.finalPrice === 0 ? (
+                      {course.finalPrice === 0 ? (
                         <div className='course-item__prices-free'>FREE</div>
                       ) : (
                         <>
-                          <span className='course-item__prices-old'>${props.courseItem.price}</span>
-                          <span className='course-item__prices-new'>${props.courseItem.finalPrice}</span>
+                          <span className='course-item__prices-old'>${course.price}</span>
+                          <span className='course-item__prices-new'>${course.finalPrice}</span>
                         </>
                       )}
                     </div>
@@ -197,7 +192,7 @@ const CourseItem = (props: CourseItemProps) => {
 // generate default props for this component
 
 CourseItem.defaultProps = {
-  courseItem: {
+  course: {
     _id: '',
     name: '',
     thumbnail: '',

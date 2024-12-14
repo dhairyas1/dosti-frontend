@@ -22,4 +22,5 @@ export interface IUser {
   loginTokenExpiration?: string;
   lastLogin?: string;
   providerId?: string;
+  fbUserId?: string;
 }

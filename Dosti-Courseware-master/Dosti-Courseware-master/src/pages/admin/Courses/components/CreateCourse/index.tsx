@@ -10,29 +10,16 @@ import CreateLeftSide from './components/CreateLeftSide';
 import CreateRightSide from './components/CreateRightSide';
 import { useGetCategoriesQuery } from '../../../Categories/category.service';
 
-const initStateCourse: ICourse = {
-  _id: '',
-  name: '',
+const initialCourse: Partial<ICourse> = {
   title: '',
   description: '',
+  thumbnail: '',
   price: 0,
   finalPrice: 0,
-  access: AccessStatus.FREE,
   level: CourseLevel.BEGINNER,
-  thumbnail: '',
-  courseSlug: '',
+  access: AccessStatus.DRAFT,
   author: '',
-  topics: [],
-  duration: 0,
-  categoryId: {
-    _id: '',
-    name: ''
-  },
-  userId: {
-    _id: '',
-    name: '',
-    avatar: ''
-  }
+  courseSlug: ''
 };
 
 const orderCreateForm = [
@@ -96,7 +83,7 @@ const CreateCourse = () => {
           message: 'Add Course',
           description: 'Add course successfully!'
         });
-        dispatch(handleFormData(initStateCourse));
+        dispatch(handleFormData(initialCourse));
       })
       .catch((error) => {
         console.log(error);
