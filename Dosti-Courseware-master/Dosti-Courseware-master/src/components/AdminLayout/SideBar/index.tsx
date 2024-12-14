@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu } from '../../../components/antd';
 import { Link } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -28,9 +28,6 @@ const SideBar: React.FC = () => {
       <Menu.SubMenu key="sub2" icon={<BookOutlined />} title="Course Management">
         <Menu.Item key="4">
           <Link to="/admin/courses">Courses List</Link>
-        </Menu.Item>
-        <Menu.Item key="5">
-          <Link to="/admin/courses/add">Add Course</Link>
         </Menu.Item>
       </Menu.SubMenu>
 
