@@ -186,17 +186,12 @@ const UsersList: React.FC<UserListProps> = (props) => {
         createdAt: user.createdAt,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-            {(user.courses || []).map((course) => (
-              <Avatar key={course._id} src={course.thumbnail} />
+            {user.courses && user.courses.map((courseId) => (
+              <Avatar key={courseId} />
             ))}
-            {/* <Avatar src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=2' />
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
-            <Tooltip title='Ant User' placement='top'>
-              {(user.courses || []).map((course) => (
-                <Avatar key={course._id} src={course.thumbnail} />
-              ))}
+            <Tooltip title='Courses' placement='top'>
+              <span>{user.courses?.length || 0} courses</span>
             </Tooltip>
-            {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
           </Avatar.Group>
         ),
         tags: (

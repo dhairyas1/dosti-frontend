@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Form, Input, Spin, notification } from 'antd';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';
@@ -132,15 +132,13 @@ const Login: React.FC<LoginProps> = ({ onClick }) => {
 
         <Form.Item>
           <ButtonCmp
-            htmlType='submit'
-            className='btn btn-primary btn-sm w-full'
+            type="primary"
+            htmlType="submit"
+            className="btn btn-primary btn-sm w-full"
             disabled={isSubmitting}
+            loading={isSubmitting}
           >
-            {isSubmitting ? (
-              <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-            ) : (
-              'Login'
-            )}
+            {!isSubmitting && 'Login'}
           </ButtonCmp>
         </Form.Item>
       </Form>

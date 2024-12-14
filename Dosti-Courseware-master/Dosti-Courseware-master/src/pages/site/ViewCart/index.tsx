@@ -7,45 +7,36 @@ import { RootState } from '../../../store/store';
 import { useGetCartQuery, useRemoveFromCartMutation } from '../client.service';
 import CartItem from './components/CartItem';
 import './ViewCart.scss';
+import { ICourseDetail } from '../../../types/course.type';
 
-interface CartCourse {
-  _id: string;
-  title: string;
-  thumbnail: string;
-  price: number;
-  author: string;
+interface CartItem extends Pick<ICourseDetail, '_id' | 'title' | 'thumbnail' | 'price' | 'author'> {}
+
+interface Cart {
+  items: CartItem[];
+  totalPrice: number;
 }
 
 const ViewCart: React.FC = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const [removeFromCart] = useRemoveFromCartMutation();
-  const { data: cartData, isLoading } = useGetCartQuery(
-    { _userId: userId },
-    { skip: !userId }
-  );
+  const { data: cartData } = useGetCartQuery();
+  const cart = cartData?.cart as Cart | undefined;
 
-  const [cartItems, setCartItems] = useState<CartCourse[]>([]);
+  const isEmpty = !cart?.items || cart.items.length === 0;
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    if (cartData?.cart) {
-      setCartItems(cartData.cart.courses);
-      const total = cartData.cart.courses.reduce(
-        (acc: number, course: CartCourse) => acc + course.price,
-        0
-      );
-      setTotalPrice(total);
+    if (cart) {
+      setCartItems(cart.items);
+      setTotalPrice(cart.totalPrice);
     }
-  }, [cartData]);
+  }, [cart]);
 
   const handleRemoveFromCart = async (courseId: string) => {
     try {
-      await removeFromCart({
-        _userId: userId,
-        _courseId: courseId
-      }).unwrap();
-
+      await removeFromCart({ courseId }).unwrap();
       notification.success({
         message: 'Course removed from cart successfully',
         description: 'The course has been removed from your cart'
@@ -91,7 +82,7 @@ const ViewCart: React.FC = () => {
     style: { flex: 1 },
   };
 
-  if (isLoading) {
+  if (isEmpty) {
     return <div>Loading cart...</div>;
   }
 

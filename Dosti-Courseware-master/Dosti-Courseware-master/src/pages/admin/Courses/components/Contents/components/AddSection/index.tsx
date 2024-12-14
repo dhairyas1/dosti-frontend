@@ -47,7 +47,8 @@ const AddSection: React.FC<AddSectionProps> = (props) => {
         name: formData.name,
         access: formData.access,
         courseId: props.courseId,
-        description: formData.description
+        description: formData.description,
+        lessons: []
       };
       addSection(data)
         .unwrap()

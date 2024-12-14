@@ -9,13 +9,18 @@ import { ILesson } from '../../../../../../../types/lesson.type';
 import { formatTime } from '../../../../../../../utils/functions';
 import { useAddLessonMutation } from '../../../../course.service';
 
-type AddLessonProps = {
-  // onSubmit: (formData: Omit<ILesson, '_id'>) => void;
-  // videoLength?: number;
-  // onCloseActivies: () => void;
-};
+interface AddLessonProps {
+  courseId: string;
+}
 
-const AddLesson: React.FC<AddLessonProps> = () => {
+interface LessonFormData {
+  name: string;
+  content: string;
+  access: string;
+  description: string;
+}
+
+const AddLesson: React.FC<AddLessonProps> = ({ courseId }) => {
   const [open, setOpen] = useState(false);
   const playerRef = useRef<ReactPlayer | null>(null);
   const [contentLink, setContentLink] = useState('');
@@ -51,7 +56,7 @@ const AddLesson: React.FC<AddLessonProps> = () => {
     setContentLink(e.clipboardData.getData('text'));
   };
 
-  const onFinish = (formData: Omit<ILesson, '_id'>) => {
+  const onFinish = (formData: LessonFormData) => {
     console.log(formData);
     console.log(playerRef.current?.getDuration());
     console.log(formatTime(playerRef.current?.getDuration() || 0));
@@ -63,7 +68,9 @@ const AddLesson: React.FC<AddLessonProps> = () => {
       sectionId: sectionId,
       type: 'video',
       description: formData.description,
-      videoLength: playerRef.current?.getDuration() || 0
+      videoLength: playerRef.current?.getDuration() || 0,
+      courseId: courseId,
+      videoUrl: formData.content
     };
 
     addLesson(lessonData)

@@ -1,62 +1,40 @@
 export enum AccessStatus {
-  PAID = 'PAID',
-  DRAFT = 'DRAFT',
-  COMMING_SOON = 'COMMING_SOON',
-  ENROLLMENT_CLOSED = 'ENROLLMENT_CLOSED',
+  PUBLIC = 'PUBLIC',
+  PRIVATE = 'PRIVATE',
   FREE = 'FREE',
-  PRIVATE = 'PRIVATE'
+  PAID = 'PAID'
 }
 
 export enum CourseLevel {
   BEGINNER = 'BEGINNER',
   INTERMEDIATE = 'INTERMEDIATE',
-  ADVANCED = 'ADVANCED',
-  EXPERT = 'EXPERT'
+  ADVANCED = 'ADVANCED'
 }
 
 // Base interface with required fields
 export interface ICourseBase {
   _id: string;
-  name: string;
   title: string;
   description: string;
   thumbnail: string;
   price: number;
-  finalPrice: number;
   level: CourseLevel;
   author: string;
-  topics: string[];
-  duration: number;
   access: AccessStatus;
-  courseSlug: string;
-  categoryId: {
-    _id: string;
-    name: string;
-  };
-  userId: {
-    _id: string;
-    name: string;
-    avatar: string;
-  };
 }
 
 // Main course interface extending base with optional fields
 export interface ICourse extends ICourseBase {
-  rating?: number;
-  reviews?: number;
-  students?: number;
+  finalPrice?: number;
+  courseSlug?: string;
+  progress?: number;
+  isBought?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  subTitle?: string;
-  willLearns?: string[];
-  lessons?: number;
-  sections?: number;
-  numOfReviews?: number;
+  sections?: string[];
+  lessons?: string[];
+  numOfLessons?: number;
   totalVideosLength?: number;
-  avgRatingStars?: number;
-  isBought?: boolean;
-  requirements?: string[];
-  tags?: string[];
 }
 
 // Interface for enrolled courses
@@ -102,22 +80,4 @@ export interface ISection {
   access: string;
   numOfLessons?: number;
   totalVideosLength?: number;
-}
-
-// When is use is enrolled ? (bought the course, click enroll if course is free)
-
-export interface ICourse {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  level: string;
-  author: string;
-  sections: string[];
-  lessons: string[];
-  progress?: number;
-  isBought?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
 }

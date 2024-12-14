@@ -1,19 +1,18 @@
 import React from 'react';
-import './Button.scss';
-type Props = {
-  children: React.ReactNode;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
-  action?: string;
-  disabled?: boolean;
-};
+import { Button } from 'antd';
+import type { ButtonProps as AntButtonProps } from 'antd';
 
-const Button = (props: Props) => {
+interface ButtonCmpProps extends AntButtonProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const ButtonCmp: React.FC<ButtonCmpProps> = ({ children, className, ...props }) => {
   return (
-    <button disabled={props.disabled} onClick={props.onClick} data-action={props.action} className={props.className}>
-      {props.children}
-    </button>
+    <Button className={className} {...props}>
+      {children}
+    </Button>
   );
 };
 
-export default Button;
+export default ButtonCmp;
