@@ -75,7 +75,9 @@ import {
   type TagProps,
   type TimelineProps,
   type TooltipProps,
-  type TypographyProps
+  type TypographyProps,
+  type RadioChangeEvent,
+  type ColumnsType
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = AntLayout;
@@ -182,5 +184,7 @@ export type {
   TagProps,
   TimelineProps,
   TooltipProps,
-  TypographyProps
+  TypographyProps,
+  RadioChangeEvent,
+  ColumnsType
 }; 

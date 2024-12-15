@@ -1,4 +1,4 @@
-import { Button, Modal } from '../../../../../components/antd';
+import { Button, Modal } from '../../../../../../../../components/antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ISection } from '../../../../../../../../types/course.type';
@@ -16,11 +16,13 @@ const AddActivities: React.FC<Props> = (props) => {
 
   const addActivitiesHandler = () => {
     const section: ISection = {
-      _id: props.sectionId,
+      id: props.sectionId,
       name: '',
       lessons: [],
       courseId: props.courseId,
-      order: 0
+      order: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
     dispatch(startAddSection(section));
     setOpen(true);
