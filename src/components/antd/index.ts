@@ -2,6 +2,85 @@ import React from 'react';
 import './styles.scss';
 
 // Types
+export interface ButtonProps {
+  type?: 'primary' | 'secondary' | 'link';
+  htmlType?: 'button' | 'submit' | 'reset';
+  className?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  onClick?: () => void;
+  children: React.ReactNode;
+}
+
+export interface NotificationArgsProps {
+  message: string;
+  description?: string;
+  duration?: number;
+  placement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+}
+
+export interface MenuProps {
+  items?: Array<{
+    key: string;
+    label: React.ReactNode;
+    icon?: React.ReactNode;
+    children?: MenuProps['items'];
+  }>;
+  mode?: 'horizontal' | 'vertical';
+  selectedKeys?: string[];
+  onClick?: (info: { key: string }) => void;
+}
+
+export interface TabsProps {
+  items?: Array<{
+    key: string;
+    label: React.ReactNode;
+    children: React.ReactNode;
+  }>;
+  activeKey?: string;
+  onChange?: (key: string) => void;
+}
+
+export interface ColProps {
+  span?: number;
+  xs?: number | { span: number; offset: number };
+  sm?: number | { span: number; offset: number };
+  md?: number | { span: number; offset: number };
+  lg?: number | { span: number; offset: number };
+  xl?: number | { span: number; offset: number };
+}
+
+export interface RowProps {
+  gutter?: number | [number, number];
+  justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+  align?: 'top' | 'middle' | 'bottom';
+}
+
+export interface CardProps {
+  title?: React.ReactNode;
+  extra?: React.ReactNode;
+  bordered?: boolean;
+  hoverable?: boolean;
+  loading?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export interface CheckboxProps {
+  checked?: boolean;
+  defaultChecked?: boolean;
+  disabled?: boolean;
+  onChange?: (e: { target: { checked: boolean } }) => void;
+  children?: React.ReactNode;
+}
+
+export interface SpinProps {
+  spinning?: boolean;
+  size?: 'small' | 'default' | 'large';
+  tip?: string;
+  children?: React.ReactNode;
+}
+
 export type TableProps<T> = {
   pagination?: TablePaginationConfig;
   onChange?: (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T>) => void;
@@ -24,12 +103,6 @@ export type SorterResult<T> = {
   columnKey?: string;
 };
 
-export type RadioChangeEvent = {
-  target: {
-    value: string | number;
-  };
-};
-
 export type ColumnsType<T> = Array<{
   title: string;
   dataIndex?: string;
@@ -38,156 +111,16 @@ export type ColumnsType<T> = Array<{
   render?: (value: any, record: T) => React.ReactNode;
 }>;
 
-// Layout Components
-export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => <div className="layout">{children}</div>;
-export const Header: React.FC<{children: React.ReactNode}> = ({children}) => <header className="header">{children}</header>;
-export const Content: React.FC<{children: React.ReactNode}> = ({children}) => <main className="content">{children}</main>;
-export const Footer: React.FC<{children: React.ReactNode}> = ({children}) => <footer className="footer">{children}</footer>;
-export const Sider: React.FC<{children: React.ReactNode}> = ({children}) => <aside className="sider">{children}</aside>;
-
-// Form Components
-export const Form: React.FC<{
-  onFinish?: (values: any) => void;
-  children: React.ReactNode;
-  className?: string;
-  initialValues?: Record<string, any>;
-}> = ({ onFinish, children, className = '', initialValues = {} }) => {
-  const [formValues, setFormValues] = React.useState(initialValues);
-  
-  return (
-    <form 
-      onSubmit={(e) => { 
-        e.preventDefault(); 
-        onFinish?.(formValues); 
-      }} 
-      className={`form ${className}`}
-    >
-      {React.Children.map(children, child => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, {
-            value: formValues[child.props.name],
-            onChange: (e: any) => {
-              setFormValues(prev => ({
-                ...prev,
-                [child.props.name]: e.target.value
-              }));
-            }
-          });
-        }
-        return child;
-      })}
-    </form>
-  );
-};
-
-export const FormItem: React.FC<{
-  label?: string;
-  name?: string;
-  children: React.ReactNode;
-  className?: string;
-  rules?: Array<{
-    required?: boolean;
-    message?: string;
-  }>;
-}> = ({ label, children, className = '', rules = [] }) => (
-  <div className={`form-item ${className}`}>
-    {label && <label className="form-label">{label}</label>}
-    {children}
-    {rules.map((rule, index) => (
-      rule.required && <span key={index} className="form-item-required">*</span>
-    ))}
-  </div>
-);
-
-// Input Components
-export const Input: React.FC<{
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  type?: string;
-  className?: string;
-  name?: string;
-}> = ({ value, onChange, placeholder, type = 'text', className = '', name }) => (
-  <input
-    type={type}
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-    className={`input ${className}`}
-    name={name}
-  />
-);
-
-export const TextArea: React.FC<{
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  rows?: number;
-  className?: string;
-  name?: string;
-}> = ({ value, onChange, rows = 3, className = '', name }) => (
-  <textarea
-    value={value}
-    onChange={onChange}
-    rows={rows}
-    className={`textarea ${className}`}
-    name={name}
-  />
-);
-
-export const Password: React.FC<{
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
-  name?: string;
-}> = ({ value, onChange, className = '', name }) => (
-  <input
-    type="password"
-    value={value}
-    onChange={onChange}
-    className={`input-password ${className}`}
-    name={name}
-  />
-);
-
-// Select Component
-export const Select: React.FC<{
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options?: Array<{ value: string; label: string }>;
-  className?: string;
-  name?: string;
-}> = ({ value, onChange, options = [], className = '', name }) => (
-  <select
-    value={value}
-    onChange={onChange}
-    className={`select ${className}`}
-    name={name}
-  >
-    {options.map(option => (
-      <option key={option.value} value={option.value}>
-        {option.label}
-      </option>
-    ))}
-  </select>
-);
-
-export const SelectOption: React.FC<{
-  value: string;
-  children: React.ReactNode;
-}> = ({ value, children }) => (
-  <option value={value}>{children}</option>
-);
-
-// Button Component
-export const Button: React.FC<{
-  onClick?: () => void;
-  children: React.ReactNode;
-  type?: 'primary' | 'secondary' | 'link';
-  htmlType?: 'button' | 'submit' | 'reset';
-  className?: string;
-  disabled?: boolean;
-  loading?: boolean;
-}> = ({ onClick, children, type = 'primary', htmlType = 'button', className = '', disabled = false, loading = false }) => (
+// Components
+export const Button: React.FC<ButtonProps> = ({ 
+  onClick, 
+  children, 
+  type = 'primary', 
+  htmlType = 'button', 
+  className = '', 
+  disabled = false, 
+  loading = false 
+}) => (
   <button 
     className={`btn btn-${type} ${loading ? 'loading' : ''} ${className}`}
     onClick={onClick}
@@ -198,74 +131,99 @@ export const Button: React.FC<{
   </button>
 );
 
-// Table Component
-export const Table: React.FC<TableProps<any>> = ({ 
-  dataSource = [], 
-  columns = [], 
-  pagination,
-  onChange 
+export const Card: React.FC<CardProps> = ({ 
+  title, 
+  extra, 
+  children, 
+  bordered = true, 
+  hoverable = false, 
+  loading = false,
+  className = '' 
 }) => (
-  <div className="table-wrapper">
-    <table className="table">
-      <thead>
-        <tr>
-          {columns.map(column => (
-            <th key={column.key || column.dataIndex}>{column.title}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {dataSource.map((record, index) => (
-          <tr key={record.key || index}>
-            {columns.map(column => (
-              <td key={column.key || column.dataIndex}>
-                {column.render 
-                  ? column.render(record[column.dataIndex as string], record)
-                  : record[column.dataIndex as string]
-                }
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    {pagination && (
-      <div className="pagination">
-        <button 
-          onClick={() => onChange?.({ ...pagination, current: (pagination.current || 1) - 1 }, {}, {})}
-          disabled={pagination.current === 1}
-        >
-          Previous
-        </button>
-        <span>{pagination.current} / {Math.ceil((pagination.total || 0) / (pagination.pageSize || 10))}</span>
-        <button 
-          onClick={() => onChange?.({ ...pagination, current: (pagination.current || 1) + 1 }, {}, {})}
-          disabled={pagination.current === Math.ceil((pagination.total || 0) / (pagination.pageSize || 10))}
-        >
-          Next
-        </button>
+  <div className={`card ${bordered ? 'card--bordered' : ''} ${hoverable ? 'card--hoverable' : ''} ${loading ? 'card--loading' : ''} ${className}`}>
+    {(title || extra) && (
+      <div className="card__header">
+        {title && <div className="card__title">{title}</div>}
+        {extra && <div className="card__extra">{extra}</div>}
+      </div>
+    )}
+    <div className="card__body">
+      {loading ? (
+        <Spin />
+      ) : children}
+    </div>
+  </div>
+);
+
+export const Checkbox: React.FC<CheckboxProps> = ({ 
+  checked, 
+  defaultChecked, 
+  disabled, 
+  onChange, 
+  children 
+}) => (
+  <label className={`checkbox ${disabled ? 'checkbox--disabled' : ''}`}>
+    <input
+      type="checkbox"
+      checked={checked}
+      defaultChecked={defaultChecked}
+      disabled={disabled}
+      onChange={e => onChange?.({ target: { checked: e.target.checked } })}
+    />
+    <span className="checkbox__checkmark"></span>
+    {children && <span className="checkbox__label">{children}</span>}
+  </label>
+);
+
+export const Spin: React.FC<SpinProps> = ({ 
+  spinning = true, 
+  size = 'default', 
+  tip, 
+  children 
+}) => (
+  <div className={`spin ${spinning ? 'spin--active' : ''} spin--${size}`}>
+    <div className="spin__indicator"></div>
+    {tip && <div className="spin__tip">{tip}</div>}
+    {children && (
+      <div className={`spin__container ${spinning ? 'spin__container--blur' : ''}`}>
+        {children}
       </div>
     )}
   </div>
 );
 
-// Other Components
-export const Space: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-  size?: 'small' | 'middle' | 'large';
-}> = ({ children, className = '', size = 'middle' }) => (
-  <div className={`space space-${size} ${className}`}>{children}</div>
+export const Menu: React.FC<MenuProps> = ({ 
+  items = [], 
+  mode = 'horizontal', 
+  selectedKeys = [], 
+  onClick 
+}) => (
+  <ul className={`menu menu--${mode}`}>
+    {items.map(item => (
+      <li
+        key={item.key}
+        className={`menu__item ${selectedKeys.includes(item.key) ? 'menu__item--selected' : ''}`}
+        onClick={() => onClick?.({ key: item.key })}
+      >
+        {item.icon && <span className="menu__item-icon">{item.icon}</span>}
+        <span className="menu__item-label">{item.label}</span>
+      </li>
+    ))}
+  </ul>
 );
 
-export const Row: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-  gutter?: number | [number, number];
-}> = ({ children, className = '', gutter = 0 }) => {
+export const Row: React.FC<RowProps & { children: React.ReactNode }> = ({ 
+  children, 
+  gutter = 0, 
+  justify = 'start', 
+  align = 'top' 
+}) => {
   const margin = typeof gutter === 'number' ? gutter : gutter[0];
   return (
-    <div className={`row ${className}`} style={{ margin: `-${margin/2}px` }}>
+    <div 
+      className={`row row--justify-${justify} row--align-${align}`} 
+      style={{ margin: `-${margin/2}px` }}
+    >
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child, {
@@ -278,68 +236,62 @@ export const Row: React.FC<{
   );
 };
 
-export const Col: React.FC<{
-  children: React.ReactNode;
-  span?: number;
-  className?: string;
-}> = ({ children, span = 12, className = '' }) => (
-  <div className={`col col-${span} ${className}`}>{children}</div>
+export const Col: React.FC<ColProps & { children: React.ReactNode }> = ({ 
+  children, 
+  span = 24, 
+  xs, 
+  sm, 
+  md, 
+  lg, 
+  xl 
+}) => (
+  <div className={`
+    col 
+    col-${span} 
+    ${xs ? `col-xs-${typeof xs === 'number' ? xs : xs.span}` : ''} 
+    ${sm ? `col-sm-${typeof sm === 'number' ? sm : sm.span}` : ''} 
+    ${md ? `col-md-${typeof md === 'number' ? md : md.span}` : ''} 
+    ${lg ? `col-lg-${typeof lg === 'number' ? lg : lg.span}` : ''} 
+    ${xl ? `col-xl-${typeof xl === 'number' ? xl : xl.span}` : ''}
+  `}>
+    {children}
+  </div>
 );
 
-export const Divider: React.FC<{
-  className?: string;
-  type?: 'horizontal' | 'vertical';
-}> = ({ className = '', type = 'horizontal' }) => (
-  <hr className={`divider divider-${type} ${className}`} />
-);
-
-export const Tag: React.FC<{
-  children: React.ReactNode;
-  color?: string;
-  className?: string;
-}> = ({ children, color = 'default', className = '' }) => (
-  <span className={`tag tag-${color} ${className}`}>{children}</span>
-);
-
-export const Modal: React.FC<{
-  title?: string;
-  open?: boolean;
-  onOk?: () => void;
-  onCancel?: () => void;
-  children: React.ReactNode;
-  width?: number | string;
-  footer?: React.ReactNode;
-}> = ({ title, open, onOk, onCancel, children, width = 520, footer }) => {
-  if (!open) return null;
-  return (
-    <div className="modal-overlay">
-      <div className="modal" style={{ maxWidth: width }}>
-        {title && <div className="modal-header">{title}</div>}
-        <div className="modal-content">{children}</div>
-        <div className="modal-footer">
-          {footer || (
-            <>
-              <Button onClick={onCancel}>Cancel</Button>
-              <Button type="primary" onClick={onOk}>OK</Button>
-            </>
-          )}
+export const Tabs: React.FC<TabsProps> = ({ 
+  items = [], 
+  activeKey, 
+  onChange 
+}) => (
+  <div className="tabs">
+    <div className="tabs__nav">
+      {items.map(item => (
+        <div
+          key={item.key}
+          className={`tabs__tab ${activeKey === item.key ? 'tabs__tab--active' : ''}`}
+          onClick={() => onChange?.(item.key)}
+        >
+          {item.label}
         </div>
-      </div>
+      ))}
     </div>
-  );
-};
+    <div className="tabs__content">
+      {items.find(item => item.key === activeKey)?.children}
+    </div>
+  </div>
+);
 
 export const notification = {
-  success: ({ message, description }: { message: string; description?: string }) => {
+  success: ({ message, description, duration = 4.5, placement = 'topRight' }: NotificationArgsProps) => {
     alert(`Success: ${message}\n${description || ''}`);
   },
-  error: ({ message, description }: { message: string; description?: string }) => {
+  error: ({ message, description, duration = 4.5, placement = 'topRight' }: NotificationArgsProps) => {
     alert(`Error: ${message}\n${description || ''}`);
   },
-  warning: ({ message, description }: { message: string; description?: string }) => {
+  warning: ({ message, description, duration = 4.5, placement = 'topRight' }: NotificationArgsProps) => {
     alert(`Warning: ${message}\n${description || ''}`);
   },
-  info: ({ message, description }: { message: string; description?: string }) => {
+  info: ({ message, description, duration = 4.5, placement = 'topRight' }: NotificationArgsProps) => {
     alert(`Info: ${message}\n${description || ''}`);
   }
 };

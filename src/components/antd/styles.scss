@@ -260,4 +260,346 @@
     justify-content: flex-end;
     gap: 0.5rem;
   }
+}
+
+// Variables
+$primary-color: #1890ff;
+$secondary-color: #f0f0f0;
+$text-color: rgba(0, 0, 0, 0.85);
+$border-color: #d9d9d9;
+$border-radius: 4px;
+$transition-duration: 0.3s;
+
+// Mixins
+@mixin hover-focus {
+  &:hover,
+  &:focus {
+    border-color: $primary-color;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+}
+
+// Card
+.card {
+  background: white;
+  border-radius: $border-radius;
+  transition: all $transition-duration;
+
+  &--bordered {
+    border: 1px solid $border-color;
+  }
+
+  &--hoverable:hover {
+    box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16),
+                0 3px 6px 0 rgba(0, 0, 0, 0.12),
+                0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  }
+
+  &__header {
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  &__body {
+    padding: 1rem;
+  }
+
+  &--loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+// Checkbox
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+
+  &__checkmark {
+    width: 16px;
+    height: 16px;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    margin-right: 8px;
+    position: relative;
+    transition: all $transition-duration;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 5px;
+      top: 2px;
+      width: 4px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  input:checked + .checkbox__checkmark {
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:after {
+      display: block;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Spin
+.spin {
+  position: relative;
+  display: inline-block;
+
+  &__indicator {
+    border: 2px solid $border-color;
+    border-top: 2px solid $primary-color;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+  }
+
+  &--small .spin__indicator {
+    width: 14px;
+    height: 14px;
+  }
+
+  &--large .spin__indicator {
+    width: 32px;
+    height: 32px;
+  }
+
+  &__tip {
+    margin-top: 8px;
+    color: $text-color;
+    text-align: center;
+  }
+
+  &__container {
+    transition: opacity $transition-duration;
+
+    &--blur {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Menu
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+
+  &--horizontal {
+    flex-direction: row;
+  }
+
+  &--vertical {
+    flex-direction: column;
+  }
+
+  &__item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all $transition-duration;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    &--selected {
+      color: $primary-color;
+      font-weight: 500;
+    }
+  }
+}
+
+// Tabs
+.tabs {
+  &__nav {
+    display: flex;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__tab {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all $transition-duration;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    &--active {
+      color: $primary-color;
+      border-bottom-color: $primary-color;
+    }
+  }
+
+  &__content {
+    padding: 1rem 0;
+  }
+}
+
+// Button
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all $transition-duration;
+  font-size: 14px;
+  line-height: 1.5;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &-primary {
+    background: $primary-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: lighten($primary-color, 10%);
+    }
+  }
+
+  &-secondary {
+    background: white;
+    border-color: $border-color;
+    color: $text-color;
+
+    &:hover:not(:disabled) {
+      color: $primary-color;
+      border-color: $primary-color;
+    }
+  }
+
+  &-link {
+    background: transparent;
+    color: $primary-color;
+    padding: 0;
+
+    &:hover:not(:disabled) {
+      color: lighten($primary-color, 10%);
+    }
+  }
+
+  &.loading {
+    position: relative;
+    color: transparent;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+  }
+}
+
+// Grid
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+
+  &--justify {
+    &-start { justify-content: flex-start; }
+    &-end { justify-content: flex-end; }
+    &-center { justify-content: center; }
+    &-space-between { justify-content: space-between; }
+    &-space-around { justify-content: space-around; }
+  }
+
+  &--align {
+    &-top { align-items: flex-start; }
+    &-middle { align-items: center; }
+    &-bottom { align-items: flex-end; }
+  }
+}
+
+.col {
+  padding: 0.5rem;
+  box-sizing: border-box;
+
+  @for $i from 1 through 24 {
+    &-#{$i} {
+      width: percentage($i / 24);
+    }
+  }
+
+  @media (min-width: 576px) {
+    @for $i from 1 through 24 {
+      &-sm-#{$i} {
+        width: percentage($i / 24);
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    @for $i from 1 through 24 {
+      &-md-#{$i} {
+        width: percentage($i / 24);
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    @for $i from 1 through 24 {
+      &-lg-#{$i} {
+        width: percentage($i / 24);
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    @for $i from 1 through 24 {
+      &-xl-#{$i} {
+        width: percentage($i / 24);
+      }
+    }
+  }
 } 
