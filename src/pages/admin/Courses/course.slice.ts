@@ -7,7 +7,18 @@ interface CourseState {
   isLoading: boolean;
   error: string | null;
   selectedSection: ISection | null;
-  formData: any;
+  formData: {
+    title?: string;
+    slug?: string;
+    price?: number;
+    access?: string;
+    thumb?: string;
+    [key: string]: any;
+  };
+  courseId?: string;
+  sectionId?: string;
+  chartName?: string;
+  previousDaysSelected?: number;
 }
 
 const initialState: CourseState = {
@@ -17,6 +28,10 @@ const initialState: CourseState = {
   error: null,
   selectedSection: null,
   formData: {},
+  courseId: undefined,
+  sectionId: undefined,
+  chartName: undefined,
+  previousDaysSelected: undefined
 };
 
 const courseSlice = createSlice({
@@ -25,6 +40,9 @@ const courseSlice = createSlice({
   reducers: {
     setCourse(state, action: PayloadAction<ICourse | null>) {
       state.course = action.payload;
+      if (action.payload) {
+        state.courseId = action.payload.id;
+      }
     },
     setCourses(state, action: PayloadAction<ICourse[]>) {
       state.courses = action.payload;
@@ -37,6 +55,9 @@ const courseSlice = createSlice({
     },
     setSelectedSection(state, action: PayloadAction<ISection | null>) {
       state.selectedSection = action.payload;
+      if (action.payload) {
+        state.sectionId = action.payload.id;
+      }
     },
     handleFormData(state, action: PayloadAction<{ field: string; value: any }>) {
       state.formData = {
@@ -49,6 +70,12 @@ const courseSlice = createSlice({
         state.course.sections = [...(state.course.sections || []), action.payload];
       }
     },
+    selectPreviousDays(state, action: PayloadAction<number>) {
+      state.previousDaysSelected = action.payload;
+    },
+    showChart(state, action: PayloadAction<string>) {
+      state.chartName = action.payload;
+    }
   },
 });
 
@@ -60,6 +87,8 @@ export const {
   setSelectedSection,
   handleFormData,
   startAddSection,
+  selectPreviousDays,
+  showChart
 } = courseSlice.actions;
 
 export default courseSlice.reducer; 
