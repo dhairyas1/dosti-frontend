@@ -34,10 +34,10 @@ import {
 } from 'antd';
 import { Line as LineProgress } from '@ant-design/plots';
 import type { LineConfig } from '@ant-design/plots';
+import type { FilterValue, ColumnsType } from 'antd/es/table/interface';
 
 export type TablePaginationConfig = TableProps<any>['pagination'];
-export type { FilterValue, ColumnsType } from 'antd/es/table/interface';
-export type { RadioChangeEvent };
+export type { FilterValue, ColumnsType, RadioChangeEvent };
 export type LineProgressProps = LineConfig & {
   style?: React.CSSProperties;
 };
