@@ -4,7 +4,7 @@ import './styles.scss';
 // Types
 export type TableProps<T> = {
   pagination?: TablePaginationConfig;
-  onChange?: (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: any) => void;
+  onChange?: (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T>) => void;
   dataSource?: T[];
   columns?: ColumnsType<T>;
 };
@@ -16,6 +16,13 @@ export type TablePaginationConfig = {
 };
 
 export type FilterValue = string | number | boolean | null;
+
+export type SorterResult<T> = {
+  column?: ColumnsType<T>[number];
+  order?: 'ascend' | 'descend' | null;
+  field?: string | string[];
+  columnKey?: string;
+};
 
 export type RadioChangeEvent = {
   target: {
@@ -43,20 +50,52 @@ export const Form: React.FC<{
   onFinish?: (values: any) => void;
   children: React.ReactNode;
   className?: string;
-}> = ({ onFinish, children, className = '' }) => (
-  <form onSubmit={(e) => { e.preventDefault(); onFinish?.({}); }} className={`form ${className}`}>
-    {children}
-  </form>
-);
+  initialValues?: Record<string, any>;
+}> = ({ onFinish, children, className = '', initialValues = {} }) => {
+  const [formValues, setFormValues] = React.useState(initialValues);
+  
+  return (
+    <form 
+      onSubmit={(e) => { 
+        e.preventDefault(); 
+        onFinish?.(formValues); 
+      }} 
+      className={`form ${className}`}
+    >
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            value: formValues[child.props.name],
+            onChange: (e: any) => {
+              setFormValues(prev => ({
+                ...prev,
+                [child.props.name]: e.target.value
+              }));
+            }
+          });
+        }
+        return child;
+      })}
+    </form>
+  );
+};
 
 export const FormItem: React.FC<{
   label?: string;
+  name?: string;
   children: React.ReactNode;
   className?: string;
-}> = ({ label, children, className = '' }) => (
+  rules?: Array<{
+    required?: boolean;
+    message?: string;
+  }>;
+}> = ({ label, children, className = '', rules = [] }) => (
   <div className={`form-item ${className}`}>
     {label && <label className="form-label">{label}</label>}
     {children}
+    {rules.map((rule, index) => (
+      rule.required && <span key={index} className="form-item-required">*</span>
+    ))}
   </div>
 );
 
@@ -67,13 +106,15 @@ export const Input: React.FC<{
   placeholder?: string;
   type?: string;
   className?: string;
-}> = ({ value, onChange, placeholder, type = 'text', className = '' }) => (
+  name?: string;
+}> = ({ value, onChange, placeholder, type = 'text', className = '', name }) => (
   <input
     type={type}
     value={value}
     onChange={onChange}
     placeholder={placeholder}
     className={`input ${className}`}
+    name={name}
   />
 );
 
@@ -82,12 +123,14 @@ export const TextArea: React.FC<{
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   rows?: number;
   className?: string;
-}> = ({ value, onChange, rows = 3, className = '' }) => (
+  name?: string;
+}> = ({ value, onChange, rows = 3, className = '', name }) => (
   <textarea
     value={value}
     onChange={onChange}
     rows={rows}
     className={`textarea ${className}`}
+    name={name}
   />
 );
 
@@ -95,12 +138,14 @@ export const Password: React.FC<{
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-}> = ({ value, onChange, className = '' }) => (
+  name?: string;
+}> = ({ value, onChange, className = '', name }) => (
   <input
     type="password"
     value={value}
     onChange={onChange}
     className={`input-password ${className}`}
+    name={name}
   />
 );
 
@@ -110,11 +155,13 @@ export const Select: React.FC<{
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options?: Array<{ value: string; label: string }>;
   className?: string;
-}> = ({ value, onChange, options = [], className = '' }) => (
+  name?: string;
+}> = ({ value, onChange, options = [], className = '', name }) => (
   <select
     value={value}
     onChange={onChange}
     className={`select ${className}`}
+    name={name}
   >
     {options.map(option => (
       <option key={option.value} value={option.value}>
@@ -139,14 +186,15 @@ export const Button: React.FC<{
   htmlType?: 'button' | 'submit' | 'reset';
   className?: string;
   disabled?: boolean;
-}> = ({ onClick, children, type = 'primary', htmlType = 'button', className = '', disabled = false }) => (
+  loading?: boolean;
+}> = ({ onClick, children, type = 'primary', htmlType = 'button', className = '', disabled = false, loading = false }) => (
   <button 
-    className={`btn btn-${type} ${className}`}
+    className={`btn btn-${type} ${loading ? 'loading' : ''} ${className}`}
     onClick={onClick}
     type={htmlType}
-    disabled={disabled}
+    disabled={disabled || loading}
   >
-    {children}
+    {loading ? 'Loading...' : children}
   </button>
 );
 
@@ -205,16 +253,30 @@ export const Table: React.FC<TableProps<any>> = ({
 export const Space: React.FC<{
   children: React.ReactNode;
   className?: string;
-}> = ({ children, className = '' }) => (
-  <div className={`space ${className}`}>{children}</div>
+  size?: 'small' | 'middle' | 'large';
+}> = ({ children, className = '', size = 'middle' }) => (
+  <div className={`space space-${size} ${className}`}>{children}</div>
 );
 
 export const Row: React.FC<{
   children: React.ReactNode;
   className?: string;
-}> = ({ children, className = '' }) => (
-  <div className={`row ${className}`}>{children}</div>
-);
+  gutter?: number | [number, number];
+}> = ({ children, className = '', gutter = 0 }) => {
+  const margin = typeof gutter === 'number' ? gutter : gutter[0];
+  return (
+    <div className={`row ${className}`} style={{ margin: `-${margin/2}px` }}>
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            style: { padding: `${margin/2}px` }
+          });
+        }
+        return child;
+      })}
+    </div>
+  );
+};
 
 export const Col: React.FC<{
   children: React.ReactNode;
@@ -224,7 +286,12 @@ export const Col: React.FC<{
   <div className={`col col-${span} ${className}`}>{children}</div>
 );
 
-export const Divider: React.FC = () => <hr className="divider" />;
+export const Divider: React.FC<{
+  className?: string;
+  type?: 'horizontal' | 'vertical';
+}> = ({ className = '', type = 'horizontal' }) => (
+  <hr className={`divider divider-${type} ${className}`} />
+);
 
 export const Tag: React.FC<{
   children: React.ReactNode;
@@ -240,16 +307,22 @@ export const Modal: React.FC<{
   onOk?: () => void;
   onCancel?: () => void;
   children: React.ReactNode;
-}> = ({ title, open, onOk, onCancel, children }) => {
+  width?: number | string;
+  footer?: React.ReactNode;
+}> = ({ title, open, onOk, onCancel, children, width = 520, footer }) => {
   if (!open) return null;
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="modal" style={{ maxWidth: width }}>
         {title && <div className="modal-header">{title}</div>}
         <div className="modal-content">{children}</div>
         <div className="modal-footer">
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button type="primary" onClick={onOk}>OK</Button>
+          {footer || (
+            <>
+              <Button onClick={onCancel}>Cancel</Button>
+              <Button type="primary" onClick={onOk}>OK</Button>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -262,5 +335,11 @@ export const notification = {
   },
   error: ({ message, description }: { message: string; description?: string }) => {
     alert(`Error: ${message}\n${description || ''}`);
+  },
+  warning: ({ message, description }: { message: string; description?: string }) => {
+    alert(`Warning: ${message}\n${description || ''}`);
+  },
+  info: ({ message, description }: { message: string; description?: string }) => {
+    alert(`Info: ${message}\n${description || ''}`);
   }
 };

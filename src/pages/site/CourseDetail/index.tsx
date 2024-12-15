@@ -1,6 +1,5 @@
 import React from 'react';
-import { Row, Col, Button, Breadcrumb } from 'antd';
-import type { RowProps, ColProps, BreadcrumbProps } from 'antd';
+import { Row, Col, Button, notification, Modal } from '../../../../components/antd';
 
 interface SimpleCourse {
   title: string;
@@ -13,28 +12,17 @@ interface CourseDetailProps {
 }
 
 const CourseDetail: React.FC<CourseDetailProps> = ({ course, onEnroll }) => {
-  const rowProps: RowProps = {
-    gutter: [16, 16]
-  };
-
-  const colProps: ColProps = {
-    xs: 24,
-    sm: 12,
-    md: 8,
-    lg: 6
-  };
-
-  const breadcrumbItems: BreadcrumbProps['items'] = [
-    { title: 'Home' },
-    { title: 'Courses' },
-    { title: course.title }
-  ];
-
   return (
     <div className="course-detail">
-      <Row {...rowProps}>
-        <Col {...colProps}>
-          <Breadcrumb items={breadcrumbItems} />
+      <div className="breadcrumb">
+        <span>Home</span>
+        <span> / </span>
+        <span>Courses</span>
+        <span> / </span>
+        <span>{course.title}</span>
+      </div>
+      <Row gutter={16}>
+        <Col span={24}>
           <h1>{course.title}</h1>
           <p>{course.description}</p>
           <Button type="primary" onClick={onEnroll}>
