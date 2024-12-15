@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, notification } from '../../../../../components/antd';
+import './PathSections.scss';
 
 interface PathSection {
   id: string;
@@ -15,10 +15,7 @@ interface PathSectionsProps {
 const PathSections: React.FC<PathSectionsProps> = ({ sections, onSectionClick }) => {
   const handleSectionClick = (section: PathSection) => {
     if (!section.completed) {
-      notification.warning({
-        message: 'Section Locked',
-        description: 'Please complete the previous sections first.'
-      });
+      alert('Please complete the previous sections first.');
       return;
     }
     onSectionClick(section.id);
@@ -27,14 +24,14 @@ const PathSections: React.FC<PathSectionsProps> = ({ sections, onSectionClick })
   return (
     <div className="path-sections">
       {sections.map((section) => (
-        <Button
+        <button
           key={section.id}
           onClick={() => handleSectionClick(section)}
-          type={section.completed ? 'primary' : 'secondary'}
+          className={`btn ${section.completed ? 'btn-primary' : 'btn-secondary'}`}
           disabled={!section.completed}
         >
           {section.title}
-        </Button>
+        </button>
       ))}
     </div>
   );

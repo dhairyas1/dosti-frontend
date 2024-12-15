@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button, notification, Modal } from '../../../../components/antd';
+import './CourseDetail.scss';
 
 interface SimpleCourse {
   title: string;
@@ -14,22 +14,20 @@ interface CourseDetailProps {
 const CourseDetail: React.FC<CourseDetailProps> = ({ course, onEnroll }) => {
   return (
     <div className="course-detail">
-      <div className="breadcrumb">
-        <span>Home</span>
+      <nav className="breadcrumb">
+        <a href="/">Home</a>
         <span> / </span>
-        <span>Courses</span>
+        <a href="/courses">Courses</a>
         <span> / </span>
         <span>{course.title}</span>
+      </nav>
+      <div className="course-content">
+        <h1>{course.title}</h1>
+        <p>{course.description}</p>
+        <button className="btn btn-primary" onClick={onEnroll}>
+          Enroll Now
+        </button>
       </div>
-      <Row gutter={16}>
-        <Col span={24}>
-          <h1>{course.title}</h1>
-          <p>{course.description}</p>
-          <Button type="primary" onClick={onEnroll}>
-            Enroll Now
-          </Button>
-        </Col>
-      </Row>
     </div>
   );
 };

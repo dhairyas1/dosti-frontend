@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Input, Button } from '../../../../components/antd';
+import React, { useState } from 'react';
+import './Signup.scss';
 
 interface SignupFormData {
   email: string;
@@ -8,44 +8,69 @@ interface SignupFormData {
 }
 
 const Signup: React.FC = () => {
-  const handleSubmit = (values: SignupFormData) => {
-    console.log('Signup form submitted:', values);
+  const [formData, setFormData] = useState<SignupFormData>({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Signup form submitted:', formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
     <div className="signup-form">
       <h2>Sign Up</h2>
-      <Form onFinish={handleSubmit}>
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: 'Please input your email!' }]}
-        >
-          <Input type="email" />
-        </Form.Item>
+      <form onSubmit={handleSubmit}>
+        <div className="form-item">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input type="password" />
-        </Form.Item>
+        <div className="form-item">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <Form.Item
-          label="Confirm Password"
-          name="confirmPassword"
-          rules={[{ required: true, message: 'Please confirm your password!' }]}
-        >
-          <Input type="password" />
-        </Form.Item>
+        <div className="form-item">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Sign Up
-          </Button>
-        </Form.Item>
-      </Form>
+        <button type="submit" className="btn btn-primary">
+          Sign Up
+        </button>
+      </form>
     </div>
   );
 };
