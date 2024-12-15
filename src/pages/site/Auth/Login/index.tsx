@@ -2,31 +2,31 @@ import React from 'react';
 import { Button } from 'antd';
 import './styles.scss';
 
-const Signup: React.FC = () => {
+const Login: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Handle signup logic
+    // Handle login logic
     setLoading(false);
   };
 
   return (
-    <div className="signup">
+    <div className="login">
       <form onSubmit={handleSubmit}>
         <Button
           type="primary"
           htmlType="submit"
-          className="signup-button"
+          className="login-button"
           disabled={loading}
           loading={loading}
         >
-          Sign up
+          Log in
         </Button>
       </form>
     </div>
   );
 };
 
-export default Signup; 
+export default Login; 

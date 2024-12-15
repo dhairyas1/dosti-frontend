@@ -1,18 +1,17 @@
 import React from 'react';
-import './StartLearning.scss';
+import { Card, Button, Row, Col } from 'antd';
+import './styles.scss';
 
-interface StartLearningProps {
-  onStart: () => void;
-}
-
-const StartLearning: React.FC<StartLearningProps> = ({ onStart }) => {
+const StartLearning: React.FC = () => {
   return (
     <div className="start-learning">
-      <h1>Ready to Start Learning?</h1>
-      <p>Click the button below to begin your learning journey.</p>
-      <button className="btn btn-primary" onClick={onStart}>
-        Start Learning
-      </button>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Card title="Start Learning">
+            <Button type="primary">Begin Course</Button>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

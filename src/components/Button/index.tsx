@@ -1,14 +1,29 @@
 import React from 'react';
+import { Button as AntButton } from '../antd';
+import type { ButtonCmpProps } from '../antd';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string;
-}
-
-const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => {
+const Button: React.FC<ButtonCmpProps> = ({
+  children,
+  onClick,
+  className,
+  type = 'default',
+  htmlType = 'button',
+  loading = false,
+  disabled = false,
+  ...props
+}) => {
   return (
-    <button className={className} {...props}>
+    <AntButton
+      onClick={onClick}
+      className={className}
+      type={type}
+      htmlType={htmlType}
+      loading={loading}
+      disabled={disabled}
+      {...props}
+    >
       {children}
-    </button>
+    </AntButton>
   );
 };
 

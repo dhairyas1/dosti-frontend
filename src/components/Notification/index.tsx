@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Space, notification } from '../antd';
+import { Button, Space, notification } from 'antd';
 import { useDispatch } from 'react-redux';
 import { closeNotification } from '../../pages/site/site.slice';
 import { useAppSelector } from '../../hooks/useRedux';

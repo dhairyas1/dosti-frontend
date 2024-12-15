@@ -1,33 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ICourse } from '../../../../../types/course.type';
-import './CourseItem.scss';
+import { Card, Divider } from 'antd';
+import './styles.scss';
 
-interface CourseItemProps {
-  course: ICourse;
+interface Props {
+  title: string;
+  description: string;
 }
 
-const CourseItem: React.FC<CourseItemProps> = ({ course }) => {
-  const { id, name, thumbnail, price, access } = course;
-
+const CourseItem: React.FC<Props> = ({ title, description }) => {
   return (
-    <div className='course-item'>
-      <div className='course-item__thumbnail'>
-        <img src={thumbnail} alt={name} />
-      </div>
-      <div className='course-item__content'>
-        <h3 className='course-item__title'>
-          <Link to={`/admin/courses/${id}`}>{name}</Link>
-        </h3>
-        <hr className='course-item__divider' />
-        <div className='course-item__meta'>
-          <span className='course-item__price'>${price}</span>
-          <span className={`course-item__access course-item__access--${access.toLowerCase()}`}>
-            {access}
-          </span>
-        </div>
-      </div>
-    </div>
+    <Card className="course-item">
+      <h3>{title}</h3>
+      <Divider />
+      <p>{description}</p>
+    </Card>
   );
 };
 
