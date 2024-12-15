@@ -1,6 +1,18 @@
-import { jwtDecode } from 'jwt-decode';
+import { ConfigProvider } from 'antd';
+import { theme } from './config/antd.config';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
 
-// Remove course type imports and related code
-const decodedToken = jwtDecode(token);
+// Import styles
+import 'antd/dist/reset.css';
+import './styles/global.scss';
 
-// ... rest of the code ... 
+function App() {
+  return (
+    <ConfigProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
+}
+
+export default App; 
