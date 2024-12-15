@@ -1,0 +1,128 @@
+.orders-list {
+  padding: 1rem;
+
+  .table-container {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    th {
+      background: #fafafa;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    tr:hover {
+      background: #fafafa;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__name {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    &__email {
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  .course-avatars {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .course-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &--more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 0.75rem;
+    }
+  }
+
+  .transaction-info {
+    a {
+      color: #1890ff;
+      text-decoration: none;
+
+      &:hover {
+        color: #40a9ff;
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+
+    .pagination-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid #d9d9d9;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+      color: rgba(0, 0, 0, 0.85);
+
+      &:hover:not(:disabled) {
+        color: #1890ff;
+        border-color: #1890ff;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        color: rgba(0, 0, 0, 0.25);
+        border-color: #d9d9d9;
+        background: #f5f5f5;
+      }
+
+      &.active {
+        color: #1890ff;
+        border-color: #1890ff;
+        font-weight: 500;
+      }
+    }
+  }
+}

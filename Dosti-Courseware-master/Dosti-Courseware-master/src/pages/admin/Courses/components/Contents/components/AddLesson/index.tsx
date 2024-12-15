@@ -1,11 +1,10 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Form, Input, Radio, Row, Space, notification, type RadioChangeEvent } from '../../../../../../../components/antd';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../store/store';
 import { ILesson } from '../../../../../../../types/lesson.type';
 import { useAddLessonMutation } from '../../../../course.service';
+import './AddLesson.scss';
 
 type ActivityType = 'media' | 'quiz' | 'assignment' | 'text' | 'survey' | 'scorm';
 type AccessType = 'DRAFT' | 'FREE' | 'PAID';
@@ -25,37 +24,21 @@ interface LessonFormData {
 }
 
 const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media', sectionId, onSuccess }) => {
-  const [open, setOpen] = useState(false);
-  const playerRef = useRef<ReactPlayer | null>(null);
-  const [contentLink, setContentLink] = useState('');
-  const [form] = Form.useForm<LessonFormData>();
+  const [showForm, setShowForm] = useState(false);
+  const playerRef = React.useRef<ReactPlayer | null>(null);
+  const [formData, setFormData] = useState<LessonFormData>({
+    name: '',
+    content: '',
+    access: 'FREE',
+    description: ''
+  });
   const [addLesson] = useAddLessonMutation();
-  const [access, setAccess] = useState<AccessType>('FREE');
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-    form.resetFields();
-    setContentLink('');
-  };
-
-  const onAccessChange = (e: RadioChangeEvent) => {
-    setAccess(e.target.value as AccessType);
-  };
-
-  const onContentLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContentLink(e.target.value);
-  };
-
-  const onFinish = async (formData: LessonFormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (!sectionId) {
-      notification.error({
-        message: 'Section Required',
-        description: 'Please select a section first'
-      });
+      alert('Please select a section first');
       return;
     }
 
@@ -63,7 +46,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media',
       const lessonData: Omit<ILesson, '_id'> = {
         name: formData.name,
         content: formData.content,
-        access: formData.access || 'PRIVATE',
+        access: formData.access,
         sectionId: sectionId,
         type: activityType,
         description: formData.description,
@@ -75,115 +58,108 @@ const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media',
 
       await addLesson(lessonData).unwrap();
       
-      notification.success({
-        message: 'Success',
-        description: `${activityType} lesson added successfully`,
-        duration: 2
+      alert(`${activityType} lesson added successfully`);
+      setShowForm(false);
+      setFormData({
+        name: '',
+        content: '',
+        access: 'FREE',
+        description: ''
       });
-
-      setOpen(false);
-      form.resetFields();
-      setContentLink('');
       onSuccess?.();
     } catch (error: any) {
-      notification.error({
-        message: 'Failed to add lesson',
-        description: error.data?.message || 'An error occurred while adding the lesson'
-      });
+      alert(error.data?.message || 'An error occurred while adding the lesson');
     }
   };
 
-  const getButtonText = () => {
-    const typeMap: Record<ActivityType, string> = {
-      media: 'Add Media',
-      quiz: 'Add Quiz',
-      assignment: 'Add Assignment',
-      text: 'Add Text',
-      survey: 'Add Survey',
-      scorm: 'Add SCORM'
-    };
-    return typeMap[activityType];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
-    <>
-      <Button type='primary' onClick={showDrawer} icon={<PlusOutlined />}>
-        {getButtonText()}
-      </Button>
-      <Drawer
-        title={`Add ${activityType.charAt(0).toUpperCase() + activityType.slice(1)}`}
-        width={812}
-        onClose={onClose}
-        open={open}
-        destroyOnClose
+    <div>
+      <button 
+        className="btn-primary"
+        onClick={() => setShowForm(true)}
       >
-        <Row>
-          <Col md={16}>
-            <Form<LessonFormData> 
-              form={form} 
-              layout='vertical' 
-              onFinish={onFinish}
-              initialValues={{
-                access: 'FREE' as AccessType
-              }}
-            >
-              <Form.Item
-                name='name'
-                label='Name'
-                rules={[{ required: true, message: 'Please enter a name' }]}
-              >
-                <Input placeholder={`Enter ${activityType} name`} />
-              </Form.Item>
+        Add {activityType.charAt(0).toUpperCase() + activityType.slice(1)}
+      </button>
+
+      {showForm && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Add {activityType.charAt(0).toUpperCase() + activityType.slice(1)}</h2>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
               {activityType === 'media' && (
-                <Form.Item
-                  name='content'
-                  label='Media URL'
-                  rules={[{ required: true, message: 'Please enter media URL' }]}
-                >
-                  <Input
-                    onChange={onContentLinkChange}
-                    placeholder='Enter media URL (YouTube, Vimeo, etc.)'
+                <div className="form-group">
+                  <label>Media URL:</label>
+                  <input
+                    type="text"
+                    name="content"
+                    value={formData.content}
+                    onChange={handleInputChange}
+                    required
                   />
-                </Form.Item>
+                </div>
               )}
 
               {activityType === 'text' && (
-                <Form.Item
-                  name='content'
-                  label='Content'
-                  rules={[{ required: true, message: 'Please enter content' }]}
-                >
-                  <Input.TextArea rows={4} placeholder='Enter text content' />
-                </Form.Item>
+                <div className="form-group">
+                  <label>Content:</label>
+                  <textarea
+                    name="content"
+                    value={formData.content}
+                    onChange={handleInputChange}
+                    required
+                    rows={4}
+                  />
+                </div>
               )}
 
-              <Form.Item
-                name='access'
-                label='Access'
-                rules={[{ required: true, message: 'Please select access level' }]}
-              >
-                <Radio.Group onChange={onAccessChange} value={access}>
-                  <Space direction='vertical'>
-                    <Radio value='DRAFT'>Draft</Radio>
-                    <Radio value='FREE'>Free</Radio>
-                    <Radio value='PAID'>Paid</Radio>
-                  </Space>
-                </Radio.Group>
-              </Form.Item>
+              <div className="form-group">
+                <label>Access:</label>
+                <select 
+                  name="access"
+                  value={formData.access}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="DRAFT">Draft</option>
+                  <option value="FREE">Free</option>
+                  <option value="PAID">Paid</option>
+                </select>
+              </div>
 
-              <Form.Item
-                name='description'
-                label='Description'
-                rules={[{ required: true, message: 'Please enter a description' }]}
-              >
-                <Input.TextArea rows={4} placeholder='Enter description' />
-              </Form.Item>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  rows={4}
+                />
+              </div>
 
-              {activityType === 'media' && contentLink && (
+              {activityType === 'media' && formData.content && (
                 <ReactPlayer
                   ref={playerRef}
-                  url={contentLink}
+                  url={formData.content}
                   width={0}
                   height={0}
                   config={{
@@ -199,19 +175,23 @@ const AddLesson: React.FC<AddLessonProps> = ({ courseId, activityType = 'media',
                 />
               )}
 
-              <Form.Item>
-                <Space>
-                  <Button type='primary' htmlType='submit'>
-                    Add {activityType.charAt(0).toUpperCase() + activityType.slice(1)}
-                  </Button>
-                  <Button onClick={onClose}>Cancel</Button>
-                </Space>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
-      </Drawer>
-    </>
+              <div className="form-actions">
+                <button type="submit" className="btn-primary">
+                  Add {activityType.charAt(0).toUpperCase() + activityType.slice(1)}
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-secondary"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,3 @@
-import { Input, Select } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../../store/store';
@@ -6,8 +5,6 @@ import { ICategory } from '../../../../../../../../types/category.type';
 import { useGetCategoriesQuery } from '../../../../../../Categories/category.service';
 import { handleFormData } from '../../../../../course.slice';
 import './CourseTitle.scss';
-
-const { TextArea } = Input;
 
 const CourseTitle = () => {
   const { data: categoriesData, isFetching } = useGetCategoriesQuery({ _q: '' });
@@ -28,22 +25,16 @@ const CourseTitle = () => {
     }));
   };
 
-  const handleCategoryChange = (value: string, option: any) => {
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
     dispatch(handleFormData({
       field: 'categoryId',
       value: {
-        _id: value,
-        name: option.label
+        _id: e.target.value,
+        name: selectedOption.text
       }
     }));
   };
-
-  const optionsCateList = categoriesData?.categories.map((cate: ICategory) => {
-    return {
-      value: cate._id,
-      label: cate.name
-    };
-  });
 
   return (
     <div className='course-title'>
@@ -55,10 +46,12 @@ const CourseTitle = () => {
           friendly by including strong keywords in it.
         </p>
         <div className='course-title__input-group'>
-          <label htmlFor='' className='course-title__input-label'>
+          <label htmlFor='title' className='course-title__input-label'>
             Your title
           </label>
-          <Input
+          <input
+            id="title"
+            type="text"
             value={formData.name}
             onChange={handleNameChange}
             className='course-title__input-input'
@@ -67,25 +60,34 @@ const CourseTitle = () => {
         </div>
 
         <div className='course-title__input-group mt-8'>
-          <label htmlFor='' className='course-title__input-label me-4 block'>
+          <label htmlFor='category' className='course-title__input-label me-4 block'>
             Course Categories
           </label>
-          <Select
-            value={formData.categoryId?.name}
-            style={{ width: '100%' }}
+          <select
+            id="category"
+            value={formData.categoryId?._id}
             onChange={handleCategoryChange}
-            options={optionsCateList}
-          />
+            className='course-title__input-input'
+          >
+            <option value="">Select a category</option>
+            {categoriesData?.categories.map((cate: ICategory) => (
+              <option key={cate._id} value={cate._id}>
+                {cate.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className='course-title__input-group mt-8'>
-          <label htmlFor='' className='course-title__input-label me-4 block'>
+          <label htmlFor='subtitle' className='course-title__input-label me-4 block'>
             Course sub title
           </label>
-          <TextArea 
+          <textarea 
+            id="subtitle"
             rows={4} 
             value={formData.subTitle} 
             onChange={handleSubTitleChange}
+            className='course-title__input-input'
           />
         </div>
       </div>
