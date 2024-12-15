@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Form, Input, Spin, notification } from 'antd';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';

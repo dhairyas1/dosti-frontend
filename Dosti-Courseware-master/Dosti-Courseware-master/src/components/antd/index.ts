@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import type { TableProps } from 'antd';
 import {
   Layout,
   Menu,
@@ -29,14 +30,14 @@ import {
   InputNumber,
   Statistic,
   Pagination,
-  type RadioChangeEvent,
-  type TablePaginationConfig
+  type RadioChangeEvent
 } from 'antd';
-import { Line as LineProgress } from '@ant-design/charts';
-import type { FilterValue, ColumnsType } from 'antd/es/table/interface';
+import { Line as LineProgress } from '@ant-design/plots';
 import type { LineConfig } from '@ant-design/plots';
 
-export type { TablePaginationConfig, FilterValue, ColumnsType, RadioChangeEvent };
+export type TablePaginationConfig = TableProps<any>['pagination'];
+export type { FilterValue, ColumnsType } from 'antd/es/table/interface';
+export type { RadioChangeEvent };
 export type LineProgressProps = LineConfig & {
   style?: React.CSSProperties;
 };

@@ -47,7 +47,7 @@ const courseSlice = createSlice({
     setCourse(state, action: PayloadAction<ICourse | null>) {
       state.course = action.payload;
       if (action.payload) {
-        state.courseId = action.payload.id;
+        state.courseId = action.payload._id;
       }
     },
     setCourses(state, action: PayloadAction<ICourse[]>) {
@@ -62,7 +62,7 @@ const courseSlice = createSlice({
     setSelectedSection(state, action: PayloadAction<ISection | null>) {
       state.selectedSection = action.payload;
       if (action.payload) {
-        state.sectionId = action.payload.id;
+        state.sectionId = action.payload._id;
       }
     },
     handleFormData(state, action: PayloadAction<{ field: string; value: any }>) {

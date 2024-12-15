@@ -12,12 +12,25 @@ const CourseTitle = () => {
   const { data: categoriesData, isFetching } = useGetCategoriesQuery({ _q: '' });
   const formData = useSelector((state: RootState) => state.course.formData);
   const dispatch = useDispatch();
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(handleFormData({ ...formData, name: e.target.value }));
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(handleFormData({
+      field: 'name',
+      value: e.target.value
+    }));
   };
 
-  const subTitleChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(handleFormData({ ...formData, subTitle: e.target.value }));
+  const handleSubTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(handleFormData({
+      field: 'subTitle',
+      value: e.target.value
+    }));
+  };
+
+  const handleCategoryChange = (categoryId: string) => {
+    dispatch(handleFormData({
+      field: 'categoryId',
+      value: categoryId
+    }));
   };
 
   const optionsCateList = categoriesData?.categories.map((cate: ICategory) => {
@@ -26,22 +39,6 @@ const CourseTitle = () => {
       label: cate.name
     };
   });
-  const cateChangeHandler = (
-    value: string,
-    options: { label: string; value: string } | { label: string; value: string }[]
-  ) => {
-    console.log(`selected ${value}`, options);
-
-    dispatch(
-      handleFormData({
-        ...formData,
-        categoryId: {
-          _id: value,
-          name: (options as { label: string; value: string }).label
-        }
-      })
-    );
-  };
 
   return (
     <div className='course-title'>
@@ -58,7 +55,7 @@ const CourseTitle = () => {
           </label>
           <Input
             value={formData.name}
-            onChange={handleInputChange}
+            onChange={handleNameChange}
             className='course-title__input-input'
             placeholder='Your course title. Ex: Learning C Programm'
           />
@@ -72,7 +69,7 @@ const CourseTitle = () => {
             // defaultValue='frontend'
             value={formData.categoryId.name}
             style={{ width: '100%' }}
-            onChange={cateChangeHandler}
+            onChange={handleCategoryChange}
             options={optionsCateList}
           />
         </div>
@@ -82,7 +79,7 @@ const CourseTitle = () => {
           <label htmlFor='' className='course-title__input-label me-4 block'>
             Course sub title
           </label>
-          <TextArea rows={4} value={formData.subTitle} onChange={subTitleChangeHandler} />
+          <TextArea rows={4} value={formData.subTitle} onChange={handleSubTitleChange} />
         </div>
       </div>
     </div>

@@ -22,7 +22,10 @@ interface DataCourseType {
 }
 
 const Courses: React.FC = () => {
-  const { data: allCoursesData } = useGetAllCoursesQuery({ page: 1, limit: 100 });
+  const { data: allCoursesData } = useGetAllCoursesQuery({ 
+    _page: 1, 
+    _limit: 100 
+  });
   const [courseData, setCourseData] = useState<DataCourseType[]>([]);
 
   useEffect(() => {

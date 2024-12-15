@@ -6,16 +6,18 @@ import './CoursePrice.scss';
 const CoursePrice = () => {
   const formData = useSelector((state: RootState) => state.course.formData);
   const dispatch = useDispatch();
-  const handleInputChange = (value: number | null) => {
-    if (value) {
-      dispatch(handleFormData({ ...formData, finalPrice: value }));
-    }
+  const handleFinalPriceChange = (value: number) => {
+    dispatch(handleFormData({
+      field: 'finalPrice',
+      value: value
+    }));
   };
 
-  const handlePriceChange = (value: number | null) => {
-    if (value) {
-      dispatch(handleFormData({ ...formData, price: value }));
-    }
+  const handlePriceChange = (value: number) => {
+    dispatch(handleFormData({
+      field: 'price',
+      value: value
+    }));
   };
 
   return (
@@ -49,7 +51,7 @@ const CoursePrice = () => {
             min={1}
             max={200}
             value={formData.finalPrice}
-            onChange={handleInputChange}
+            onChange={handleFinalPriceChange}
             className='course-price__input-input'
             placeholder='Price'
           />

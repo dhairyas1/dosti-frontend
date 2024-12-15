@@ -8,8 +8,11 @@ import './CourseAccess.scss';
 const CourseAccess = () => {
   const formData = useSelector((state: RootState) => state.course.formData);
   const dispatch = useDispatch();
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(handleFormData({ ...formData, access: AccessStatus.FREE }));
+  const handleAccessChange = (value: AccessStatus) => {
+    dispatch(handleFormData({
+      field: 'access',
+      value: value
+    }));
   };
 
   return (
@@ -27,7 +30,7 @@ const CourseAccess = () => {
           </label>
           <Input
             value={formData.access}
-            onChange={handleInputChange}
+            onChange={handleAccessChange}
             className='course-access__input-input'
             placeholder='Your Access'
           />
