@@ -1,0 +1,263 @@
+// Layout
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #fff;
+  padding: 0 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: #f0f2f5;
+}
+
+.sider {
+  background: #fff;
+  padding: 1rem;
+}
+
+// Form
+.form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-item {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+// Input
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: #40a9ff;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
+  }
+}
+
+.textarea {
+  @extend .input;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.input-password {
+  @extend .input;
+}
+
+// Select
+.select {
+  @extend .input;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+// Button
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+  line-height: 1.5;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &-primary {
+    background: #1890ff;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #40a9ff;
+    }
+  }
+
+  &-secondary {
+    background: white;
+    border-color: #d9d9d9;
+    color: rgba(0,0,0,0.85);
+
+    &:hover:not(:disabled) {
+      color: #40a9ff;
+      border-color: #40a9ff;
+    }
+  }
+
+  &-link {
+    background: transparent;
+    color: #1890ff;
+    padding: 0;
+
+    &:hover:not(:disabled) {
+      color: #40a9ff;
+    }
+  }
+}
+
+// Table
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  th {
+    background: #fafafa;
+    font-weight: 500;
+    color: rgba(0,0,0,0.85);
+  }
+
+  tr:hover {
+    background: #fafafa;
+  }
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    @extend .btn;
+    @extend .btn-secondary;
+  }
+}
+
+// Space
+.space {
+  display: flex;
+  gap: 0.5rem;
+}
+
+// Grid
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+
+.col {
+  padding: 0.5rem;
+  box-sizing: border-box;
+
+  @for $i from 1 through 24 {
+    &-#{$i} {
+      width: percentage($i / 24);
+    }
+  }
+}
+
+// Divider
+.divider {
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  margin: 1rem 0;
+}
+
+// Tag
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  color: rgba(0,0,0,0.85);
+
+  &-magenta {
+    color: #c41d7f;
+    background: #fff0f6;
+    border-color: #ffadd2;
+  }
+}
+
+// Modal
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px -4px rgba(0,0,0,0.12);
+  width: 90%;
+  max-width: 520px;
+
+  &-header {
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 500;
+  }
+
+  &-content {
+    padding: 1rem;
+  }
+
+  &-footer {
+    padding: 1rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+} 
