@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { TableProps } from 'antd';
+import type { FilterValue, ColumnsType } from 'antd/es/table/interface';
+import type { RadioChangeEvent } from 'antd/es/radio/interface';
 import {
   Layout,
   Menu,
@@ -29,12 +31,10 @@ import {
   Tooltip,
   InputNumber,
   Statistic,
-  Pagination,
-  type RadioChangeEvent
+  Pagination
 } from 'antd';
 import { Line as LineProgress } from '@ant-design/plots';
 import type { LineConfig } from '@ant-design/plots';
-import type { FilterValue, ColumnsType } from 'antd/es/table/interface';
 
 export type TablePaginationConfig = TableProps<any>['pagination'];
 export type { FilterValue, ColumnsType, RadioChangeEvent };

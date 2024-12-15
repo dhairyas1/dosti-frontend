@@ -3,7 +3,7 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './OrdersList.scss';
 import { DownloadOutlined } from '@ant-design/icons';
-import { IOrder } from '../../../../../types/order.type';
+import { IOrder, IOrderItem } from '../../../../../types/order.type';
 
 interface DataOrderType {
   key: React.Key;
@@ -82,10 +82,10 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
 
   const ordersData: DataOrderType[] =
     props.ordersList.map((order) => {
-      const { transaction, user, _id, totalPrice, items } = order;
+      const { transaction, user, id, totalPrice, items } = order;
 
       const orderTemplateItem = {
-        key: order._id,
+        key: order.id,
         name: (
           <a href='#' onClick={showUserDetail}>
             <div className='user-info'>
@@ -102,11 +102,11 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
-              <Avatar key={course._id} src={course.thumbnail} />
+              <Avatar key={course.id} src={course.thumbnail} />
             ))}
             <Tooltip title="Courses" placement="top">
               {(items || []).map((course) => (
-                <Avatar key={course._id} src={course.thumbnail} />
+                <Avatar key={course.id} src={course.thumbnail} />
               ))}
             </Tooltip>
           </Avatar.Group>

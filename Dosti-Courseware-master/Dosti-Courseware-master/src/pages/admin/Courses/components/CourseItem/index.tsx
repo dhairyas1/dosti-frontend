@@ -1,6 +1,13 @@
-import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, notification } from '../../../../../../components/antd';
-
+import { Link } from 'react-router-dom';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, notification } from '../../../../../components/antd';
+import { BACKEND_URL } from '../../../../../constant/backend-domain';
+import { ICourse } from '../../../../../types/course.type';
+import { useDeleteCourseMutation } from '../../course.service';
+import AuthorInfo from './AuthorInfo';
+import CourseSettings from './CourseSettings';
+import './CourseItem.scss';
+
 const { Meta } = Card;
 
 type CourseItemProps = {
@@ -9,14 +16,6 @@ type CourseItemProps = {
   lg?: number;
   course: ICourse;
 };
-
-import { Link } from 'react-router-dom';
-import { BACKEND_URL } from '../../../../../constant/backend-domain';
-import { ICourse } from '../../../../../types/course.type';
-import { useDeleteCourseMutation } from '../../course.service';
-import AuthorInfo from './AuthorInfo';
-import './CourseItem.scss';
-import CourseSettings from './CourseSettings';
 
 const CourseItem = (props: CourseItemProps) => {
   console.log('props.course: ', props.course);
