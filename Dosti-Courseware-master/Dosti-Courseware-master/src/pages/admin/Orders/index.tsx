@@ -1,4 +1,4 @@
-import { Input, Select, Skeleton, Space } from '../../../components/antd';
+import { Input, Select, Skeleton, Space } from '../../../../components/antd';
 import { useState } from 'react';
 import './Orders.scss';
 import OrdersList from './components/OrdersList';
@@ -77,9 +77,6 @@ const Orders = () => {
       <div className='orders__wrap'>
         <div className='orders__filter'>
           <Space className='sub-header__wrap'>
-            {/* <Button onClick={() => setOpen(true)} type='primary' icon={<PlusOutlined />}>
-              New account
-            </Button> */}
             <Search placeholder='input search text' onSearch={onSearchHandler} style={{ width: 200 }} />
 
             <Select

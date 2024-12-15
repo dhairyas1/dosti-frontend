@@ -1,28 +1,26 @@
 import React from 'react';
-import { Progress, type ProgressProps } from '../antd';
+import './LineProgress.scss';
 
-interface LineProgressProps {
+export interface LineProgressProps {
   percent: number;
-  size?: number;
-  color?: string;
+  size: number;
+  color: string;
   className?: string;
 }
 
-const LineProgress: React.FC<LineProgressProps> = ({ 
-  percent, 
-  size = 4, 
-  color = '#1890ff',
-  className 
-}) => {
-  const progressProps: ProgressProps = {
-    percent,
-    strokeWidth: size,
-    strokeColor: color,
-    type: 'line',
-    className
-  };
-
-  return <Progress {...progressProps} />;
+const LineProgress: React.FC<LineProgressProps> = ({ percent, size, color, className }) => {
+  return (
+    <div className={`line-progress ${className || ''}`}>
+      <div
+        className="line-progress__bar"
+        style={{
+          width: `${percent}%`,
+          height: size,
+          backgroundColor: color
+        }}
+      />
+    </div>
+  );
 };
 
 export default LineProgress; 

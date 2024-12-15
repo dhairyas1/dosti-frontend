@@ -44,13 +44,11 @@ const columns: TableProps<DataOrderType>['columns'] = [
     ],
     filterMode: 'tree',
     filterSearch: true,
-    // onFilter: (value: string | number | boolean, record) => record.name.startsWith(value.toString()),
     width: '30%'
   },
   {
     title: 'Register',
     dataIndex: 'register'
-    // sorter: (a, b) => Number(a.author) - Number(b.author)
   },
   {
     title: 'Courses',
@@ -104,16 +102,13 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
-              <Avatar src={course.thumbnail} />
+              <Avatar key={course._id} src={course.thumbnail} />
             ))}
-            {/* <Avatar src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=2' />
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
-            <Tooltip title='Courses' placement='top'>
+            <Tooltip title="Courses" placement="top">
               {(items || []).map((course) => (
-                <Avatar src={course.thumbnail} />
+                <Avatar key={course._id} src={course.thumbnail} />
               ))}
             </Tooltip>
-            {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
           </Avatar.Group>
         ),
         transaction: (
@@ -151,7 +146,6 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   return (
     <Fragment>
       <div className='users-list'>
-        {/* {isFetching && <Skeleton />} */}
         <Table columns={columns} dataSource={ordersData} onChange={onChange} pagination={tableParams.pagination} />
       </div>
     </Fragment>

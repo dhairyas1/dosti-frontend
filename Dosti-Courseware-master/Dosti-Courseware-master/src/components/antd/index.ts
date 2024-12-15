@@ -28,15 +28,18 @@ import {
   Tooltip,
   InputNumber,
   Statistic,
-  Pagination
+  Pagination,
+  type RadioChangeEvent,
+  type TablePaginationConfig
 } from 'antd';
-import type { RadioChangeEvent } from 'antd';
 import { Line as LineProgress } from '@ant-design/charts';
+import type { FilterValue, ColumnsType } from 'antd/es/table/interface';
+import type { LineConfig } from '@ant-design/plots';
 
-export type { TablePaginationConfig, FilterValue } from 'antd/lib/table/interface';
-export type { ColumnsType } from 'antd/es/table';
-export type { LineProgressProps } from '@ant-design/charts';
-export type { RadioChangeEvent };
+export type { TablePaginationConfig, FilterValue, ColumnsType, RadioChangeEvent };
+export type LineProgressProps = LineConfig & {
+  style?: React.CSSProperties;
+};
 
 const { Header, Content, Footer, Sider } = Layout;
 const { TextArea, Password } = Input;

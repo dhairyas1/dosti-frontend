@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICourse, ISection } from '../../../types/course.type';
 
+export interface IParams {
+  _page?: number;
+  _limit?: number;
+  [key: string]: any;
+}
+
 interface CourseState {
   course: ICourse | null;
   courses: ICourse[];
@@ -8,11 +14,8 @@ interface CourseState {
   error: string | null;
   selectedSection: ISection | null;
   formData: {
-    title?: string;
-    slug?: string;
-    price?: number;
-    access?: string;
-    thumb?: string;
+    field: string;
+    value: any;
     [key: string]: any;
   };
   courseId?: string;
@@ -27,7 +30,10 @@ const initialState: CourseState = {
   isLoading: false,
   error: null,
   selectedSection: null,
-  formData: {},
+  formData: {
+    field: '',
+    value: null
+  },
   courseId: undefined,
   sectionId: undefined,
   chartName: undefined,
@@ -41,9 +47,7 @@ const courseSlice = createSlice({
     setCourse(state, action: PayloadAction<ICourse | null>) {
       state.course = action.payload;
       if (action.payload) {
-        state.courseId = action.payload._id;
-      } else {
-        state.courseId = undefined;
+        state.courseId = action.payload.id;
       }
     },
     setCourses(state, action: PayloadAction<ICourse[]>) {
@@ -58,14 +62,14 @@ const courseSlice = createSlice({
     setSelectedSection(state, action: PayloadAction<ISection | null>) {
       state.selectedSection = action.payload;
       if (action.payload) {
-        state.sectionId = action.payload._id;
-      } else {
-        state.sectionId = undefined;
+        state.sectionId = action.payload.id;
       }
     },
     handleFormData(state, action: PayloadAction<{ field: string; value: any }>) {
       state.formData = {
         ...state.formData,
+        field: action.payload.field,
+        value: action.payload.value,
         [action.payload.field]: action.payload.value,
       };
     },
@@ -79,12 +83,6 @@ const courseSlice = createSlice({
     },
     showChart(state, action: PayloadAction<string>) {
       state.chartName = action.payload;
-    },
-    setCourseId(state, action: PayloadAction<string | undefined>) {
-      state.courseId = action.payload;
-    },
-    setSectionId(state, action: PayloadAction<string | undefined>) {
-      state.sectionId = action.payload;
     }
   },
 });
@@ -98,9 +96,7 @@ export const {
   handleFormData,
   startAddSection,
   selectPreviousDays,
-  showChart,
-  setCourseId,
-  setSectionId
+  showChart
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

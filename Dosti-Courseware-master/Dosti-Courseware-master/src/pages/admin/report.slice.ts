@@ -1,31 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ReportState {
-  isLoading: boolean;
-  error: string | null;
+  chartName: string | undefined;
+  previousDaysSelected: number | undefined;
 }
 
 const initialState: ReportState = {
-  isLoading: false,
-  error: null,
+  chartName: undefined,
+  previousDaysSelected: undefined
 };
 
 const reportSlice = createSlice({
   name: 'report',
   initialState,
   reducers: {
-    setLoading(state, action: PayloadAction<boolean>) {
-      state.isLoading = action.payload;
+    selectPreviousDays(state, action: PayloadAction<number>) {
+      state.previousDaysSelected = action.payload;
     },
-    setError(state, action: PayloadAction<string | null>) {
-      state.error = action.payload;
-    },
-  },
+    showChart(state, action: PayloadAction<string>) {
+      state.chartName = action.payload;
+    }
+  }
 });
 
-export const {
-  setLoading,
-  setError,
-} = reportSlice.actions;
-
+export const { selectPreviousDays, showChart } = reportSlice.actions;
 export default reportSlice.reducer;

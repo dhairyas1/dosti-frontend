@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { UserRole } from '../types/user.type';
 import { ICourseEnrolledByUser } from '../types/course.type';
 

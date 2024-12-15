@@ -13,10 +13,12 @@ import {
   Dropdown as AntDropdown,
   Form as AntForm,
   Input as AntInput,
+  InputNumber as AntInputNumber,
   Layout as AntLayout,
   List as AntList,
   Menu as AntMenu,
   Modal as AntModal,
+  Pagination as AntPagination,
   Popover as AntPopover,
   Progress as AntProgress,
   Radio as AntRadio,
@@ -26,10 +28,12 @@ import {
   Skeleton as AntSkeleton,
   Space as AntSpace,
   Spin as AntSpin,
+  Statistic as AntStatistic,
   Table as AntTable,
   Tabs as AntTabs,
   Tag as AntTag,
   Timeline as AntTimeline,
+  Tooltip as AntTooltip,
   Typography as AntTypography,
   notification as antNotification,
   theme as antTheme,
@@ -44,14 +48,17 @@ import {
   type DescriptionsProps,
   type DrawerProps,
   type DropdownProps,
+  type FilterValue,
   type FormInstance,
   type FormProps,
+  type InputNumberProps,
   type InputProps,
   type LayoutProps,
   type ListProps,
   type MenuProps,
   type ModalProps,
   type NotificationArgsProps,
+  type PaginationProps,
   type PopoverProps,
   type ProgressProps,
   type RadioProps,
@@ -61,10 +68,13 @@ import {
   type SkeletonProps,
   type SpaceProps,
   type SpinProps,
+  type StatisticProps,
+  type TablePaginationConfig,
   type TableProps,
   type TabsProps,
   type TagProps,
   type TimelineProps,
+  type TooltipProps,
   type TypographyProps
 } from 'antd';
 
@@ -91,10 +101,12 @@ export const Drawer = AntDrawer;
 export const Dropdown = AntDropdown;
 export const Form = AntForm;
 export const Input = AntInput;
+export const InputNumber = AntInputNumber;
 export const Layout = AntLayout;
 export const List = AntList;
 export const Menu = AntMenu;
 export const Modal = AntModal;
+export const Pagination = AntPagination;
 export const Popover = AntPopover;
 export const Progress = AntProgress;
 export const Radio = AntRadio;
@@ -103,10 +115,12 @@ export const Select = AntSelect;
 export const Skeleton = AntSkeleton;
 export const Space = AntSpace;
 export const Spin = AntSpin;
+export const Statistic = AntStatistic;
 export const Table = AntTable;
 export const Tabs = AntTabs;
 export const Tag = AntTag;
 export const Timeline = AntTimeline;
+export const Tooltip = AntTooltip;
 export const Typography = AntTypography;
 export const notification = antNotification;
 export const theme = antTheme;
@@ -141,14 +155,17 @@ export type {
   DescriptionsProps,
   DrawerProps,
   DropdownProps,
+  FilterValue,
   FormInstance,
   FormProps,
+  InputNumberProps,
   InputProps,
   LayoutProps,
   ListProps,
   MenuProps,
   ModalProps,
   NotificationArgsProps,
+  PaginationProps,
   PopoverProps,
   ProgressProps,
   RadioProps,
@@ -158,9 +175,12 @@ export type {
   SkeletonProps,
   SpaceProps,
   SpinProps,
+  StatisticProps,
+  TablePaginationConfig,
   TableProps,
   TabsProps,
   TagProps,
   TimelineProps,
+  TooltipProps,
   TypographyProps
 }; 

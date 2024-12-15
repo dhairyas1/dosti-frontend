@@ -95,9 +95,9 @@ const PathPlayer = () => {
                   <div className='path-player__progress'>
                     <LineProgress
                       percent={currProgress}
-                      size={5}
+                      size={4}
                       color="#1890ff"
-                      style={{ width: '100%' }}
+                      className="path-player__progress-bar"
                     />
                   </div>
                 )}
