@@ -1,22 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { ClockCircleOutlined, BookOutlined } from '@ant-design/icons';
-import { openAuthModal } from '../../../pages/auth.slice';
-import { RootState } from '../../../store/store';
 import pythonLogo from '../../../assets/images/python.png';
 import './CourseHome.scss';
 
 const CourseHome: React.FC = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-
-  const handleCourseClick = () => {
-    if (!isAuth) {
-      dispatch(openAuthModal());
-    }
-  };
-
   return (
     <div className="container">
       <h1 className="course-title">Available Courses</h1>
@@ -32,15 +20,9 @@ const CourseHome: React.FC = () => {
               <BookOutlined /> 12 Lessons
               <ClockCircleOutlined /> 24 Hours
             </div>
-            {isAuth ? (
-              <Link to="/course_1" className="course-button">
-                Start Learning
-              </Link>
-            ) : (
-              <button onClick={handleCourseClick} className="course-button">
-                Login to Start
-              </button>
-            )}
+            <Link to="/course_1" className="course-button">
+              Start Learning
+            </Link>
           </div>
         </div>
       </div>

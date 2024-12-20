@@ -2,71 +2,131 @@
 @import "../../../assets/sass/mixins";
 
 .header {
-  background-color: #132f4c;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color:#78aafa;
+    box-shadow: 0 0 10px rgba($brand-primary-color, 0.3);
+    &__wrapper {
+        width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: $header-height;
+        padding: 1rem 0rem;
+        font-size: 1.7rem;
+        font-family: $text-font;
+        color: $light-text-color;
+    }
+
+    
+    &__logo-img {
+       height: 60px;
+       width: auto;
+    }
+    
+
+    &__nav {
+        display: flex;
+        align-items: center;
+    }
+
+    &__nav-list {
+        @include list-reset;
+        display: flex;
+        margin-right: 2rem;
+    }
+
+    &__nav-item {
+       
+        color: inherit;
+        margin: 0rem 1.2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    &__nav-link {
+       
+        color: $light-text-color;
+        text-decoration: none;
+
+        &-icon {
+           font-size: 2.2rem;
+        }
+    }
+
+    @media (max-width: map-get($breakpoint, tablet-lg)) {
+        &__nav {
+            &-list {
+                display: none;
+            }
+        }
+
+
+        &__wrapper{
+            width: 100%;
+        }
+    }
+
+    @media (max-width: map-get($breakpoint, tablet)) {
+        // Adjust styles for tablet
+
+        // width: 768px;
+
+        &__wrapper {
+            width: 100%;
+            padding: 0rem 2rem;
+        }
+
+        &__nav {
+            &-list {
+                display: none;
+            }
+        }
+    }
+
+    @media (max-width: map-get($breakpoint, mobile-sm)) {
+        // Adjust styles for mobile
+            width: 375px;
+            &__wrapper {
+                width: 375px;
+            }
+
+            &__search {
+                display: none;
+            }
+
+            &__logo {
+                margin-left: 2rem;
+            }
+
+            &__wrapper {
+                justify-content: unset;
+            }
+
+
+            &__nav {
+                &-item {
+
+                    &--user {
+                        margin-left: 3rem;
+                    }
+                }
+
+            }
+
+            &__auth {
+                display: none;
+            }
+      }
+
 }
 
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-
-  .logo {
-    height: 40px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  button {
-    color: #f5f6fa;
-    font-size: 1rem;
-
-    &:hover {
-      color: #78aafa;
-    }
-  }
-}
-
-.right-section {
-  button {
-    background-color: #78aafa;
-    border: none;
-
-    &:hover {
-      background-color: #5b8fd9 !important;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .header-content {
-    padding: 0 1rem;
-  }
-
-  .left-section {
-    gap: 1rem;
-
-    .logo {
-      height: 32px;
-    }
-  }
+// Add margin to main content to account for fixed header
+body {
+    padding-top: $header-height;
 }
 
