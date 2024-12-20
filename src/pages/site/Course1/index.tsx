@@ -176,10 +176,12 @@ const Course1 = () => {
               />
             </div>
             <iframe
-              src="https://explain-ai-chatbot-2ce90e.zapier.app/codey-ai"
+              src="https://codey-ai.zapier.app"
               width="100%"
               height="100%"
               frameBorder="0"
+              allow="same-origin"
+              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
             />
           </div>
         )}
