@@ -12,11 +12,15 @@
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
     "@firebase/auth": "^1.8.1",
+    "@reduxjs/toolkit": "^2.0.1",
     "@types/antd": "^0.12.32",
     "antd": "^5.22.3",
     "firebase": "^11.0.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.0.4",
+    "redux": "^5.0.0",
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
