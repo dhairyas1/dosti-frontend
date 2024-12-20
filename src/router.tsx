@@ -8,12 +8,14 @@ import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
 import CourseDetail from './pages/site/CourseDetail';
-import CourseHome from './pages/site/CourseHome';
 import HomePage from './pages/site/Home';
 import OrderCompleted from './pages/site/OrderCompleted';
 import Profile from './pages/site/Profile';
 import StartLearning from './pages/site/StartLearning';
 import ViewCart from './pages/site/ViewCart';
+
+// Import CourseHome with index
+import CourseHome from './pages/site/CourseHome/index';
 
 // Create a wrapper component to handle auth state
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

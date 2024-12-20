@@ -3,12 +3,18 @@ import './CourseHome.scss';
 
 const CourseHome = () => {
   return (
-    <div>
-      <h1>Course Home</h1>
-      <div>
-        <Link to="/courses/1">Course 1</Link>
-        <Link to="/courses/2">Course 2</Link>
-        <Link to="/courses/3">Course 3</Link>
+    <div className="container">
+      <h1 className="course-title">Available Courses</h1>
+      <div className="courses-grid">
+        <div className="course-card">
+          <Link to="/courses/1" className="course-button">Course 1</Link>
+        </div>
+        <div className="course-card">
+          <Link to="/courses/2" className="course-button">Course 2</Link>
+        </div>
+        <div className="course-card">
+          <Link to="/courses/3" className="course-button">Course 3</Link>
+        </div>
       </div>
     </div>
   );
