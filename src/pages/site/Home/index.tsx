@@ -15,7 +15,7 @@ const HomePage = () => {
 
   const startNowHandler = () => {
     if (isAuth) {
-      navigate('/start');
+      navigate('/course-home');
     } else {
       dispatch(openAuthModal());
     }
