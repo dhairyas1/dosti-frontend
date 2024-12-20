@@ -21,6 +21,10 @@ const HomePage = () => {
     }
   };
 
+  const handleDostiClick = () => {
+    window.open('https://www.projectdosti.net/', '_blank');
+  };
+
   return (
     <div>
       <div className='banner mt-sm' style={{ 
@@ -42,9 +46,13 @@ const HomePage = () => {
                   <Button onClick={startNowHandler} className='banner__cta-start-now btn btn-md btn-secondary'>
                     Read. Watch. Learn. Improve.
                   </Button>
-                  <Link to='/course-home'>
-                    <Button className='btn btn-md btn-tertiary'>Explore</Button>
-                  </Link>
+                  {isAuth ? (
+                    <Button onClick={handleDostiClick} className='btn btn-md btn-tertiary'>Dosti</Button>
+                  ) : (
+                    <Link to='/course-home'>
+                      <Button className='btn btn-md btn-tertiary'>Explore</Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
