@@ -130,13 +130,18 @@
   color: #0A1929;
   border: none;
   border-radius: 8px;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
   z-index: 100;
+  font-size: 1.2rem;
+
+  .anticon {
+    font-size: 1.5rem;
+  }
 
   &:hover {
     background-color: #5b8fd9;
