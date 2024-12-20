@@ -1,244 +1,181 @@
 .course-container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
+  display: flex;
+  min-height: calc(100vh - 64px);
   background-color: #0A1929;
   color: #f5f6fa;
-  position: relative;
+}
 
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.sidebar {
+  width: 300px;
+  background-color: #132f4c;
+  padding: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+  h2 {
+    color: #78aafa;
+    margin-bottom: 1.5rem;
     font-size: 1.5rem;
-    color: #f5f6fa;
+  }
+}
+
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
-  .course-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background-color: #132f4c;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-
-    h1 {
-      color: #78aafa;
-      margin-bottom: 0.5rem;
-      font-size: 2rem;
-      font-weight: 600;
-    }
-
-    p {
-      color: #f5f6fa;
-      opacity: 0.8;
-    }
-  }
-
-  .course-content {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
-    background-color: #132f4c;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    position: relative;
-  }
-
-  .lessons-sidebar {
-    background-color: #1a3b5d;
-    padding: 1rem;
-    border-right: 1px solid #1e4976;
-    display: flex;
-    flex-direction: column;
-
-    .lesson-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      flex: 1;
-    }
-
-    .lesson-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      color: #f5f6fa;
-
-      &:hover {
-        background-color: #1e4976;
-      }
-
-      &.active {
-        background-color: #78aafa;
-        color: #0A1929;
-      }
-
-      .lesson-title {
-        flex: 1;
-        margin-right: 1rem;
-      }
-
-      .lesson-checkbox {
-        cursor: pointer;
-        accent-color: #78aafa;
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-
-  .video-container {
-    padding: 2rem;
-
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      margin-bottom: 2rem;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-
-      iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 8px;
-      }
-    }
-
-    .lesson-info {
-      h2 {
-        color: #78aafa;
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-      }
-
-      ul {
-        list-style-type: disc;
-        padding-left: 2rem;
-        color: #f5f6fa;
-        opacity: 0.8;
-
-        li {
-          margin-bottom: 0.75rem;
-          line-height: 1.5;
-        }
-      }
-    }
-  }
-
-  .chatbot-toggle {
-    margin-top: 1rem;
-    width: 100%;
+  &.active {
     background-color: #78aafa;
-    border: none;
-    height: 40px;
-    border-radius: 4px;
     color: #0A1929;
+  }
+
+  .lesson-number {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: 500;
-
-    &:hover {
-      background-color: #5b8fd9;
-    }
-
-    .anticon {
-      font-size: 1.2rem;
-    }
+    margin-right: 1rem;
+    font-size: 0.9rem;
   }
 
-  .chatbot-container {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 400px;
-    height: 600px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 1000;
+  .lesson-title {
+    flex: 1;
   }
 
-  .chatbot-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: #78aafa;
-    color: #0A1929;
+  .completed-badge {
+    color: #4ccf6d;
+    margin-left: 0.5rem;
+  }
+}
 
-    h3 {
-      margin: 0;
-      color: #0A1929;
-      font-weight: 500;
-    }
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  position: relative;
+}
 
-    .close-button {
-      color: #0A1929;
-      border: none;
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.video-container {
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  position: relative;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
 
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.lesson-info {
+  margin-bottom: 2rem;
+
+  h2 {
+    color: #78aafa;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #78aafa;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+
+      &:before {
+        content: "•";
+        color: #78aafa;
+        position: absolute;
+        left: 0;
       }
     }
+  }
+}
+
+.chatbot-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #78aafa;
+  color: #0A1929;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 100;
+
+  &:hover {
+    background-color: #5b8fd9;
+  }
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  background-color: #132f4c;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+  overflow: hidden;
+
+  iframe {
+    border-radius: 8px;
   }
 }
 
 @media (max-width: 768px) {
   .course-container {
-    padding: 1rem;
-
-    .course-content {
-      grid-template-columns: 1fr;
-    }
-
-    .lessons-sidebar {
-      border-right: none;
-      border-bottom: 1px solid #1e4976;
-    }
-
-    .chatbot-container {
-      width: 100%;
-      height: 100%;
-      bottom: 0;
-      right: 0;
-      border-radius: 0;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .course-content {
     flex-direction: column;
   }
 
-  .lessons-sidebar {
+  .sidebar {
     width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .chatbot-container {
+    width: calc(100% - 2rem);
+    height: 50vh;
+    bottom: 5rem;
   }
 } 

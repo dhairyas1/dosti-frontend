@@ -17,59 +17,41 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-    margin-top: 80px;
+    min-height: calc(100vh - 64px);
+    background-color: #0A1929;
   }
   
   .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
   }
   
   .course-card {
-    background: white;
-    border-radius: 15px;
+    background-color: #132f4c;
+    border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
     
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-
-      .course-overlay {
-        opacity: 1;
-      }
+      transform: translateY(-4px);
     }
   }
   
   .course-thumbnail {
+    position: relative;
     width: 100%;
     height: 200px;
     overflow: hidden;
-    position: relative;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
-    }
+    background-color: #1a3b5d;
     
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover img {
-      transform: scale(1.05);
+      object-fit: contain;
+      padding: 2rem;
+      background-color: #fff;
     }
   }
   
@@ -77,40 +59,29 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-
-    span {
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 500;
-      padding: 1rem;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-      backdrop-filter: blur(4px);
-    }
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
   }
   
   .course-info {
     padding: 1.5rem;
 
     h2 {
-      color: var(--primary-color);
+      color: #78aafa;
       font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-      font-weight: 600;
+      margin-bottom: 1rem;
     }
 
     p {
-      color: #666;
+      color: #f5f6fa;
+      opacity: 0.8;
       margin-bottom: 1rem;
       line-height: 1.5;
     }
@@ -120,53 +91,44 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #888;
-    font-size: 0.9rem;
+    color: #f5f6fa;
+    opacity: 0.6;
     margin-bottom: 1.5rem;
-
-    span {
-      &:nth-child(2) {
-        color: #ccc;
-      }
-    }
+    font-size: 0.9rem;
   }
   
   .course-button {
     display: inline-block;
-    width: 100%;
-    padding: 1rem;
-    background: var(--button-color);
-    color: white;
+    background-color: #78aafa;
+    color: #0A1929;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
     text-decoration: none;
-    border: none;
-    border-radius: 8px;
-    text-align: center;
     font-weight: 500;
-    font-size: 1rem;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
     
     &:hover {
-      background: var(--button-hover-color);
-      transform: translateY(-2px);
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(76, 207, 109, 0.3);
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-      transform: none;
+      background-color: #5b8fd9;
     }
   }
   
   .course-title {
-    color: var(--primary-color);
+    color: #78aafa;
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
-    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .courses-grid {
+      grid-template-columns: 1fr;
+    }
   }

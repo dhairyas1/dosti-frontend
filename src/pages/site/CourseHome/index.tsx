@@ -1,44 +1,28 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { openAuthModal } from '../../../pages/auth.slice';
+import { ClockCircleOutlined, BookOutlined } from '@ant-design/icons';
+import pythonLogo from '../../../assets/images/python.png';
 import './CourseHome.scss';
 
-const CourseHome = () => {
-  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-  const dispatch = useDispatch();
-
-  const handleStartLearning = (e: React.MouseEvent) => {
-    e.preventDefault();
-    dispatch(openAuthModal());
-  };
-
+const CourseHome: React.FC = () => {
   return (
     <div className="container">
       <h1 className="course-title">Available Courses</h1>
       <div className="courses-grid">
         <div className="course-card">
           <div className="course-thumbnail">
-            <img src="https://i.imgur.com/7kwnZXz.jpg" alt="Python Course" />
-            {!isAuth && (
-              <div className="course-overlay">
-                <span>Sign in to access this course</span>
-              </div>
-            )}
+            <img src={pythonLogo} alt="Python Course" />
           </div>
           <div className="course-info">
-            <h2>Python for Beginners</h2>
-            <p>Learn Python programming from scratch with hands-on projects and real-world examples.</p>
+            <h2>Python Programming</h2>
+            <p>Learn Python programming from scratch. Master the fundamentals and build real-world applications.</p>
             <div className="course-meta">
-              <span>5 Lessons</span>
-              <span>•</span>
-              <span>2.5 Hours</span>
+              <BookOutlined /> 12 Lessons
+              <ClockCircleOutlined /> 24 Hours
             </div>
-            {isAuth ? (
-              <Link to="/course_1" className="course-button">Start Learning</Link>
-            ) : (
-              <button onClick={handleStartLearning} className="course-button">Sign in to Start Learning</button>
-            )}
+            <Link to="/course_1" className="course-button">
+              Start Learning
+            </Link>
           </div>
         </div>
       </div>

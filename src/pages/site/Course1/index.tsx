@@ -1,186 +1,88 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import React, { useState } from 'react';
 import { RobotOutlined, CloseOutlined } from '@ant-design/icons';
 import './Course1.scss';
 
-interface Lesson {
-  title: string;
-  completed: boolean;
-  videoUrl: string;
-  objectives: string[];
-}
-
-const Course1 = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+const Course1: React.FC = () => {
+  const [selectedLesson, setSelectedLesson] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const defaultVideos = {
-    intro: 'https://www.youtube.com/embed/rfscVS0vtbw',
-    variables: 'https://www.youtube.com/embed/Z1Yd7upQsXY',
-    controlFlow: 'https://www.youtube.com/embed/Zp5MuPOtsSY',
-    functions: 'https://www.youtube.com/embed/9Os0o3wzS_I',
-    oop: 'https://www.youtube.com/embed/JeznW_7DlB0'
-  };
-
-  const lessons: Lesson[] = [
+  const lessons = [
     {
       title: 'Introduction to Python',
       completed: false,
-      videoUrl: defaultVideos.intro,
-      objectives: [
-        'What is Python?',
-        'Setting up your development environment',
-        'Writing your first Python program',
-        'Basic syntax and structure'
-      ]
-    },
-    {
-      title: 'Variables and Data Types',
-      completed: false,
-      videoUrl: defaultVideos.variables,
-      objectives: [
-        'Understanding variables',
-        'Numbers, strings, and booleans',
-        'Lists and dictionaries',
-        'Type conversion'
-      ]
+      videoUrl: 'https://www.youtube.com/embed/kqtD5dpn9C8',
+      objectives: ['Learn Python basics', 'Understand variables and data types', 'Write your first Python program']
     },
     {
       title: 'Control Flow',
       completed: false,
-      videoUrl: defaultVideos.controlFlow,
-      objectives: [
-        'If statements',
-        'Loops (for and while)',
-        'Break and continue',
-        'Exception handling'
-      ]
+      videoUrl: 'https://www.youtube.com/embed/HZARImviDxg',
+      objectives: ['Master if-else statements', 'Work with loops', 'Handle basic error cases']
     },
     {
-      title: 'Functions',
+      title: 'Functions and Modules',
       completed: false,
-      videoUrl: defaultVideos.functions,
-      objectives: [
-        'Defining functions',
-        'Parameters and return values',
-        'Lambda functions',
-        'Built-in functions'
-      ]
-    },
-    {
-      title: 'Object-Oriented Programming',
-      completed: false,
-      videoUrl: defaultVideos.oop,
-      objectives: [
-        'Classes and objects',
-        'Inheritance',
-        'Encapsulation',
-        'Polymorphism'
-      ]
+      videoUrl: 'https://www.youtube.com/embed/u-OmVr_fT4s',
+      objectives: ['Create and use functions', 'Work with parameters', 'Import and use modules']
     }
   ];
-
-  const [selectedLesson, setSelectedLesson] = useState<Lesson>(lessons[0]);
 
   const toggleChatbot = () => {
     setShowChatbot(!showChatbot);
   };
 
-  if (isLoading) {
-    return (
-      <div className="course-container">
-        <div className="loading">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="course-container">
-      <div className="course-header">
-        <h1>Python for Beginners</h1>
-        <p>Learn Python programming from scratch</p>
+      <div className="sidebar">
+        <h2>Course Content</h2>
+        <div className="lessons-list">
+          {lessons.map((lesson, index) => (
+            <div
+              key={index}
+              className={`lesson-item ${selectedLesson === index ? 'active' : ''}`}
+              onClick={() => setSelectedLesson(index)}
+            >
+              <span className="lesson-number">{index + 1}</span>
+              <span className="lesson-title">{lesson.title}</span>
+              {lesson.completed && <span className="completed-badge">✓</span>}
+            </div>
+          ))}
+        </div>
       </div>
-
-      <div className="course-content">
-        <aside className="lessons-sidebar">
-          <ul className="lesson-list">
-            {lessons.map((lesson, index) => (
-              <li
-                key={index}
-                className={`lesson-item ${lesson.title === selectedLesson.title ? 'active' : ''}`}
-                onClick={() => setSelectedLesson(lesson)}
-              >
-                <span className="lesson-title">{lesson.title}</span>
-                <input
-                  type="checkbox"
-                  className="lesson-checkbox"
-                  checked={lesson.completed}
-                  onChange={() => {
-                    lesson.completed = !lesson.completed;
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
-          <Button 
-            type="primary" 
-            icon={<RobotOutlined />}
-            className="chatbot-toggle"
-            onClick={toggleChatbot}
-          >
-            Ask Codey AI
-          </Button>
-        </aside>
-
-        <main className="video-container">
-          <div className="video-wrapper">
-            <iframe
-              width="100%"
-              height="100%"
-              src={selectedLesson.videoUrl}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="lesson-info">
-            <h2>{selectedLesson.title}</h2>
+      <div className="main-content">
+        <div className="video-container">
+          <iframe
+            src={lessons[selectedLesson].videoUrl}
+            title={lessons[selectedLesson].title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+        <div className="lesson-info">
+          <h2>{lessons[selectedLesson].title}</h2>
+          <div className="objectives">
+            <h3>Learning Objectives:</h3>
             <ul>
-              {selectedLesson.objectives.map((objective, index) => (
+              {lessons[selectedLesson].objectives.map((objective, index) => (
                 <li key={index}>{objective}</li>
               ))}
             </ul>
           </div>
-        </main>
-
+        </div>
+        <button className="chatbot-toggle" onClick={toggleChatbot}>
+          {showChatbot ? <CloseOutlined /> : <RobotOutlined />}
+          {showChatbot ? 'Close Codey AI' : 'Open Codey AI'}
+        </button>
         {showChatbot && (
           <div className="chatbot-container">
-            <div className="chatbot-header">
-              <h3>Codey AI Assistant</h3>
-              <Button 
-                type="text" 
-                icon={<CloseOutlined />} 
-                onClick={toggleChatbot}
-                className="close-button"
-              />
-            </div>
             <iframe
-              src="https://interfaces.zapier.com/embed/chatbot/cm2jarbb1002fdiy2y209rgpu"
-              height="100%"
-              width="100%"
-              allow="clipboard-write *"
+              src='https://interfaces.zapier.com/embed/chatbot/cm2jarbb1002fdiy2y209rgpu'
+              height='600px'
+              width='400px'
+              allow='clipboard-write *'
               style={{ border: 'none' }}
-            />
+            ></iframe>
           </div>
         )}
       </div>
