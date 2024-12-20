@@ -8,11 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          
       - name: Install Dependencies
         run: npm install
+        
       - name: Build
         run: npm run build
         env:
@@ -22,11 +25,14 @@ jobs:
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-      - name: GitHub Action for Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
+
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools@12.0.0
+        
+      - name: Deploy to Firebase
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOSTI_CODEY }}' > /tmp/service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/service-account.json
+          firebase deploy --only hosting --project dosti-codey --non-interactive
         env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOSTI_CODEY }}
-          PROJECT_ID: dosti-codey
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
