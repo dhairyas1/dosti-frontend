@@ -34,21 +34,21 @@ const routes = [
       },
       {
         path: 'course-home',
-        element: <CourseHome />
+        element: <ProtectedRoute><CourseHome /></ProtectedRoute>
       },
       {
         path: 'course_1',
-        element: <Course1 />,
+        element: <ProtectedRoute><Course1 /></ProtectedRoute>,
         errorElement: <ErrorPage />
       },
       {
         path: 'course_2.html',
-        element: <CourseDetail />,
+        element: <ProtectedRoute><CourseDetail /></ProtectedRoute>,
         errorElement: <ErrorPage />
       },
       {
         path: 'course_3.html',
-        element: <CourseDetail />,
+        element: <ProtectedRoute><CourseDetail /></ProtectedRoute>,
         errorElement: <ErrorPage />
       },
       {

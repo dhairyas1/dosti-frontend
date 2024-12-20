@@ -1,7 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { openAuthModal } from '../../../pages/auth.slice';
 import './CourseHome.scss';
 
 const CourseHome = () => {
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const dispatch = useDispatch();
+
+  const handleStartLearning = (e: React.MouseEvent) => {
+    if (!isAuth) {
+      e.preventDefault();
+      dispatch(openAuthModal());
+    }
+  };
+
   return (
     <div className="container">
       <h1 className="course-title">Available Courses</h1>
@@ -18,7 +31,11 @@ const CourseHome = () => {
               <span>•</span>
               <span>2.5 Hours</span>
             </div>
-            <Link to="/course_1" className="course-button">Start Learning</Link>
+            {isAuth ? (
+              <Link to="/course_1" className="course-button">Start Learning</Link>
+            ) : (
+              <button onClick={handleStartLearning} className="course-button">Sign in to Start Learning</button>
+            )}
           </div>
         </div>
       </div>
