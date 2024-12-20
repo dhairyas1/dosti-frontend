@@ -1,10 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ClockCircleOutlined, BookOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { openAuthModal } from '../../../pages/auth.slice';
+import { RootState } from '../../../store/store';
 import pythonLogo from '../../../assets/images/python.png';
 import './CourseHome.scss';
 
 const CourseHome: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  const handleCourseClick = () => {
+    if (isAuth) {
+      navigate('/course_1');
+    } else {
+      dispatch(openAuthModal());
+    }
+  };
+
   return (
     <div className="container">
       <h1 className="course-title">Available Courses</h1>
@@ -15,14 +29,15 @@ const CourseHome: React.FC = () => {
           </div>
           <div className="course-info">
             <h2>Python Programming</h2>
-            <p>Learn Python programming from scratch. Master the fundamentals and build real-world applications.</p>
+            <p>Learn Python programming from scratch with hands-on projects and real-world examples.</p>
             <div className="course-meta">
-              <BookOutlined /> 12 Lessons
-              <ClockCircleOutlined /> 24 Hours
+              <span>12 Lessons</span>
+              <span>•</span>
+              <span>6 Hours</span>
             </div>
-            <Link to="/course_1" className="course-button">
-              Start Learning
-            </Link>
+            <button onClick={handleCourseClick} className="course-button">
+              {isAuth ? 'Start Learning' : 'Login to Access'}
+            </button>
           </div>
         </div>
       </div>
