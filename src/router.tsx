@@ -22,85 +22,62 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuth ? <>{children}</> : <Navigate to="/" />;
 };
 
-const routes = [
+const router = createBrowserRouter([
   {
     path: '/',
     element: <RootSiteLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element: <HomePage />
+        path: '/',
+        element: <HomePage />,
       },
       {
-        path: 'course-home',
-        element: <CourseHome />
+        path: '/course-home',
+        element: <ProtectedRoute><CourseHome /></ProtectedRoute>,
       },
       {
-        path: 'course_1',
+        path: '/course_1',
         element: <ProtectedRoute><Course1 /></ProtectedRoute>,
-        errorElement: <ErrorPage />
       },
       {
-        path: 'course_2.html',
-        element: <ProtectedRoute><CourseDetail /></ProtectedRoute>,
-        errorElement: <ErrorPage />
+        path: '/about-us',
+        element: <About />,
       },
       {
-        path: 'course_3.html',
-        element: <ProtectedRoute><CourseDetail /></ProtectedRoute>,
-        errorElement: <ErrorPage />
+        path: '/contact',
+        element: <Contact />,
       },
       {
-        path: 'start',
-        element: <ProtectedRoute><StartLearning /></ProtectedRoute>
+        path: '/profile',
+        element: <ProtectedRoute><Profile /></ProtectedRoute>,
       },
       {
-        path: 'profile',
-        element: <ProtectedRoute><Profile /></ProtectedRoute>
+        path: '/author-profile',
+        element: <AuthorProfile />,
       },
       {
-        path: 'view-cart',
-        element: <ViewCart />
+        path: '/course-detail',
+        element: <CourseDetail />,
       },
       {
-        path: 'checkout',
-        element: <ProtectedRoute><Checkout /></ProtectedRoute>
+        path: '/view-cart',
+        element: <ViewCart />,
       },
       {
-        path: 'order-completed',
-        element: <ProtectedRoute><OrderCompleted /></ProtectedRoute>
+        path: '/checkout',
+        element: <Checkout />,
       },
       {
-        path: 'contact',
-        element: <Contact />
+        path: '/order-completed',
+        element: <OrderCompleted />,
       },
       {
-        path: 'about-us',
-        element: <About />
+        path: '/start-learning',
+        element: <StartLearning />,
       },
-      {
-        path: 'user',
-        children: [
-          {
-            path: ':userId',
-            element: <AuthorProfile />
-          }
-        ]
-      }
-    ]
-  }
-];
-
-export const router = createBrowserRouter(routes, {
-  future: {
-    v7_startTransition: true,
-    v7_relativeSplatPath: true,
-    v7_fetcherPersist: true,
-    v7_normalizeFormMethod: true,
-    v7_partialHydration: true,
-    v7_skipActionErrorRevalidation: true
-  }
-});
+    ],
+  },
+]);
 
 export default router;

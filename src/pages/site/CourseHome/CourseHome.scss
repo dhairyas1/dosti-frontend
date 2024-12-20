@@ -14,7 +14,7 @@
   }
   
   .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
     min-height: calc(100vh - 64px);
@@ -23,8 +23,9 @@
   
   .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: minmax(300px, 600px);
     gap: 2rem;
+    justify-content: center;
   }
   
   .course-card {
