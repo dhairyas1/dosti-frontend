@@ -4,7 +4,7 @@
 .footer {
     background-color: #78aafa;
     color: $light-text-color;
-    padding: 4rem 0;
+    padding: 2rem 0;
 
     &__row {
         max-width: 1200px;
@@ -19,35 +19,35 @@
     }
 
     &__logo {
-        width: 300px;
-        margin-bottom: 1rem;
+        width: 200px;
+        margin-bottom: 0.5rem;
     }
 
     &__text {
         font-weight: 500;
-        font-size: 1.4rem;
-        line-height: 1.6;
-        margin: 2rem 0;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        margin: 1rem 0;
         max-width: 600px;
         text-align: left;
     }
 
     &__title {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
         color: $light-text-color;
     }
 
     .featured-list {
         @include list-reset;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
 
         &__item {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
 
             &-link {
                 color: $light-text-color;
-                font-size: 1.4rem;
+                font-size: 1.2rem;
                 line-height: 1.4;
                 text-decoration: none;
                 transition: opacity 0.3s;
@@ -62,7 +62,7 @@
     .social-list {
         display: flex;
         gap: 1rem;
-        margin-top: 2rem;
+        margin-top: 1rem;
     }
 
     @media (max-width: map-get($breakpoint, tablet)) {
@@ -73,11 +73,11 @@
 
         &__text {
             text-align: center;
-            margin: 2rem auto;
+            margin: 1rem auto;
         }
 
         &__col {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .social-list {
