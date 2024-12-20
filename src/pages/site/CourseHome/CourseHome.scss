@@ -1,0 +1,80 @@
+:root {
+    --primary-color: #78aafa;
+    --secondary-color: #58b7d7;
+    --success-color: #449ec9;
+    --text-color: #f5f6fa;
+    --background-color: #0b1929;
+    --dark-color: #003050;
+    --complete-color: #4ccf6d;
+    --button-color: #4ccf6d;
+    --button-hover-color: #2c773f;
+    --accent-color: #e74c3c;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 80px;
+  }
+  
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+  
+  .course-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .course-image {
+    width: 150%;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .course-content {
+    padding: 1.5rem;
+  }
+  
+  .course-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .course-description {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .course-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #888;
+    font-size: 0.9rem;
+  }
+  
+  .course-button {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: var(--button-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: var(--button-hover-color);
+    }
+  }

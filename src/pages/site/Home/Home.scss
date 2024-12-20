@@ -1,0 +1,184 @@
+@import "../../../assets/sass/base";
+
+.banner {
+    position: relative;
+    top: $header-height;
+    width: 100vw;
+    font-size: 1.6rem;
+    padding-top: 30%;
+    display: flex;
+    color: $light-text-color;
+    min-height: 500px;
+    
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0.8;
+    }
+
+    &__wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1200px;
+        margin: 0 auto;
+        z-index: 1;
+        
+        &-left {
+            width: 50%;
+        }
+
+        &-right {
+            width: 50%;
+        }
+    }
+
+    &__title {
+        @include h-style("h1");
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        color: $light-text-color !important;
+    }
+
+    &__content {
+        line-height: 1.4;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        color: $light-text-color !important;
+    }
+
+    @media (max-width: map-get($breakpoint, tablet)) {
+        padding-top: 50%;
+        &__wrapper {
+            width: 768px;
+            padding: 0rem 2rem;
+        }
+
+        &__title {
+            @include h-style("h2");
+        }
+
+        &__content {
+            margin: 1rem 0rem;
+        }
+    }
+    
+    @media (max-width: map-get($breakpoint, mobile)) {
+        &__wrapper {
+            width: 375px;
+            padding: 0rem 2rem;
+            &-left {
+                width: 100%;
+            }
+        }
+
+        &__title {
+            font-size: 2.4rem;
+        }
+
+        &__content {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.our-benefits {
+    margin-top: $header-height;
+    font-size: 1.6rem;
+    text-align: center;
+    background-color: $brand-primary-color;
+    color: $light-text-color !important;
+    
+    &__title {
+        @include h-style('h2');
+        margin-bottom: 2.5rem;
+        color: $light-text-color !important;
+    }
+
+    &__sub-tittle {
+        margin-bottom: 8rem;
+        color: $light-text-color !important;
+    }
+
+    &__list {
+        display: flex;
+        margin-left: -3rem;
+    }
+
+    &__item {
+        margin-left: 3rem;
+        color: $light-text-color !important;
+
+        &-icon {
+            font-size: 3rem;
+            color: $light-text-color !important;
+        }
+
+        &-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    &__item-img {
+        margin-bottom: 2.5rem;
+        color: $light-text-color !important;
+        
+        .anticon {
+            color: $light-text-color !important;
+            font-size: 3rem;
+        }
+    }
+
+    &__item-title {
+        @include heading-style;
+        margin-bottom: 2.5rem;
+        color: $light-text-color !important;
+    }
+
+    &__item-content {
+        line-height: 1.55;
+        opacity: 0.8;
+        font-weight: 400;
+        color: $light-text-color !important;
+    }
+
+    @media (max-width: map-get($breakpoint, tablet)) {
+        &__list {
+            padding: 0rem 2rem;
+        }
+
+        &__item-photo {
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    @media (max-width: map-get($breakpoint, mobile)) {
+        &__list {
+            flex-direction: column;
+        }
+
+        &__item {
+            margin-bottom: 2rem;
+        }
+
+        &__item-photo {
+            width: 100px;
+            height: 100px;
+        }
+    }
+}

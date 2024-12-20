@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="course-container">
+        <header>
+            <h1>Available Courses</h1>
+        </header>
+        <main>
+            <div class="course-grid">
+                <div class="course-card">
+                    <img src="images/python.jpg" alt="Python Course">
+                    <div class="course-info">
+                        <h2>Python Programming</h2>
+                        <p>Learn Python from scratch with hands-on projects</p>
+                        <a href="#/courses/python" class="course-link">Start Learning</a>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <img src="images/javascript.jpg" alt="JavaScript Course">
+                    <div class="course-info">
+                        <h2>JavaScript Essentials</h2>
+                        <p>Master modern JavaScript development</p>
+                        <a href="#/courses/javascript" class="course-link">Start Learning</a>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <img src="images/react.jpg" alt="React Course">
+                    <div class="course-info">
+                        <h2>React Development</h2>
+                        <p>Build modern web applications with React</p>
+                        <a href="#/courses/react" class="course-link">Start Learning</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Handle client-side routing
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/courses/')) {
+                const courseId = hash.replace('#/courses/', '');
+                window.location.href = `/courses/${courseId}`;
+            }
+        });
+    </script>
+</body>
+</html>
