@@ -2,10 +2,12 @@
 @import "../../../assets/sass/base";
 
 .footer {
-    background-color: #78aafa;
+    background-color: #78aafa !important;
     color: $light-text-color;
     padding: 2rem 0;
     margin-bottom: 0;
+    position: relative;
+    z-index: 1;
 
     &__row {
         max-width: 1200px;
@@ -13,10 +15,12 @@
         display: flex;
         justify-content: space-between;
         padding: 0 2rem;
+        background-color: #78aafa;
     }
 
     &__col {
         padding: 0 1rem;
+        background-color: #78aafa;
     }
 
     &__logo {
