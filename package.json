@@ -17,6 +17,7 @@
     "antd": "^5.22.3",
     "axios": "^1.6.2",
     "firebase": "^11.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.3",
