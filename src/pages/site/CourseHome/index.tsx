@@ -9,10 +9,8 @@ const CourseHome = () => {
   const dispatch = useDispatch();
 
   const handleStartLearning = (e: React.MouseEvent) => {
-    if (!isAuth) {
-      e.preventDefault();
-      dispatch(openAuthModal());
-    }
+    e.preventDefault();
+    dispatch(openAuthModal());
   };
 
   return (
@@ -22,6 +20,11 @@ const CourseHome = () => {
         <div className="course-card">
           <div className="course-thumbnail">
             <img src="https://i.imgur.com/7kwnZXz.jpg" alt="Python Course" />
+            {!isAuth && (
+              <div className="course-overlay">
+                <span>Sign in to access this course</span>
+              </div>
+            )}
           </div>
           <div className="course-info">
             <h2>Python for Beginners</h2>

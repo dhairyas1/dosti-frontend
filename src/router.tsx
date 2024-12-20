@@ -34,7 +34,7 @@ const routes = [
       },
       {
         path: 'course-home',
-        element: <ProtectedRoute><CourseHome /></ProtectedRoute>
+        element: <CourseHome />
       },
       {
         path: 'course_1',
