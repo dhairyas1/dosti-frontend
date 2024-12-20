@@ -176,6 +176,10 @@ const Header = () => {
     setOpenMobileMenu(true);
   };
 
+  const handleCoursesClick = () => {
+    navigate('/course-home');
+  };
+
   return (
     <>
       {notificationContextHolder}
@@ -193,9 +197,9 @@ const Header = () => {
                 </Link>
               </li>
               <li className='header__nav-item'>
-                <Link to='/course-home' className='header__nav-link'>
+                <button onClick={handleCoursesClick} className='header__nav-link'>
                   Courses
-                </Link>
+                </button>
               </li>
               <li className='header__nav-item'>
                 <Link to='/contact' className='header__nav-link'>
