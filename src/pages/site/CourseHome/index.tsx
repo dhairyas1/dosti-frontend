@@ -7,12 +7,12 @@ const CourseHome = () => {
       <div className="courses-grid">
         <div className="course-card">
           <img 
-            src="/src/assets/images/logo.png" 
+            src="../../../assets/images/logo.png" 
             alt="Course 1" 
             className="course-image" 
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = '/assets/images/default-course.jpg';
+              target.src = '../../../assets/images/default-course.jpg';
             }}
           />
           <div className="course-content">
@@ -28,12 +28,12 @@ const CourseHome = () => {
 
         <div className="course-card">
           <img 
-            src="/src/assets/images/logo.png" 
+            src="../../../assets/images/logo.png" 
             alt="Course 2" 
             className="course-image"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = '/assets/images/default-course.jpg';
+              target.src = '../../../assets/images/default-course.jpg';
             }}
           />
           <div className="course-content">
@@ -49,12 +49,12 @@ const CourseHome = () => {
 
         <div className="course-card">
           <img 
-            src="/src/assets/images/logo.png" 
+            src="../../../assets/images/logo.png" 
             alt="Course 3" 
             className="course-image"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = '/assets/images/default-course.jpg';
+              target.src = '../../../assets/images/default-course.jpg';
             }}
           />
           <div className="course-content">
