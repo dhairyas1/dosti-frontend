@@ -1,12 +1,11 @@
 import { InstagramOutlined, LinkedinFilled } from '@ant-design/icons';
-import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import './Footer.scss';
 import Logo from '../../../assets/images/logo.png';
 
 const Footer = () => {
   return (
-    <footer className='footer spacing-h-md'>
+    <footer className='footer'>
       <div className='footer__row'>
         <div className='footer__col' style={{ flex: '0 0 33.33%' }}>
           <div className='footer__logo'>
