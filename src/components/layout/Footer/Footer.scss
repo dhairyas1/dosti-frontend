@@ -2,26 +2,20 @@
 @import "../../../assets/sass/base";
 
 .footer {
-    background-color: #78aafa !important;
-    color: $light-text-color;
-    padding: 2rem 0;
-    margin-bottom: 0;
-    position: relative;
-    z-index: 1;
+    background-color: #78aafa;
     width: 100%;
+    padding: 2rem 0;
 
     &__row {
-        max-width: 100%;
+        max-width: 1200px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
-        padding: 0 4rem;
-        background-color: #78aafa;
+        padding: 0 2rem;
     }
 
     &__col {
         padding: 0 1rem;
-        background-color: #78aafa;
     }
 
     &__logo {
@@ -30,8 +24,7 @@
     }
 
     &__text {
-        font-weight: 500;
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         line-height: 1.6;
         margin: 1rem 0;
         max-width: 600px;
@@ -43,6 +36,7 @@
         font-size: 1.8rem;
         margin-bottom: 1rem;
         color: #0A1929;
+        font-weight: 600;
     }
 
     .featured-list {
@@ -50,11 +44,11 @@
         margin-top: 0.5rem;
 
         &__item {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
 
             &-link {
                 color: #0A1929;
-                font-size: 1.4rem;
+                font-size: 1.6rem;
                 line-height: 1.5;
                 text-decoration: none;
                 transition: opacity 0.3s;
@@ -76,7 +70,6 @@
         &__row {
             flex-direction: column;
             text-align: center;
-            padding: 0 2rem;
         }
 
         &__text {

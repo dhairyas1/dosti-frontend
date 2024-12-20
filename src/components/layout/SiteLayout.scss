@@ -1,21 +1,22 @@
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
-    background-color: #0A1929;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: #78aafa;
 }
 
 #main {
-   background-color: #0A1929;
    flex: 1;
    display: flex;
    flex-direction: column;
+   background-color: #78aafa;
 }
 
 .site-layout {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #78aafa;
 }
