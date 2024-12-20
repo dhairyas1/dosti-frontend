@@ -69,14 +69,24 @@
   
   .course-button {
     display: inline-block;
+    width: 100%;
     padding: 0.8rem 1.5rem;
     background: var(--button-color);
     color: white;
     text-decoration: none;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
     transition: background 0.3s ease;
     
     &:hover {
       background: var(--button-hover-color);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(76, 207, 109, 0.3);
     }
   }

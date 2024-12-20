@@ -15,7 +15,14 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
-    }
+    },
+    fs: {
+      strict: false
+    },
+    middlewareMode: 'html'
+  },
+  preview: {
+    port: 8000
   },
   css: {
     preprocessorOptions: {
