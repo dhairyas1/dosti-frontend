@@ -22,7 +22,7 @@ const CourseHome = () => {
               <span>Num of Lessons</span>
             </div>
             <br />
-            <Link to="/course/1" className="course-button">Start Learning</Link>
+            <Link to="/courses/1" className="course-button">Start Learning</Link>
           </div>
         </div>
 
@@ -43,7 +43,7 @@ const CourseHome = () => {
               <span>Num of Lessons</span>
             </div>
             <br />
-            <Link to="/course/2" className="course-button">Start Learning</Link>
+            <Link to="/courses/2" className="course-button">Start Learning</Link>
           </div>
         </div>
 
@@ -64,7 +64,7 @@ const CourseHome = () => {
               <span>Num of Lessons</span>
             </div>
             <br />
-            <Link to="/course/3" className="course-button">Start Learning</Link>
+            <Link to="/courses/3" className="course-button">Start Learning</Link>
           </div>
         </div>
       </div>
