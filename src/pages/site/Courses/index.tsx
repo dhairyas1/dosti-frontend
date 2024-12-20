@@ -11,39 +11,18 @@ import { useGetAuthorsQuery, useGetCategoriesQuery, useGetCoursesQuery } from '.
 import CourseList from '../components/CourseList';
 import './Courses.scss';
 
-import { SearchParamsStateType, useSearchParamsState } from 'react-use-search-params-state';
-
 const { Search } = Input;
 const Courses = () => {
-  const filtersDefaults: SearchParamsStateType = {
-    minPrice: { type: 'number', default: null },
-    maxPrice: { type: 'number', default: null },
-    // isSold: { type: 'boolean', default: true },
-    // types: { type: 'string', default: null, multiple: true },
-    _author: { type: 'string', default: [], multiple: true },
-    _level: { type: 'string', default: [], multiple: true },
-    _price: { type: 'string', default: [], multiple: true },
-    _topic: { type: 'string', default: [], multiple: true },
-    _page: { type: 'number', default: 1 }
-  };
-
-  const sortDefaults: SearchParamsStateType = {
-    sort: { type: 'string', default: 'relavant' }
-    // orderDir: { type: 'string', default: 'asc' }
-  };
-
-  const [filterParams, setFilterParams] = useSearchParamsState(filtersDefaults);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortParams, setSortParams] = useSearchParamsState(sortDefaults);
 
   const userId = useSelector((state: RootState) => state.auth.userId);
 
   const searchValue = searchParams.get('_q') || '';
   const sortValue = searchParams.get('_sort') || 'relavant';
-  const authorValue = searchParams.getAll('_author') || '';
-  const levelValue = searchParams.getAll('_level') || '';
-  const priceValue = searchParams.getAll('_price') || '';
-  const topicValue = searchParams.getAll('_topic') || '';
+  const authorValue = searchParams.getAll('_author') || [];
+  const levelValue = searchParams.getAll('_level') || [];
+  const priceValue = searchParams.getAll('_price') || [];
+  const topicValue = searchParams.getAll('_topic') || [];
 
   const params = {
     _limit: searchParams.get('_limit') ? Number(searchParams.get('_limit')) : 12,
@@ -61,7 +40,7 @@ const Courses = () => {
 
   const { data, isFetching } = useGetCoursesQuery(params);
 
-  const isFiltered = authorValue || levelValue || priceValue;
+  const isFiltered = authorValue.length > 0 || levelValue.length > 0 || priceValue.length > 0;
 
   const numberOfResult = data?.pagination._totalRows || 0;
   // Get all categories at db
@@ -79,44 +58,61 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const sortChangeHandler = (value: string) => {
-    console.log('value: ', value);
-
-    setSortParams({ _sort: value });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('_sort', value);
+    setSearchParams(newParams);
   };
 
   const filterAuthorsHandler = (e: CheckboxChangeEvent) => {
     const { checked, value } = e.target;
-    // console.log('e.target: ', e.target.getAttribute('author-id'));
-    const newValues = checked
-      ? [...filterParams._author, value]
-      : filterParams._author.filter((item: string) => item !== value);
-    setFilterParams({ _author: newValues });
+    const newParams = new URLSearchParams(searchParams);
+    if (checked) {
+      newParams.append('_author', value);
+    } else {
+      const authors = searchParams.getAll('_author').filter(author => author !== value);
+      newParams.delete('_author');
+      authors.forEach(author => newParams.append('_author', author));
+    }
+    setSearchParams(newParams);
   };
 
   const filterLevelHandler = (e: CheckboxChangeEvent) => {
     const { checked, value } = e.target;
-    const newValues = checked
-      ? [...filterParams._level, value]
-      : filterParams._level.filter((item: string) => item !== value);
-    setFilterParams({ _level: newValues });
+    const newParams = new URLSearchParams(searchParams);
+    if (checked) {
+      newParams.append('_level', value);
+    } else {
+      const levels = searchParams.getAll('_level').filter(level => level !== value);
+      newParams.delete('_level');
+      levels.forEach(level => newParams.append('_level', level));
+    }
+    setSearchParams(newParams);
   };
 
   const filterPriceHandler = (e: CheckboxChangeEvent) => {
     const { checked, value } = e.target;
-    const newValues = checked
-      ? [...filterParams._price, value]
-      : filterParams._price.filter((item: string) => item !== value);
-    setFilterParams({ _price: newValues });
+    const newParams = new URLSearchParams(searchParams);
+    if (checked) {
+      newParams.append('_price', value);
+    } else {
+      const prices = searchParams.getAll('_price').filter(price => price !== value);
+      newParams.delete('_price');
+      prices.forEach(price => newParams.append('_price', price));
+    }
+    setSearchParams(newParams);
   };
 
   const filterTopicHandler = (e: CheckboxChangeEvent) => {
     const { checked, value } = e.target;
-
-    const newValues = checked
-      ? [...filterParams._topic, value]
-      : filterParams._topic.filter((item: string) => item !== value);
-
-    setFilterParams({ _topic: newValues });
+    const newParams = new URLSearchParams(searchParams);
+    if (checked) {
+      newParams.append('_topic', value);
+    } else {
+      const topics = searchParams.getAll('_topic').filter(topic => topic !== value);
+      newParams.delete('_topic');
+      topics.forEach(topic => newParams.append('_topic', topic));
+    }
+    setSearchParams(newParams);
   };
 
   const clearFilterHandler = () => {
@@ -128,7 +124,9 @@ const Courses = () => {
   };
 
   const paginateHandler = (page: number) => {
-    setFilterParams({ _p: page });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('_p', page.toString());
+    setSearchParams(newParams);
   };
 
   return (
@@ -145,7 +143,7 @@ const Courses = () => {
             <div className='search-results'>
               {searchValue && (
                 <h3 className='search-results__text'>
-                  {numberOfResult} results for “{searchValue}”
+                  {numberOfResult} results for "{searchValue}"
                 </h3>
               )}
               <div className='search-results__sort'>
@@ -194,16 +192,6 @@ const Courses = () => {
                       </li>
                     </>
                   )}
-                  {/* <li className='status-filter__item'>
-                    <a href='' className='status-filter__item-link'>
-                      Popular
-                    </a>
-                  </li>
-                  <li className='status-filter__item'>
-                    <a href='' className='status-filter__item-link'>
-                      Free
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -216,19 +204,15 @@ const Courses = () => {
                     return (
                       <li key={author[1]._id} className='authors-filter__item'>
                         <Checkbox
-                          checked={filterParams._author.includes(author[1]._id)}
-                          onChange={(e) => filterAuthorsHandler(e)}
+                          value={author[1]._id}
+                          checked={authorValue.includes(author[1]._id)}
+                          onChange={filterAuthorsHandler}
                         >
                           {author[1].name}
                         </Checkbox>
                       </li>
                     );
                   })}
-                  {/* <li className='authors-filter__item'>
-                    <a className='authors-filter__item-link' href=''>
-                      Sang
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -242,34 +226,15 @@ const Courses = () => {
                     return (
                       <li key={index} className='course-level__item'>
                         <Checkbox
-                          checked={filterParams._level.includes(level)}
-                          onChange={(e) => filterLevelHandler(e)}
+                          value={level}
+                          checked={levelValue.includes(level)}
+                          onChange={filterLevelHandler}
                         >
                           {level}
                         </Checkbox>
                       </li>
                     );
                   })}
-                  {/* <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      All Levels
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Beginer
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Intermidate
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Expert
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -281,16 +246,16 @@ const Courses = () => {
                 <ul className='course-by-price__list'>
                   <li className='course-by-price__item'>
                     <Checkbox 
-                      checked={filterParams._price.includes('Free')} 
-                      onChange={(e) => filterPriceHandler(e)}
+                      checked={priceValue.includes('Free')} 
+                      onChange={filterPriceHandler}
                     >
                       Free
                     </Checkbox>
                   </li>
                   <li className='course-by-price__item'>
                     <Checkbox 
-                      checked={filterParams._price.includes('Paid')} 
-                      onChange={(e) => filterPriceHandler(e)}
+                      checked={priceValue.includes('Paid')} 
+                      onChange={filterPriceHandler}
                     >
                       Paid
                     </Checkbox>
@@ -308,8 +273,8 @@ const Courses = () => {
                     return (
                       <li key={cateItem._id} className='course-topic__item'>
                         <Checkbox
-                          checked={filterParams._topic.includes(cateItem._id)}
                           value={cateItem._id}
+                          checked={topicValue.includes(cateItem._id)}
                           onChange={filterTopicHandler}
                         >
                           {cateItem.name}
@@ -317,16 +282,6 @@ const Courses = () => {
                       </li>
                     );
                   })}
-                  {/* <li className='course-topic__item'>
-                    <a className='course-topic__item-link' href=''>
-                      Javascript
-                    </a>
-                  </li>
-                  <li className='course-topic__item'>
-                    <a className='course-topic__item-link' href=''>
-                      Free
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -335,17 +290,6 @@ const Courses = () => {
               <h3 className='courses__filter-bar-item-title'>Course Ratings</h3>
               <div className='course-ratings'>
                 <ul className='course-ratings__list'>
-                  {/* <li className='course-ratings__item'>
-                    <a className='course-ratings__item-link' href=''>
-                      5 star
-                    </a>
-                  </li>
-                  <li className='course-ratings__item'>
-                    <a className='course-ratings__item-link' href=''>
-                      4.5 star
-                    </a>
-                  </li> */}
-                  {/* onChange={filterRatingHandler} value={value} */}
                   <Radio.Group>
                     <Space direction='vertical'>
                       <Radio value={1}>
@@ -364,10 +308,6 @@ const Courses = () => {
                         <Rate allowHalf defaultValue={3} />
                         <span className='ml-2 font-normal'> 3 & up</span>
                       </Radio>
-                      {/* <Radio value={4}>
-                        More...
-                        {value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-                      </Radio> */}
                     </Space>
                   </Radio.Group>
                 </ul>
