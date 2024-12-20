@@ -16,11 +16,9 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        working-directory: Dosti-Courseware-master/Dosti-Courseware-master
         run: npm install
 
       - name: Build
-        working-directory: Dosti-Courseware-master/Dosti-Courseware-master
         run: npm run build
 
       - name: Deploy to Firebase
