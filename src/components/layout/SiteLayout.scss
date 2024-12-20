@@ -4,14 +4,6 @@ body {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: #0A1929;
-    padding-top: $header-height;
-}
-
-.site-layout {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -19,7 +11,7 @@ body {
     background-color: #0A1929;
 }
 
-.main-content {
+#main {
     flex: 1;
     display: flex;
     flex-direction: column;

@@ -5,11 +5,9 @@ import './SiteLayout.scss';
 
 const RootSiteLayout = () => {
   return (
-    <div className='site-layout'>
+    <div className='main' id='main'>
       <Header />
-      <main className='main-content'>
-        <Outlet />
-      </main>
+      <Outlet />
       <Footer />
     </div>
   );
