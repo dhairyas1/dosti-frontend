@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "Dosti-Courseware-master/Dosti-Courseware-master/dist",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
