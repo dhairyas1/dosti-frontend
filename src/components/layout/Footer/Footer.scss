@@ -5,6 +5,7 @@
     background-color: #78aafa;
     color: $light-text-color;
     padding: 2rem 0;
+    margin-bottom: 0;
 
     &__row {
         max-width: 1200px;
@@ -30,12 +31,13 @@
         margin: 1rem 0;
         max-width: 600px;
         text-align: left;
+        color: #0A1929;
     }
 
     &__title {
         font-size: 1.6rem;
         margin-bottom: 1rem;
-        color: $light-text-color;
+        color: #0A1929;
     }
 
     .featured-list {
@@ -46,7 +48,7 @@
             margin-bottom: 0.8rem;
 
             &-link {
-                color: $light-text-color;
+                color: #0A1929;
                 font-size: 1.2rem;
                 line-height: 1.4;
                 text-decoration: none;
