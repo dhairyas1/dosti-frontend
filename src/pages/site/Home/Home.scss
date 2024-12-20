@@ -4,10 +4,11 @@
     position: relative;
     width: 100%;
     font-size: 1.6rem;
-    min-height: calc(100vh - #{$header-height});
+    height: calc(100vh - #{$header-height});
     display: flex;
     color: $light-text-color;
-    margin-top: 0;
+    margin: 0;
+    padding: 0;
     background-size: cover;
     background-position: center;
     
@@ -89,26 +90,26 @@
 
 .our-benefits {
     padding: 0;
+    margin: 0;
     font-size: 1.6rem;
     text-align: center;
     background-color: $brand-primary-color;
     color: $light-text-color !important;
-    margin-top: 0;
     
     .container {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 4rem 2rem 0;
+        margin: 0;
+        padding: 3rem 2rem;
     }
     
     &__title {
         @include h-style('h2');
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
         color: $light-text-color !important;
     }
 
     &__sub-tittle {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         color: $light-text-color !important;
         max-width: 800px;
         margin-left: auto;
@@ -121,7 +122,7 @@
         gap: 3rem;
         max-width: 1200px;
         margin: 0 auto;
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
     }
 
     &__item {
