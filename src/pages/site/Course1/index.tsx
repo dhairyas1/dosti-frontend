@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'antd';
+import { RobotOutlined, CloseOutlined } from '@ant-design/icons';
 import './Course1.scss';
 
 interface Lesson {
@@ -12,6 +14,7 @@ interface Lesson {
 const Course1 = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
     // Simulate loading
@@ -90,6 +93,10 @@ const Course1 = () => {
 
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(lessons[0]);
 
+  const toggleChatbot = () => {
+    setShowChatbot(!showChatbot);
+  };
+
   if (isLoading) {
     return (
       <div className="course-container">
@@ -126,6 +133,14 @@ const Course1 = () => {
               </li>
             ))}
           </ul>
+          <Button 
+            type="primary" 
+            icon={<RobotOutlined />}
+            className="chatbot-toggle"
+            onClick={toggleChatbot}
+          >
+            Ask Codey AI
+          </Button>
         </aside>
 
         <main className="video-container">
@@ -148,6 +163,26 @@ const Course1 = () => {
             </ul>
           </div>
         </main>
+
+        {showChatbot && (
+          <div className="chatbot-container">
+            <div className="chatbot-header">
+              <h3>Codey AI Assistant</h3>
+              <Button 
+                type="text" 
+                icon={<CloseOutlined />} 
+                onClick={toggleChatbot}
+                className="close-button"
+              />
+            </div>
+            <iframe
+              src="https://explain-ai-chatbot-2ce90e.zapier.app/codey-ai"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

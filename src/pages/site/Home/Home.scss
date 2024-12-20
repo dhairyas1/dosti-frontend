@@ -2,13 +2,14 @@
 
 .banner {
     position: relative;
-    top: $header-height;
-    width: 100vw;
+    width: 100%;
     font-size: 1.6rem;
-    padding-top: 30%;
+    min-height: calc(100vh - #{$header-height});
     display: flex;
     color: $light-text-color;
-    min-height: 500px;
+    margin-top: $header-height;
+    background-size: cover;
+    background-position: center;
     
     &:before {
         content: "";
@@ -53,7 +54,6 @@
     }
 
     @media (max-width: map-get($breakpoint, tablet)) {
-        padding-top: 50%;
         &__wrapper {
             width: 768px;
             padding: 0rem 2rem;
@@ -88,11 +88,17 @@
 }
 
 .our-benefits {
-    margin-top: $header-height;
+    padding: 4rem 0;
     font-size: 1.6rem;
     text-align: center;
     background-color: $brand-primary-color;
     color: $light-text-color !important;
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
     
     &__title {
         @include h-style('h2');
@@ -101,35 +107,29 @@
     }
 
     &__sub-tittle {
-        margin-bottom: 8rem;
+        margin-bottom: 4rem;
         color: $light-text-color !important;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     &__list {
         display: flex;
-        margin-left: -3rem;
+        justify-content: center;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     &__item {
-        margin-left: 3rem;
+        flex: 1;
+        max-width: 350px;
         color: $light-text-color !important;
 
         &-icon {
             font-size: 3rem;
             color: $light-text-color !important;
-        }
-
-        &-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-
-            &:hover {
-                transform: scale(1.05);
-            }
         }
     }
 
@@ -159,26 +159,24 @@
     @media (max-width: map-get($breakpoint, tablet)) {
         &__list {
             padding: 0rem 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
         }
 
-        &__item-photo {
-            width: 120px;
-            height: 120px;
+        &__item {
+            flex: 0 0 calc(50% - 1rem);
         }
     }
 
     @media (max-width: map-get($breakpoint, mobile)) {
         &__list {
             flex-direction: column;
+            align-items: center;
         }
 
         &__item {
+            flex: 0 0 100%;
             margin-bottom: 2rem;
-        }
-
-        &__item-photo {
-            width: 100px;
-            height: 100px;
         }
     }
 }

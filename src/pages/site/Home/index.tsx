@@ -65,7 +65,7 @@ const HomePage = () => {
         <Fragment>
           <div className='our-benefits spacing-h-md '>
             <div className='container'>
-              <h2 className='our-benefits__title'>Benefits of our courses</h2>
+              <h2 className='our-benefits__title'>Benefits Of Our Courses</h2>
               <p className='our-benefits__sub-tittle'>
                 The most engaging and interactive courses for free, tailored for young learners.
               </p>

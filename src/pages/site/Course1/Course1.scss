@@ -134,6 +134,72 @@
       }
     }
   }
+
+  .chatbot-toggle {
+    margin-top: auto;
+    width: 100%;
+    background-color: #1890ff;
+    border: none;
+    height: 40px;
+    border-radius: 4px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #40a9ff;
+    }
+
+    .anticon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .chatbot-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 400px;
+    height: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  .chatbot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #1890ff;
+    color: #fff;
+
+    h3 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .close-button {
+      color: #fff;
+      border: none;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -148,5 +214,23 @@
       border-right: none;
       border-bottom: 1px solid #1e4976;
     }
+  }
+}
+
+@media (max-width: 1024px) {
+  .course-content {
+    flex-direction: column;
+  }
+
+  .lessons-sidebar {
+    width: 100%;
+  }
+
+  .chatbot-container {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
   }
 } 
