@@ -1,39 +1,19 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
-import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
-import RootAdminLayout from './components/AdminLayout/RootLayout';
 import RootSiteLayout from './components/layout/RootLayout';
 import ErrorPage from './pages/Error/404Error';
-import AdminAuth from './pages/admin/Auth';
-import Categories from './pages/admin/Categories';
-import CoursesList from './pages/admin/Courses/components/CoursesList';
-import Dashboard from './pages/admin/Dashboard';
-import Orders from './pages/admin/Orders';
-import CancelledSales from './pages/admin/Reports/components/CancelledSales';
-import Certifications from './pages/admin/Reports/components/Certifications';
-import CourseInsights from './pages/admin/Reports/components/CourseInsights';
-import CoursesRevenues from './pages/admin/Reports/components/CoursesReveneue';
-import InstructorsRevene from './pages/admin/Reports/components/InstructorsRevenue';
-import ReviewsCenter from './pages/admin/Reports/components/ReviewsCenter';
-import UsersProgress from './pages/admin/Reports/components/UsersProgress';
-import UsersSegment from './pages/admin/Reports/components/UsersSegments';
-import Settings from './pages/admin/Settings';
-import Users from './pages/admin/Users';
 import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
 import CourseDetail from './pages/site/CourseDetail';
-import SiteCourses from './pages/site/Courses';
+import CourseHome from './pages/site/CourseHome';
 import HomePage from './pages/site/Home';
 import OrderCompleted from './pages/site/OrderCompleted';
-import PathPlayer from './pages/site/PathPlayer';
 import Profile from './pages/site/Profile';
 import StartLearning from './pages/site/StartLearning';
-import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
-import { UserRole } from './types/user.type';
 
 // Create a wrapper component to handle auth state
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -45,23 +25,19 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootSiteLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         element: <HomePage />
       },
       {
-        path: '/courses',
-        children: [
-          {
-            index: true,
-            element: <SiteCourses />
-          },
-          {
-            path: ':courseId',
-            element: <CourseDetail />
-          }
-        ]
+        path: 'course-home',
+        element: <CourseHome />
+      },
+      {
+        path: 'courses/:courseId',
+        element: <CourseDetail />
       },
       {
         path: 'start',
@@ -105,7 +81,11 @@ export const router = createBrowserRouter([
 ], {
   future: {
     v7_startTransition: true,
-    v7_relativeSplatPath: true
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true
   }
 });
 
