@@ -8,6 +8,22 @@
     ],
     "rewrites": [
       {
+        "source": "/course_1",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/course_2.html",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/course_3.html",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/course-home",
+        "destination": "/index.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

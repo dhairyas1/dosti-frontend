@@ -22,7 +22,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuth ? <>{children}</> : <Navigate to="/" />;
 };
 
-export const router = createBrowserRouter([
+const routes = [
   {
     path: '/',
     element: <RootSiteLayout />,
@@ -90,7 +90,9 @@ export const router = createBrowserRouter([
       }
     ]
   }
-], {
+];
+
+export const router = createBrowserRouter(routes, {
   future: {
     v7_startTransition: true,
     v7_relativeSplatPath: true,
