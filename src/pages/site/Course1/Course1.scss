@@ -5,6 +5,7 @@
   min-height: 100vh;
   background-color: #0A1929;
   color: #f5f6fa;
+  position: relative;
 
   .loading {
     display: flex;
@@ -44,17 +45,21 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    position: relative;
   }
 
   .lessons-sidebar {
     background-color: #1a3b5d;
     padding: 1rem;
     border-right: 1px solid #1e4976;
+    display: flex;
+    flex-direction: column;
 
     .lesson-list {
       list-style: none;
       padding: 0;
       margin: 0;
+      flex: 1;
     }
 
     .lesson-item {
@@ -136,22 +141,23 @@
   }
 
   .chatbot-toggle {
-    margin-top: auto;
+    margin-top: 1rem;
     width: 100%;
-    background-color: #1890ff;
+    background-color: #78aafa;
     border: none;
     height: 40px;
     border-radius: 4px;
-    color: #fff;
+    color: #0A1929;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-weight: 500;
 
     &:hover {
-      background-color: #40a9ff;
+      background-color: #5b8fd9;
     }
 
     .anticon {
@@ -171,15 +177,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    z-index: 9999;
-
-    iframe {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      border: none;
-      background-color: #fff;
-    }
+    z-index: 1000;
   }
 
   .chatbot-header {
@@ -187,17 +185,17 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
-    background-color: #1890ff;
-    color: #fff;
-    z-index: 10000;
+    background-color: #78aafa;
+    color: #0A1929;
 
     h3 {
       margin: 0;
-      color: #fff;
+      color: #0A1929;
+      font-weight: 500;
     }
 
     .close-button {
-      color: #fff;
+      color: #0A1929;
       border: none;
       padding: 4px;
       display: flex;
@@ -205,7 +203,8 @@
       justify-content: center;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
       }
     }
   }
@@ -223,6 +222,14 @@
       border-right: none;
       border-bottom: 1px solid #1e4976;
     }
+
+    .chatbot-container {
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      right: 0;
+      border-radius: 0;
+    }
   }
 }
 
@@ -233,13 +240,5 @@
 
   .lessons-sidebar {
     width: 100%;
-  }
-
-  .chatbot-container {
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    right: 0;
-    border-radius: 0;
   }
 } 

@@ -17,7 +17,6 @@ const Course1 = () => {
   const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -176,12 +175,11 @@ const Course1 = () => {
               />
             </div>
             <iframe
-              src="https://codey-ai.zapier.app"
-              width="100%"
+              src="https://interfaces.zapier.com/embed/chatbot/cm2jarbb1002fdiy2y209rgpu"
               height="100%"
-              frameBorder="0"
-              allow="same-origin"
-              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+              width="100%"
+              allow="clipboard-write *"
+              style={{ border: 'none' }}
             />
           </div>
         )}
