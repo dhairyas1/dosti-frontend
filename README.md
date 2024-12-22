@@ -21,7 +21,7 @@ https://e-learning-platform.pro
 
 ### 2.1 Authentication feature: 
 + Using JWT authenticate for both user and admin site
-+ Users can signup 
++ Users can 
    - After signup, users are able to login (with username and password have created at website)
    - Password using bcrypt algorithm
    - Info to signup: Name, Email, Password, Phone
