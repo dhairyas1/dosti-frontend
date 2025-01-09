@@ -60,14 +60,17 @@
         &__wrapper {
             width: 768px;
             padding: 0rem 2rem;
+            z-index: 10;
         }
 
         &__title {
             @include h-style("h2");
+            z-index: 10;
         }
 
         &__content {
             margin: 1rem 0rem;
+            z-index: 10;
         }
     }
     
@@ -75,6 +78,7 @@
         &__wrapper {
             width: 375px;
             padding: 0rem 2rem;
+            z-index: 10;
             &-left {
                 width: 100%;
             }
@@ -82,10 +86,12 @@
 
         &__title {
             font-size: 2.4rem;
+            z-index: 10;
         }
 
         &__content {
             font-size: 1.2rem;
+            z-index: 10;
         }
     }
 }
