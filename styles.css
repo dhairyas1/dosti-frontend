@@ -21,6 +21,7 @@ header {
     background: #1a1a1a;
     color: white;
     border-radius: 8px;
+    z-index: 10;
 }
 
 header h1 {
