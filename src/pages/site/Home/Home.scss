@@ -11,6 +11,7 @@
     padding: 0;
     background-size: cover;
     background-position: center;
+    z-index: -1000;
     
     &:before {
         content: "";
@@ -29,7 +30,6 @@
         transform: translate(-50%, -50%);
         width: 1200px;
         margin: 0 auto;
-        z-index: 1;
         
         &-left {
             width: 50%;
@@ -52,7 +52,7 @@
         margin-bottom: 3rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         color: $light-text-color !important;
-        z-index: 9;
+        ;
     }
 
     @media (max-width: map-get($breakpoint, tablet)) {
@@ -114,6 +114,7 @@
         @include h-style('h2');
         margin-bottom: 2rem;
         color: $light-text-color !important;
+        z-index: 10;
     }
 
     &__sub-tittle {
@@ -122,6 +123,7 @@
         max-width: 800px;
         margin-left: auto;
         margin-right: auto;
+        z-index: 10;
     }
 
     &__list {
