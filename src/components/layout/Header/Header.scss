@@ -133,16 +133,16 @@ body {
 .mobile-nav {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
+  gap: 3rem;
+  padding: 2rem;
 
   &__item {
     width: 100%;
-    padding: 1.2rem;
+    padding: 1.5rem;
     text-align: left;
     background: none;
     border: none;
-    font-size: 1.8rem;
+    font-size: 2rem;
     cursor: pointer;
     transition: background-color 0.2s;
     font-weight: 500;
@@ -153,17 +153,8 @@ body {
   }
 }
 
-// Add styles for the drawer overlay
-:global(.ant-drawer-mask) {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-}
-
-:global(.ant-drawer-content-wrapper) {
-  z-index: 2147483648 !important;
-}
-
-:global(.ant-drawer-title) {
-  font-size: 2rem !important;
-  font-weight: 600 !important;
+// Remove the drawer title styles since we're not using it anymore
+:global(.ant-drawer-header) {
+  display: none !important;
 }
 

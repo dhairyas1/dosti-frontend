@@ -254,19 +254,17 @@ const Header = () => {
         </Modal>
 
         <Drawer
-          title='Menu'
           placement={'left'}
           width={300}
           onClose={onCloseMobileMenu}
           open={openMobileMenu}
           zIndex={2147483648}
           maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+          closable={false}
+          title={null}
           styles={{
-            header: {
-              padding: '24px 16px',
-            },
             body: {
-              padding: '0',
+              padding: '2rem 0',
             }
           }}
         >
