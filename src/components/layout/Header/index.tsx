@@ -270,17 +270,6 @@ const Header = () => {
                 {item.label}
               </Button>
             ))}
-            
-            {!isAuth && (
-              <div className='mobile-nav__auth'>
-                <Button onClick={signInHandler} className='mobile-nav__auth-btn'>
-                  Sign in
-                </Button>
-                <Button onClick={signUpHandler} className='mobile-nav__auth-btn'>
-                  Sign up
-                </Button>
-              </div>
-            )}
           </div>
         </Drawer>
       </div>
