@@ -29,7 +29,7 @@
         transform: translate(-50%, -50%);
         width: 1200px;
         margin: 0 auto;
-        z-index: 1;
+        z-index: 100;
         
         &-left {
             width: 50%;
@@ -44,7 +44,7 @@
         @include h-style("h1");
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         color: $light-text-color !important;
-        z-index: 10;
+        z-index: 1;
     }
 
     &__content {
@@ -53,7 +53,7 @@
         margin-bottom: 3rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         color: $light-text-color !important;
-        z-index: 10;
+        z-index: 1;
     }
 
     @media (max-width: map-get($breakpoint, tablet)) {
@@ -69,7 +69,7 @@
         &__wrapper {
             width: 768px;
             padding: 0rem 2rem;
-            z-index: 1;
+            z-index: 100;
         }
 
         &__title {
@@ -96,7 +96,7 @@
         &__wrapper {
             width: 375px;
             padding: 0rem 2rem;
-            z-index: 1;
+            z-index: 100;
             &-left {
                 width: 100%;
             }
