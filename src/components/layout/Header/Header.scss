@@ -107,19 +107,19 @@
                 justify-content: unset;
             }
 
-
             &__nav {
                 &-item {
-
                     &--user {
                         margin-left: 3rem;
                     }
                 }
-
             }
 
             &__auth {
-                display: none;
+                .btn {
+                    font-size: 1.4rem;
+                    padding: 0.5rem 1rem;
+                }
             }
       }
 
