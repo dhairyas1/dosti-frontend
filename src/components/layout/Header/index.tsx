@@ -259,6 +259,16 @@ const Header = () => {
           width={300}
           onClose={onCloseMobileMenu}
           open={openMobileMenu}
+          zIndex={2147483648}
+          maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+          styles={{
+            header: {
+              padding: '24px 16px',
+            },
+            body: {
+              padding: '0',
+            }
+          }}
         >
           <div className='mobile-nav'>
             {navigationItems.map((item) => (
