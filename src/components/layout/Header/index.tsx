@@ -180,6 +180,18 @@ const Header = () => {
     navigate('/course-home');
   };
 
+  const navigationItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Courses', path: '/course-home' },
+    { label: 'Contact', path: '/contact' },
+    { label: 'About us', path: '/about-us' }
+  ];
+
+  const handleDrawerNavigation = (path: string) => {
+    navigate(path);
+    setOpenMobileMenu(false); // Close drawer after navigation
+  };
+
   return (
     <>
       {notificationContextHolder}
@@ -242,19 +254,34 @@ const Header = () => {
         </Modal>
 
         <Drawer
-          title='Mobile menu'
+          title='Menu'
           placement={'left'}
           width={300}
           onClose={onCloseMobileMenu}
           open={openMobileMenu}
-          extra={
-            <Space>
-              <Button onClick={onCloseMobileMenu}>Cancel</Button>
-              <Button onClick={onCloseMobileMenu}>OK</Button>
-            </Space>
-          }
         >
-          <div>Content in here</div>
+          <div className='mobile-nav'>
+            {navigationItems.map((item) => (
+              <Button
+                key={item.path}
+                onClick={() => handleDrawerNavigation(item.path)}
+                className='mobile-nav__item'
+              >
+                {item.label}
+              </Button>
+            ))}
+            
+            {!isAuth && (
+              <div className='mobile-nav__auth'>
+                <Button onClick={signInHandler} className='mobile-nav__auth-btn'>
+                  Sign in
+                </Button>
+                <Button onClick={signUpHandler} className='mobile-nav__auth-btn'>
+                  Sign up
+                </Button>
+              </div>
+            )}
+          </div>
         </Drawer>
       </div>
     </>

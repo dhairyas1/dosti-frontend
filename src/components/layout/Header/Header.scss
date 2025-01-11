@@ -130,3 +130,37 @@ body {
     padding-top: $header-height;
 }
 
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__item {
+    width: 100%;
+    padding: 0.75rem;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  &__auth {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &-btn {
+      width: 100%;
+    }
+  }
+}
+
