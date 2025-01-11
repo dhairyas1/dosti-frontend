@@ -6,7 +6,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 2147483647;
     background-color:#78aafa;
     box-shadow: 0 0 10px rgba($brand-primary-color, 0.3);
     &__wrapper {
@@ -150,17 +150,5 @@ body {
     }
   }
 
-  &__auth {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-
-    &-btn {
-      width: 100%;
-    }
-  }
 }
 
