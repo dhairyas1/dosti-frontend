@@ -20,7 +20,7 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         opacity: 0.8;
-        z-index: -1000;
+        z-index: ;
     }
 
     &__wrapper {
@@ -30,6 +30,7 @@
         transform: translate(-50%, -50%);
         width: 1200px;
         margin: 0 auto;
+        z-index: 1;
         
         &-left {
             width: 50%;
@@ -65,7 +66,6 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             opacity: 0.8;
-            z-index: -1000;
         }
         &__wrapper {
             width: 768px;
@@ -93,12 +93,11 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             opacity: 0.8;
-            z-index: 1;
         }
         &__wrapper {
             width: 375px;
             padding: 0rem 2rem;
-            z-index: 2;
+            z-index: 1;
             &-left {
                 width: 100%;
             }
