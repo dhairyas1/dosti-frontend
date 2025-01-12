@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Home</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .progress-container {
+            margin-top: 15px;
+            padding: 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="course-container">
@@ -18,7 +42,13 @@
                     <div class="course-info">
                         <h2>Python Programming</h2>
                         <p>Learn Python from scratch with hands-on projects</p>
-                        <a href="#/courses/python" class="course-link">Start Learning</a>
+                        <a href="courses/python/index.html" class="course-link">Start Learning</a>
+                        <div class="progress-container">
+                            <div class="progress-text">Course Progress: <span class="progress-value" data-course="python">0%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress" data-course="python"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="course-card">
@@ -26,7 +56,13 @@
                     <div class="course-info">
                         <h2>JavaScript Essentials</h2>
                         <p>Master modern JavaScript development</p>
-                        <a href="#/courses/javascript" class="course-link">Start Learning</a>
+                        <a href="courses/javascript/index.html" class="course-link">Start Learning</a>
+                        <div class="progress-container">
+                            <div class="progress-text">Course Progress: <span class="progress-value" data-course="javascript">0%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress" data-course="javascript"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="course-card">
@@ -34,21 +70,40 @@
                     <div class="course-info">
                         <h2>React Development</h2>
                         <p>Build modern web applications with React</p>
-                        <a href="#/courses/react" class="course-link">Start Learning</a>
+                        <a href="courses/react/index.html" class="course-link">Start Learning</a>
+                        <div class="progress-container">
+                            <div class="progress-text">Course Progress: <span class="progress-value" data-course="react">0%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress" data-course="react"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     <script>
-        // Handle client-side routing
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash;
-            if (hash.startsWith('#/courses/')) {
-                const courseId = hash.replace('#/courses/', '');
-                window.location.href = `/courses/${courseId}`;
-            }
-        });
+        // Function to update progress bars
+        function updateAllProgress() {
+            const courses = ['python', 'javascript', 'react'];
+            
+            courses.forEach(course => {
+                // Get progress from localStorage
+                const progress = localStorage.getItem(`${course}_progress`) || 0;
+                
+                // Update progress bar and text
+                const progressBar = document.querySelector(`.progress[data-course="${course}"]`);
+                const progressText = document.querySelector(`.progress-value[data-course="${course}"]`);
+                
+                if (progressBar && progressText) {
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}%`;
+                }
+            });
+        }
+
+        // Update progress when page loads
+        document.addEventListener('DOMContentLoaded', updateAllProgress);
     </script>
 </body>
 </html>
