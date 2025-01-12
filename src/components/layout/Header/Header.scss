@@ -24,7 +24,7 @@
 
     
     &__logo-img {
-       height: 60px;
+       height: 40px;
        width: auto;
     }
     
@@ -93,6 +93,7 @@
             width: 375px;
             &__wrapper {
                 width: 375px;
+                padding: 0 1rem;
             }
 
             &__search {
@@ -100,7 +101,11 @@
             }
 
             &__logo {
-                margin-left: 2rem;
+                margin-left: 1rem;
+                
+                &-img {
+                    height: 35px;
+                }
             }
 
             &__wrapper {
@@ -110,15 +115,15 @@
             &__nav {
                 &-item {
                     &--user {
-                        margin-left: 3rem;
+                        margin-left: 2rem;
                     }
                 }
             }
 
             &__auth {
                 .btn {
-                    font-size: 1.2rem;
-                    padding: 0.4rem 0.8rem;
+                    font-size: 1.1rem;
+                    padding: 0.3rem 0.6rem;
                     white-space: nowrap;
                 }
             }
