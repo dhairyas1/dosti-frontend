@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python for Beginners</title>
+    <title>JavaScript Essentials</title>
     <style>
-        /* Copy the styles from course_1.html */
         :root {
             --primary-color: #78aafa;
             --secondary-color: #58b7d7;
@@ -196,8 +195,8 @@
 
     <div class="container">
         <header class="course-header">
-            <h1>Python for Beginners</h1>
-            <p>Learn Python programming from scratch</p>
+            <h1>JavaScript Essentials</h1>
+            <p>Master modern JavaScript development</p>
             <div class="progress-container">
                 <div class="progress-text">Course Progress: <span class="progress-value">0%</span></div>
                 <div class="progress-bar">
@@ -209,23 +208,23 @@
         <aside class="lessons-sidebar">
             <ul class="lesson-list">
                 <li class="lesson-item active">
-                    <span class="lesson-title">Introduction to Python</span>
+                    <span class="lesson-title">JavaScript Fundamentals</span>
                     <input type="checkbox" class="lesson-checkbox">
                 </li>
                 <li class="lesson-item">
-                    <span class="lesson-title">Variables and Data Types</span>
+                    <span class="lesson-title">DOM Manipulation</span>
                     <input type="checkbox" class="lesson-checkbox">
                 </li>
                 <li class="lesson-item">
-                    <span class="lesson-title">Control Flow</span>
+                    <span class="lesson-title">Events and Event Handling</span>
                     <input type="checkbox" class="lesson-checkbox">
                 </li>
                 <li class="lesson-item">
-                    <span class="lesson-title">Functions</span>
+                    <span class="lesson-title">Async Programming</span>
                     <input type="checkbox" class="lesson-checkbox">
                 </li>
                 <li class="lesson-item">
-                    <span class="lesson-title">Object-Oriented Programming</span>
+                    <span class="lesson-title">ES6+ Features</span>
                     <input type="checkbox" class="lesson-checkbox">
                 </li>
                 <li class="lesson-item">
@@ -243,13 +242,13 @@
                 </video>
             </div>
             <div class="lesson-info">
-                <h2>Introduction to Python</h2>
+                <h2>JavaScript Fundamentals</h2>
                 <p>In this lesson, you'll learn about:</p>
                 <ul>
-                    <li>What is Python?</li>
-                    <li>Setting up your development environment</li>
-                    <li>Writing your first Python program</li>
-                    <li>Basic syntax and structure</li>
+                    <li>Variables and Data Types</li>
+                    <li>Functions and Scope</li>
+                    <li>Control Flow</li>
+                    <li>Arrays and Objects</li>
                 </ul>
             </div>
         </main>
@@ -271,7 +270,7 @@
             progressText.textContent = `${progress}%`;
             
             // Store progress in localStorage
-            localStorage.setItem('python_progress', progress);
+            localStorage.setItem('javascript_progress', progress);
         }
 
         // Handle lesson completion
@@ -279,7 +278,7 @@
             // Load saved state
             const lessonItem = checkbox.closest('.lesson-item');
             const lessonTitle = lessonItem.querySelector('.lesson-title').textContent;
-            const isCompleted = localStorage.getItem(`python_lesson_${lessonTitle}`);
+            const isCompleted = localStorage.getItem(`javascript_lesson_${lessonTitle}`);
             
             if (isCompleted === 'true') {
                 checkbox.checked = true;
@@ -294,11 +293,11 @@
                 if (this.checked) {
                     lessonItem.classList.add('completed');
                     completedLessons++;
-                    localStorage.setItem(`python_lesson_${lessonTitle}`, 'true');
+                    localStorage.setItem(`javascript_lesson_${lessonTitle}`, 'true');
                 } else {
                     lessonItem.classList.remove('completed');
                     completedLessons--;
-                    localStorage.setItem(`python_lesson_${lessonTitle}`, 'false');
+                    localStorage.setItem(`javascript_lesson_${lessonTitle}`, 'false');
                 }
                 
                 updateProgress();
