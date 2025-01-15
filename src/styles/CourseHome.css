@@ -118,6 +118,17 @@ header {
 .advanced { background: var(--accent-color); color: white; }
 
 @media (max-width: 480px) {
+    .container {
+        margin-top: 100px;
+        padding: 1rem;
+    }
+    
+    header {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        display: block !important;
+    }
+
     .course-card {
         width: 100%;
     }
