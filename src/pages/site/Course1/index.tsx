@@ -8,34 +8,112 @@ const Course1: React.FC = () => {
 
   const lessons = [
     {
-      title: 'Introduction to Python',
+      title: 'Python Basics',
       completed: false,
       videoUrl: 'https://www.youtube.com/embed/kqtD5dpn9C8',
       objectives: ['Learn Python basics', 'Understand variables and data types', 'Write your first Python program']
     },
     {
-      title: 'Control Flow',
+      title: 'Working Modes',
       completed: false,
       videoUrl: 'https://www.youtube.com/embed/HZARImviDxg',
       objectives: ['Master if-else statements', 'Work with loops', 'Handle basic error cases']
     },
     {
-      title: 'Functions and Modules',
+      title: 'How to use Codey Chatbot',
       completed: false,
       videoUrl: 'https://www.youtube.com/embed/u-OmVr_fT4s',
-      objectives: ['Create and use functions', 'Work with parameters', 'Import and use modules']
+      objectives: ['Understand Codey Chatbot basics', 'Learn to interact with Codey Chatbot', 'Use Codey Chatbot for coding assistance']
     },
     {
-      title: 'Working with Lists and Dictionaries',
+      title: 'Python Syntax and Token',
       completed: false,
-      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
-      objectives: ['Understand Python lists', 'Work with dictionaries', 'Master list comprehensions']
+      videoUrl: 'https://www.youtube.com/embed/u-OmVr_fT4s',
+      objectives: ['Understand Python syntax', 'Learn about tokens in Python', 'Master Python syntax rules']
     },
     {
-      title: 'Object-Oriented Programming',
+      title: 'Variables and Data Types',
       completed: false,
       videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
-      objectives: ['Learn about classes', 'Understand inheritance', 'Work with objects and methods']
+      objectives: ['Understand variables in Python', 'Learn about data types in Python', 'Work with variables and data types']
+    },
+    {
+      title: 'Input/Output',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about input/output operations in Python', 'Understand how to read user input', 'Master output formatting']
+    },
+    {
+      title: 'Operators',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about operators in Python', 'Understand arithmetic operators', 'Master comparison and logical operators']
+    },
+    {
+      title: 'Conditional Statements',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about conditional statements in Python', 'Understand if-else statements', 'Master nested conditional statements']
+    },
+    {
+      title: 'Iteration',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about iteration in Python', 'Understand for loops', 'Master while loops']
+    },
+    {
+      title: 'Applications',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about real-world applications of Python', 'Understand how to apply Python in different domains', 'Master using Python for problem-solving']
+    },
+    {
+      title: 'String Basics',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about strings in Python', 'Understand string operations', 'Master string formatting']
+    },
+    {
+      title: 'String Operations',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about string operations in Python', 'Understand string concatenation', 'Master string slicing']
+    },
+    {
+      title: 'String Methods',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about string methods in Python', 'Understand string formatting methods', 'Master string manipulation methods']
+    },
+    {
+      title: 'Applications',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about real-world applications of strings in Python', 'Understand how to apply string operations in different domains', 'Master using strings for problem-solving']
+    },
+    {
+      title: 'Basics of Lists',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about lists in Python', 'Understand list operations', 'Master list indexing']
+    },
+    {
+      title: 'List Operations',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about list operations in Python', 'Understand list concatenation', 'Master list slicing']
+    },
+    {
+      title: 'List Methods',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about list methods in Python', 'Understand list manipulation methods', 'Master list sorting methods']
+    },
+    {
+      title: 'Applications',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about real-world applications of lists in Python', 'Understand how to apply list operations in different domains', 'Master using lists for problem-solving']
     }
   ];
 
