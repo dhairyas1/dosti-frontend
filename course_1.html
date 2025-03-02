@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Course</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .course-container {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .course-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .course-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .course-content {
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .lessons-sidebar {
+            width: 300px;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lesson-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .lesson-item:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .lesson-item.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .video-container {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-bottom: 2rem;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .lesson-info {
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .lesson-info h2 {
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .lesson-info p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .lesson-info ul {
+            padding-left: 1.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .lesson-checkbox {
+            margin-left: 1rem;
+            accent-color: #007bff;
+        }
+
+        .lesson-title {
+            font-weight: 500;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #007bff;
+            width: 0%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .course-content {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .lessons-sidebar {
+                width: 100%;
+            }
+
+            .course-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="course-container">
+        <div class="course-header">
+            <h1>Python for Beginners</h1>
+            <p>Learn Python programming from scratch</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Complete</div>
+        </div>
+
+        <div class="course-content">
+            <aside class="lessons-sidebar">
+                <ul class="lesson-list" id="lessonList">
+                    <!-- Lessons will be loaded here -->
+                </ul>
+            </aside>
+
+            <main class="video-container">
+                <div class="video-wrapper">
+                    <iframe id="lessonVideo" 
+                            width="100%" 
+                            height="100%" 
+                            src="" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="lesson-info" id="lessonInfo">
+                    <!-- Lesson info will be loaded here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Default video URLs (Python tutorial videos from freeCodeCamp)
+        const defaultVideos = {
+            intro: 'https://www.youtube.com/embed/rfscVS0vtbw', // Full Python course
+            variables: 'https://www.youtube.com/embed/Z1Yd7upQsXY', // Python variables
+            controlFlow: 'https://www.youtube.com/embed/Zp5MuPOtsSY', // Python control flow
+            functions: 'https://www.youtube.com/embed/9Os0o3wzS_I', // Python functions
+            oop: 'https://www.youtube.com/embed/JeznW_7DlB0' // Python OOP
+        };
+
+        // Course content
+        const lessons = [
+            {
+                title: 'Introduction to Python',
+                completed: false,
+                videoUrl: defaultVideos.intro,
+                objectives: [
+                    'What is Python?',
+                    'Setting up your development environment',
+                    'Writing your first Python program',
+                    'Basic syntax and structure'
+                ]
+            },
+            {
+                title: 'Variables and Data Types',
+                completed: false,
+                videoUrl: defaultVideos.variables,
+                objectives: [
+                    'Understanding variables',
+                    'Numbers, strings, and booleans',
+                    'Lists and dictionaries',
+                    'Type conversion'
+                ]
+            },
+            {
+                title: 'Control Flow',
+                completed: false,
+                videoUrl: defaultVideos.controlFlow,
+                objectives: [
+                    'If statements',
+                    'Loops (for and while)',
+                    'Break and continue',
+                    'Exception handling'
+                ]
+            },
+            {
+                title: 'Functions',
+                completed: false,
+                videoUrl: defaultVideos.functions,
+                objectives: [
+                    'Defining functions',
+                    'Parameters and return values',
+                    'Lambda functions',
+                    'Built-in functions'
+                ]
+            },
+            {
+                title: 'Object-Oriented Programming',
+                completed: false,
+                videoUrl: defaultVideos.oop,
+                objectives: [
+                    'Classes and objects',
+                    'Inheritance',
+                    'Encapsulation',
+                    'Polymorphism'
+                ]
+            }
+        ];
+
+        // Function to update progress
+        function updateProgress() {
+            const completedLessons = lessons.filter(lesson => lesson.completed).length;
+            const totalLessons = lessons.length;
+            const progressPercentage = (completedLessons / totalLessons) * 100;
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${Math.round(progressPercentage)}% Complete`;
+        }
+
+        // Function to mark lesson as completed
+        function markLessonCompleted(index) {
+            lessons[index].completed = true;
+            const checkbox = document.querySelectorAll('.lesson-checkbox')[index];
+            checkbox.checked = true;
+            updateProgress();
+        }
+
+        // Function to select a lesson
+        function selectLesson(lesson, index) {
+            // Update active lesson
+            document.querySelectorAll('.lesson-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.lesson-item')[index].classList.add('active');
+
+            // Update video source
+            const video = document.getElementById('lessonVideo');
+            video.src = lesson.videoUrl;
+
+            // Update lesson info
+            const lessonInfo = document.getElementById('lessonInfo');
+            lessonInfo.innerHTML = `
+                <h2>${lesson.title}</h2>
+                <p>In this lesson, you'll learn about:</p>
+                <ul>
+                    ${lesson.objectives.map(obj => `<li>${obj}</li>`).join('')}
+                </ul>
+            `;
+
+            // Add event listener for video completion
+            video.addEventListener('ended', () => {
+                markLessonCompleted(index);
+            });
+        }
+
+        // Function to initialize the page
+        function initializePage() {
+            const lessonList = document.getElementById('lessonList');
+            
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                li.className = 'lesson-item' + (index === 0 ? ' active' : '');
+                li.innerHTML = `
+                    <span class="lesson-title">${lesson.title}</span>
+                    <input type="checkbox" class="lesson-checkbox" ${lesson.completed ? 'checked' : ''}>
+                `;
+                
+                // Add click event for the list item
+                li.addEventListener('click', (e) => {
+                    if (e.target.type !== 'checkbox') {
+                        selectLesson(lesson, index);
+                    }
+                });
+
+                // Add change event for the checkbox
+                const checkbox = li.querySelector('.lesson-checkbox');
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    lessons[index].completed = e.target.checked;
+                    updateProgress();
+                });
+
+                lessonList.appendChild(li);
+            });
+
+            // Select first lesson by default
+            if (lessons.length > 0) {
+                selectLesson(lessons[0], 0);
+            }
+
+            // Initialize progress bar
+            updateProgress();
+        }
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
+

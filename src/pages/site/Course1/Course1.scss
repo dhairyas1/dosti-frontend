@@ -1,0 +1,186 @@
+.course-container {
+  display: flex;
+  min-height: calc(100vh - 64px);
+  background-color: #0A1929;
+  color: #f5f6fa;
+}
+
+.sidebar {
+  width: 300px;
+  background-color: #132f4c;
+  padding: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+  h2 {
+    color: #78aafa;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background-color: #78aafa;
+    color: #0A1929;
+  }
+
+  .lesson-number {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .lesson-title {
+    flex: 1;
+  }
+
+  .completed-badge {
+    color: #4ccf6d;
+    margin-left: 0.5rem;
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  position: relative;
+}
+
+.video-container {
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  position: relative;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.lesson-info {
+  margin-bottom: 2rem;
+
+  h2 {
+    color: #78aafa;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #78aafa;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+
+      &:before {
+        content: "•";
+        color: #78aafa;
+        position: absolute;
+        left: 0;
+      }
+    }
+  }
+}
+
+.chatbot-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #78aafa;
+  color: #0A1929;
+  border: none;
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 100;
+  font-size: 1.2rem;
+
+  .anticon {
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    background-color: #5b8fd9;
+  }
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  background-color: #132f4c;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+  overflow: hidden;
+
+  iframe {
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .chatbot-container {
+    width: calc(100% - 2rem);
+    height: 50vh;
+    bottom: 5rem;
+  }
+} 

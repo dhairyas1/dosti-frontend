@@ -1,0 +1,193 @@
+@import "../../../assets/sass/base";
+
+.banner {
+    position: relative;
+    width: 100%;
+    font-size: 1.6rem;
+    height: calc(100vh - #{$header-height});
+    display: flex;
+    color: $light-text-color;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0.8;
+    }
+
+    &__wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1200px;
+        margin: 0 auto;
+        z-index: 1;
+        
+        &-left {
+            width: 50%;
+        }
+
+        &-right {
+            width: 50%;
+        }
+    }
+
+    &__title {
+        @include h-style("h1");
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        color: $light-text-color !important;
+    }
+
+    &__content {
+        line-height: 1.4;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        color: $light-text-color !important;
+    }
+
+    @media (max-width: map-get($breakpoint, tablet)) {
+        &__wrapper {
+            width: 768px;
+            padding: 0rem 2rem;
+        }
+
+        &__title {
+            @include h-style("h2");
+        }
+
+        &__content {
+            margin: 1rem 0rem;
+        }
+    }
+    
+    @media (max-width: map-get($breakpoint, mobile)) {
+        &__wrapper {
+            width: 375px;
+            padding: 0rem 2rem;
+            &-left {
+                width: 100%;
+            }
+        }
+
+        &__title {
+            font-size: 2.4rem;
+        }
+
+        &__content {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.our-benefits {
+    padding: 0;
+    margin: 0;
+    font-size: 1.6rem;
+    text-align: center;
+    background-color: $brand-primary-color;
+    color: $light-text-color !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    &__title {
+        @include h-style('h2');
+        margin-bottom: 2rem;
+        color: $light-text-color !important;
+    }
+
+    &__sub-tittle {
+        margin-bottom: 2rem;
+        color: $light-text-color !important;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &__list {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        width: 100%;
+    }
+
+    &__item {
+        flex: 1;
+        max-width: 350px;
+        color: $light-text-color !important;
+
+        &-icon {
+            font-size: 3rem;
+            color: $light-text-color !important;
+        }
+    }
+
+    &__item-img {
+        margin-bottom: 2.5rem;
+        color: $light-text-color !important;
+        
+        .anticon {
+            color: $light-text-color !important;
+            font-size: 3rem;
+        }
+    }
+
+    &__item-title {
+        @include heading-style;
+        margin-bottom: 2.5rem;
+        color: $light-text-color !important;
+    }
+
+    &__item-content {
+        line-height: 1.55;
+        opacity: 0.8;
+        font-weight: 400;
+        color: $light-text-color !important;
+    }
+
+    @media (max-width: map-get($breakpoint, tablet)) {
+        &__list {
+            padding: 0rem 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        &__item {
+            flex: 0 0 calc(50% - 1rem);
+        }
+    }
+
+    @media (max-width: map-get($breakpoint, mobile)) {
+        &__list {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &__item {
+            flex: 0 0 100%;
+            margin-bottom: 2rem;
+        }
+    }
+}
