@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RobotOutlined, CloseOutlined } from '@ant-design/icons';
+import type { Progress as ProgressType } from 'antd';
+import { Progress } from 'antd';
 import './Course1.scss';
 
 const Course1: React.FC = () => {
   const [selectedLesson, setSelectedLesson] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
+  const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
 
   const lessons = [
     {
@@ -117,6 +120,28 @@ const Course1: React.FC = () => {
     }
   ];
 
+  // Calculate progress percentage
+  const totalLessons = lessons.filter(lesson => lesson.videoUrl !== '').length;
+  const progress = Math.round((completedLessons.size / totalLessons) * 100);
+
+  const handleVideoEnd = () => {
+    // Add current lesson to completed lessons
+    setCompletedLessons(prev => new Set([...prev, selectedLesson]));
+  };
+
+  // Load completed lessons from localStorage on component mount
+  useEffect(() => {
+    const savedCompletedLessons = localStorage.getItem('completedLessons');
+    if (savedCompletedLessons) {
+      setCompletedLessons(new Set(JSON.parse(savedCompletedLessons)));
+    }
+  }, []);
+
+  // Save completed lessons to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('completedLessons', JSON.stringify([...completedLessons]));
+  }, [completedLessons]);
+
   const toggleChatbot = () => {
     setShowChatbot(!showChatbot);
   };
@@ -125,6 +150,13 @@ const Course1: React.FC = () => {
     <div className="course-container">
       <div className="sidebar">
         <h2>Course Content</h2>
+        <div className="progress-container">
+          <Progress 
+            percent={progress} 
+            status={progress === 100 ? "success" : "active"}
+            format={(percent) => `${percent}% Complete`}
+          />
+        </div>
         <div className="lessons-list">
           {lessons.map((lesson, index) => (
             <div
@@ -134,7 +166,7 @@ const Course1: React.FC = () => {
             >
               <span className="lesson-number">{index + 1}</span>
               <span className="lesson-title">{lesson.title}</span>
-              {lesson.completed && <span className="completed-badge">✓</span>}
+              {completedLessons.has(index) && <span className="completed-badge">✓</span>}
             </div>
           ))}
         </div>
@@ -147,6 +179,7 @@ const Course1: React.FC = () => {
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            onEnded={handleVideoEnd}
           ></iframe>
         </div>
         <div className="lesson-info">
