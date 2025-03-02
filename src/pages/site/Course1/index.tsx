@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { RobotOutlined, CloseOutlined } from '@ant-design/icons';
-import type { Progress as ProgressType } from 'antd';
-import { Progress } from 'antd';
+import Progress from 'antd/lib/progress';
 import './Course1.scss';
+
+declare global {
+  interface Window {
+    onYouTubeIframeAPIReady: () => void;
+    YT: any;
+  }
+}
 
 const Course1: React.FC = () => {
   const [selectedLesson, setSelectedLesson] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
+  const [player, setPlayer] = useState<any>(null);
 
   const lessons = [
     {
@@ -124,6 +131,56 @@ const Course1: React.FC = () => {
   const totalLessons = lessons.filter(lesson => lesson.videoUrl !== '').length;
   const progress = Math.round((completedLessons.size / totalLessons) * 100);
 
+  // Load YouTube API
+  useEffect(() => {
+    // Load the YouTube IFrame Player API code asynchronously
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = () => {
+      createPlayer();
+    };
+
+    return () => {
+      window.onYouTubeIframeAPIReady = () => {};
+    };
+  }, []);
+
+  // Create or update player when selected lesson changes
+  useEffect(() => {
+    if (window.YT && window.YT.Player) {
+      createPlayer();
+    }
+  }, [selectedLesson]);
+
+  const createPlayer = () => {
+    const videoUrl = lessons[selectedLesson].videoUrl;
+    if (!videoUrl) return;
+
+    // Extract video ID from URL
+    const videoId = videoUrl.split('/').pop();
+    
+    if (player) {
+      player.destroy();
+    }
+
+    const newPlayer = new window.YT.Player('youtube-player', {
+      videoId,
+      events: {
+        onStateChange: (event: any) => {
+          // Video ended
+          if (event.data === window.YT.PlayerState.ENDED) {
+            handleVideoEnd();
+          }
+        },
+      },
+    });
+
+    setPlayer(newPlayer);
+  };
+
   const handleVideoEnd = () => {
     // Add current lesson to completed lessons
     setCompletedLessons(prev => new Set([...prev, selectedLesson]));
@@ -173,14 +230,7 @@ const Course1: React.FC = () => {
       </div>
       <div className="main-content">
         <div className="video-container">
-          <iframe
-            src={lessons[selectedLesson].videoUrl}
-            title={lessons[selectedLesson].title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            onEnded={handleVideoEnd}
-          ></iframe>
+          <div id="youtube-player"></div>
         </div>
         <div className="lesson-info">
           <h2>{lessons[selectedLesson].title}</h2>
