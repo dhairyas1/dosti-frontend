@@ -3,6 +3,9 @@
   min-height: calc(100vh - 64px);
   background-color: #0A1929;
   color: #f5f6fa;
+  margin-top: 64px; /* Add margin to account for fixed header */
+  position: relative;
+  z-index: 0; /* Ensure content is below header */
 }
 
 .sidebar {
@@ -10,6 +13,10 @@
   background-color: #132f4c;
   padding: 1.5rem;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 64px; /* Stick below the header */
+  height: calc(100vh - 64px);
+  overflow-y: auto;
 
   h2 {
     color: #78aafa;
