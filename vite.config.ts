@@ -7,7 +7,8 @@ export default defineConfig({
   base: '/',
   plugins: [react()],
   server: {
-    port: 8000,
+    port: 3000,
+    host: true,
     proxy: {
       '/api': {
         target: 'https://dosti-backend-1ign.onrender.com',

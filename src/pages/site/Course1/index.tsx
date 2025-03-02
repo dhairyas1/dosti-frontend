@@ -24,6 +24,18 @@ const Course1: React.FC = () => {
       completed: false,
       videoUrl: 'https://www.youtube.com/embed/u-OmVr_fT4s',
       objectives: ['Create and use functions', 'Work with parameters', 'Import and use modules']
+    },
+    {
+      title: 'Working with Lists and Dictionaries',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Understand Python lists', 'Work with dictionaries', 'Master list comprehensions']
+    },
+    {
+      title: 'Object-Oriented Programming',
+      completed: false,
+      videoUrl: 'https://www.youtube.com/embed/YOUR_VIDEO_ID',
+      objectives: ['Learn about classes', 'Understand inheritance', 'Work with objects and methods']
     }
   ];
 
