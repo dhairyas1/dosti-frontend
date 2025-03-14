@@ -36,6 +36,7 @@
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         .lessons-sidebar {
@@ -171,6 +172,64 @@
                 font-size: 2rem;
             }
         }
+
+        /* Add new styles for Jupyter integration */
+        .jupyter-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        }
+
+        .jupyter-toggle:hover {
+            transform: translateY(-2px);
+        }
+
+        .jupyter-container {
+            display: none;
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 33.33%;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transition: transform 0.3s ease;
+        }
+
+        .jupyter-container.active {
+            display: block;
+        }
+
+        .jupyter-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .course-content.with-jupyter {
+            width: 66.67%;
+            transition: width 0.3s ease;
+        }
+
+        .jupyter-resizer {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            cursor: ew-resize;
+            background: transparent;
+        }
     </style>
 </head>
 <body>
@@ -211,6 +270,15 @@
             </main>
         </div>
     </div>
+
+    <!-- Add Jupyter container -->
+    <div class="jupyter-container" id="jupyterContainer">
+        <div class="jupyter-resizer" id="jupyterResizer"></div>
+        <iframe class="jupyter-iframe" id="jupyterNotebook" src="https://jupyter.org/try-jupyter/lab/" frameborder="0"></iframe>
+    </div>
+    
+    <!-- Add toggle button -->
+    <button class="jupyter-toggle" id="jupyterToggle">Toggle Jupyter</button>
 
     <script>
         // Default video URLs (Python tutorial videos from freeCodeCamp)
@@ -369,6 +437,55 @@
 
         // Initialize the page when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializePage);
+
+        // Add Jupyter integration code
+        document.addEventListener('DOMContentLoaded', function() {
+            const jupyterToggle = document.getElementById('jupyterToggle');
+            const jupyterContainer = document.getElementById('jupyterContainer');
+            const courseContent = document.querySelector('.course-content');
+            const jupyterResizer = document.getElementById('jupyterResizer');
+            let isResizing = false;
+            let startX;
+            let startWidth;
+
+            jupyterToggle.addEventListener('click', () => {
+                jupyterContainer.classList.toggle('active');
+                if (jupyterContainer.classList.contains('active')) {
+                    courseContent.style.width = '66.67%';
+                } else {
+                    courseContent.style.width = '100%';
+                }
+            });
+
+            // Resizer functionality
+            jupyterResizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.pageX;
+                startWidth = jupyterContainer.offsetWidth;
+                
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', () => {
+                    isResizing = false;
+                    document.removeEventListener('mousemove', handleMouseMove);
+                });
+            });
+
+            function handleMouseMove(e) {
+                if (!isResizing) return;
+                
+                const width = startWidth - (e.pageX - startX);
+                const windowWidth = window.innerWidth;
+                
+                // Limit the width between 25% and 75% of window width
+                const minWidth = windowWidth * 0.25;
+                const maxWidth = windowWidth * 0.75;
+                
+                if (width >= minWidth && width <= maxWidth) {
+                    jupyterContainer.style.width = `${width}px`;
+                    courseContent.style.width = `${windowWidth - width}px`;
+                }
+            }
+        });
     </script>
 </body>
 </html>
