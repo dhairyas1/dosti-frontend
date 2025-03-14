@@ -173,24 +173,29 @@
             }
         }
 
-        /* Add new styles for Jupyter integration */
+        /* Jupyter Integration Styles */
         .jupyter-toggle {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
             background: #007bff;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             z-index: 1000;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .jupyter-toggle:hover {
+            background: #0056b3;
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .jupyter-container {
@@ -201,9 +206,9 @@
             width: 33.33%;
             height: 100vh;
             background: white;
-            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+            box-shadow: -2px 0 4px rgba(0,0,0,0.1);
             z-index: 999;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .jupyter-container.active {
@@ -216,11 +221,6 @@
             border: none;
         }
 
-        .course-content.with-jupyter {
-            width: 66.67%;
-            transition: width 0.3s ease;
-        }
-
         .jupyter-resizer {
             position: absolute;
             left: -5px;
@@ -229,6 +229,27 @@
             height: 100%;
             cursor: ew-resize;
             background: transparent;
+        }
+
+        .course-content.with-jupyter {
+            margin-right: 33.33%;
+            transition: margin-right 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .jupyter-container {
+                width: 100%;
+            }
+
+            .container.with-jupyter {
+                margin-right: 0;
+                display: none;
+            }
+
+            .jupyter-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
         }
     </style>
 </head>
@@ -277,8 +298,10 @@
         <iframe class="jupyter-iframe" id="jupyterNotebook" src="https://jupyter.org/try-jupyter/lab/" frameborder="0"></iframe>
     </div>
     
-    <!-- Add toggle button -->
-    <button class="jupyter-toggle" id="jupyterToggle">Toggle Jupyter</button>
+    <!-- Add Jupyter toggle button -->
+    <button class="jupyter-toggle" id="jupyterToggle">
+        <span>Open Jupyter Lab</span>
+    </button>
 
     <script>
         // Default video URLs (Python tutorial videos from freeCodeCamp)
@@ -438,7 +461,7 @@
         // Initialize the page when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializePage);
 
-        // Add Jupyter integration code
+        // Jupyter integration
         document.addEventListener('DOMContentLoaded', function() {
             const jupyterToggle = document.getElementById('jupyterToggle');
             const jupyterContainer = document.getElementById('jupyterContainer');
@@ -450,10 +473,12 @@
 
             jupyterToggle.addEventListener('click', () => {
                 jupyterContainer.classList.toggle('active');
+                courseContent.classList.toggle('with-jupyter');
+                
                 if (jupyterContainer.classList.contains('active')) {
-                    courseContent.style.width = '66.67%';
+                    jupyterToggle.innerHTML = '<span>Close Jupyter Lab</span>';
                 } else {
-                    courseContent.style.width = '100%';
+                    jupyterToggle.innerHTML = '<span>Open Jupyter Lab</span>';
                 }
             });
 
@@ -482,7 +507,7 @@
                 
                 if (width >= minWidth && width <= maxWidth) {
                     jupyterContainer.style.width = `${width}px`;
-                    courseContent.style.width = `${windowWidth - width}px`;
+                    courseContent.style.marginRight = `${width}px`;
                 }
             }
         });
