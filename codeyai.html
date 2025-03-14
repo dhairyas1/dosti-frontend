@@ -201,6 +201,69 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
+        /* Jupyter Integration Styles */
+        .jupyter-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .jupyter-toggle:hover {
+            background: var(--success-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .jupyter-container {
+            display: none;
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 33.33%;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 4px rgba(0,0,0,0.1);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .jupyter-container.active {
+            display: block;
+        }
+
+        .jupyter-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .jupyter-resizer {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            cursor: ew-resize;
+            background: transparent;
+        }
+
+        .container.with-jupyter {
+            margin-right: 33.33%;
+            transition: margin-right 0.3s ease;
+        }
+
         @media (max-width: 768px) {
             .nav-button-container {
                 position: relative;
@@ -219,6 +282,20 @@
                 right: 0;
                 margin: 1rem;
             }
+
+            .jupyter-container {
+                width: 100%;
+            }
+
+            .container.with-jupyter {
+                margin-right: 0;
+                display: none;
+            }
+
+            .jupyter-toggle {
+                bottom: 1rem;
+                right: 1rem;
+            }
         }
     </style>
 </head>
@@ -233,9 +310,9 @@
         </a>
     </div>
 
-    <!-- <a href="codeyai.html" class="codey-button">
+    <a href="codeyai.html" class="codey-button">
         ← Ask Codey-AI
-    </a> -->
+    </a>
 
     <div class="container">
         <header class="course-header">
@@ -385,5 +462,69 @@
     </script>
 
     <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Add Jupyter container -->
+    <div class="jupyter-container" id="jupyterContainer">
+        <div class="jupyter-resizer" id="jupyterResizer"></div>
+        <iframe class="jupyter-iframe" id="jupyterNotebook" src="https://jupyter.org/try-jupyter/lab/" frameborder="0"></iframe>
+    </div>
+    
+    <!-- Add Jupyter toggle button -->
+    <button class="jupyter-toggle" id="jupyterToggle">
+        <span>Open Jupyter Lab</span>
+    </button>
+
+    <script>
+        // Jupyter integration
+        document.addEventListener('DOMContentLoaded', function() {
+            const jupyterToggle = document.getElementById('jupyterToggle');
+            const jupyterContainer = document.getElementById('jupyterContainer');
+            const mainContainer = document.querySelector('.container');
+            const jupyterResizer = document.getElementById('jupyterResizer');
+            let isResizing = false;
+            let startX;
+            let startWidth;
+
+            jupyterToggle.addEventListener('click', () => {
+                jupyterContainer.classList.toggle('active');
+                mainContainer.classList.toggle('with-jupyter');
+                
+                if (jupyterContainer.classList.contains('active')) {
+                    jupyterToggle.innerHTML = '<span>Close Jupyter Lab</span>';
+                } else {
+                    jupyterToggle.innerHTML = '<span>Open Jupyter Lab</span>';
+                }
+            });
+
+            // Resizer functionality
+            jupyterResizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.pageX;
+                startWidth = jupyterContainer.offsetWidth;
+                
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', () => {
+                    isResizing = false;
+                    document.removeEventListener('mousemove', handleMouseMove);
+                });
+            });
+
+            function handleMouseMove(e) {
+                if (!isResizing) return;
+                
+                const width = startWidth - (e.pageX - startX);
+                const windowWidth = window.innerWidth;
+                
+                // Limit the width between 25% and 75% of window width
+                const minWidth = windowWidth * 0.25;
+                const maxWidth = windowWidth * 0.75;
+                
+                if (width >= minWidth && width <= maxWidth) {
+                    jupyterContainer.style.width = `${width}px`;
+                    mainContainer.style.marginRight = `${width}px`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
