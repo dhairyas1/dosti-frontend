@@ -6,33 +6,41 @@
     font-size: 1.6rem;
     height: calc(100vh - #{$header-height});
     display: flex;
+    align-items: center;
+    justify-content: center;
     color: $light-text-color;
     margin: 0;
     padding: 0;
     background-size: cover;
     background-position: center;
+    overflow: hidden;
     
     &:before {
         content: "";
         position: absolute;
         top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         opacity: 0.8;
+        z-index: 1;
     }
 
     &__wrapper {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 1200px;
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
         margin: 0 auto;
-        z-index: 1;
+        padding: 0 2rem;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         
         &-left {
             width: 50%;
+            padding-right: 2rem;
         }
 
         &-right {
@@ -44,20 +52,36 @@
         @include h-style("h1");
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         color: $light-text-color !important;
+        margin-bottom: 2rem;
     }
 
     &__content {
-        line-height: 1.4;
+        line-height: 1.6;
         font-weight: 400;
         margin-bottom: 3rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         color: $light-text-color !important;
+        font-size: 1.8rem;
+    }
+
+    &__cta--btns {
+        margin-top: 2rem;
     }
 
     @media (max-width: map-get($breakpoint, tablet)) {
         &__wrapper {
-            width: 768px;
-            padding: 0rem 2rem;
+            padding: 0 4rem;
+            flex-direction: column;
+            text-align: center;
+            
+            &-left, &-right {
+                width: 100%;
+                padding: 0;
+            }
+            
+            &-left {
+                margin-bottom: 2rem;
+            }
         }
 
         &__title {
@@ -65,17 +89,27 @@
         }
 
         &__content {
-            margin: 1rem 0rem;
+            margin: 1.5rem auto;
+            max-width: 600px;
+        }
+        
+        &__cta--btns {
+            display: flex;
+            justify-content: center;
+            
+            > div {
+                justify-content: center;
+            }
         }
     }
     
     @media (max-width: map-get($breakpoint, mobile)) {
+        height: auto;
+        min-height: calc(100vh - #{$header-height});
+        padding: 4rem 0;
+        
         &__wrapper {
-            width: 375px;
-            padding: 0rem 2rem;
-            &-left {
-                width: 100%;
-            }
+            padding: 0 2rem;
         }
 
         &__title {
@@ -83,7 +117,19 @@
         }
 
         &__content {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            max-width: 100%;
+        }
+        
+        &__cta--btns {
+            > div {
+                flex-direction: column;
+                gap: 1rem;
+                
+                .btn {
+                    width: 100%;
+                }
+            }
         }
     }
 }
