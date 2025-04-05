@@ -21,11 +21,22 @@ const RootSiteLayout: FC = () => {
               if (splitContainer) {
                 const isActive = splitContainer.classList.contains('active');
                 if (isActive) {
-                  // Move content to split view
+                  // Move content to split view and add mobile class
                   splitContent.appendChild(mainContent);
+                  mainContent.classList.add('mobile-view');
+                  // Preserve header width
+                  const header = mainContent.querySelector('.header');
+                  if (header) {
+                    header.classList.add('full-width');
+                  }
                 } else {
-                  // Move content back to original position
+                  // Move content back and remove mobile class
                   document.body.appendChild(mainContent);
+                  mainContent.classList.remove('mobile-view');
+                  const header = mainContent.querySelector('.header');
+                  if (header) {
+                    header.classList.remove('full-width');
+                  }
                 }
               }
             }

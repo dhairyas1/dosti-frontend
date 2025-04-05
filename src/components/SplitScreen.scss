@@ -46,10 +46,29 @@
     background-color: #ffffff;
     overflow-y: auto;
     pointer-events: auto;
+    display: flex;
+    flex-direction: column;
 
     #main-site-content {
       min-height: 100%;
       width: 100%;
+      max-width: 480px; // Standard mobile breakpoint
+      margin: 0 auto;
+      padding: 0 1rem;
+
+      // Keep header/banner at full width
+      :global(.header) {
+        max-width: none;
+        width: 100vw;
+        margin-left: calc(-50vw + 240px); // Centers the header
+        padding: 0;
+      }
+
+      // Apply mobile styles to the content
+      > *:not(.header) {
+        width: 100%;
+        max-width: 100%;
+      }
     }
   }
 

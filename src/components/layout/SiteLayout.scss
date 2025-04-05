@@ -18,4 +18,32 @@ body {
     margin: 0;
     padding: 0;
     background-color: #0A1929;
+
+    // Mobile view styles for split screen
+    &.mobile-view {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        transition: all 0.3s ease;
+
+        // Keep header at full width
+        .header.full-width {
+            width: 100vw;
+            max-width: none;
+            margin-left: calc(-50vw + 240px);
+            padding: 0;
+            position: relative;
+            left: 0;
+        }
+
+        // Mobile styles for content
+        > *:not(.header.full-width):not(.split-container) {
+            width: 100%;
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 }
