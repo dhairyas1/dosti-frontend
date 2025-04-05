@@ -39,15 +39,18 @@ const SplitScreen: FC = () => {
 
       <div className={`split-container ${isOpen ? 'active' : ''}`}>
         <div className="main-content">
-          {/* This div will wrap your existing content */}
+          <div id="main-site-content">
+            {/* Your main site content will be moved here by React */}
+          </div>
         </div>
         <div className="replit-content">
           <iframe
-            src="https://replit.com/@replit/Python?embed=true&theme=dark&outputonly=0"
+            src="https://replit.com/@replit/Python-3?lite=true&embed=true"
             width="100%"
             height="100%"
             title="Python Replit"
             allow="clipboard-write"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
           />
         </div>
       </div>

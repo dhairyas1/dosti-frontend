@@ -35,22 +35,30 @@
   z-index: 999;
   pointer-events: none;
   display: flex;
-  transform: translateX(100%);
-  transition: transform 0.5s ease;
+  visibility: hidden;
+  transition: visibility 0s 0.5s;
 
   .main-content {
     width: 50%;
     height: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    background-color: #ffffff;
+    overflow-y: auto;
     pointer-events: auto;
-    background-color: #0A1929;
+
+    #main-site-content {
+      min-height: 100%;
+      width: 100%;
+    }
   }
 
   .replit-content {
     width: 50%;
     height: 100%;
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
     background-color: white;
-    opacity: 0;
-    transition: opacity 0.5s ease;
     position: relative;
 
     iframe {
@@ -65,10 +73,12 @@
 
   &.active {
     pointer-events: auto;
-    transform: translateX(0);
+    visibility: visible;
+    transition: visibility 0s;
 
+    .main-content,
     .replit-content {
-      opacity: 1;
+      transform: translateX(0);
     }
   }
 } 
