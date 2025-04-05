@@ -1,18 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import './SplitScreen.scss';
 
 const SplitScreen: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSplit = () => {
-    setIsOpen(!isOpen);
+  const toggleSplit = useCallback(() => {
+    setIsOpen(prev => !prev);
     // When opening, we need to ensure the main content is visible
-    if (!isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  };
+    document.body.style.overflow = !isOpen ? 'hidden' : 'auto';
+  }, [isOpen]);
 
   return (
     <>

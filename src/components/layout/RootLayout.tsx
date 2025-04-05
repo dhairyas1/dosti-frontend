@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
@@ -6,6 +6,8 @@ import './SiteLayout.scss';
 import SplitScreen from '../SplitScreen';
 
 const RootSiteLayout: FC = () => {
+  const originalParentRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     // Function to move content between main and split view
     const handleSplitView = () => {
@@ -13,6 +15,11 @@ const RootSiteLayout: FC = () => {
       const splitContent = document.getElementById('main-site-content');
       
       if (mainContent && splitContent) {
+        // Store the original parent on first run
+        if (!originalParentRef.current) {
+          originalParentRef.current = mainContent.parentElement;
+        }
+
         // Create a mutation observer to watch for changes in the split container's class
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
@@ -31,7 +38,11 @@ const RootSiteLayout: FC = () => {
                   }
                 } else {
                   // Move content back and remove mobile class
-                  document.body.appendChild(mainContent);
+                  if (originalParentRef.current) {
+                    originalParentRef.current.appendChild(mainContent);
+                  } else {
+                    document.body.appendChild(mainContent);
+                  }
                   mainContent.classList.remove('mobile-view');
                   const header = mainContent.querySelector('.header');
                   if (header) {
