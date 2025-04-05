@@ -41,7 +41,7 @@ const SplitScreen: FC = () => {
         </div>
         <div className="replit-content">
           <iframe
-            src="https://replit.com/@replit/Python?embed=true"
+            src="https://replit.com/@replit/Python?lite=true&embed=true&v=1"
             width="100%"
             height="100%"
             title="Python Replit"
