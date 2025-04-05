@@ -41,12 +41,13 @@ const SplitScreen: FC = () => {
         </div>
         <div className="replit-content">
           <iframe
-            src="https://replit.com/@replit/Learn-Python?embed=true&lite=false"
+            src="https://codesandbox.io/embed/new?file=/main.py&template=python"
             width="100%"
             height="100%"
-            title="Python Learning Environment"
-            allow="clipboard-read; clipboard-write; fullscreen"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-presentation"
+            title="Python CodeSandbox"
+            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+            sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+            loading="lazy"
           />
         </div>
       </div>
