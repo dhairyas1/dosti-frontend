@@ -1,14 +1,38 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState, useCallback, useEffect } from 'react';
 import './SplitScreen.scss';
 
 const SplitScreen: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Cleanup function to reset body style when component unmounts or split screen closes
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
+  // Handle split screen toggle
   const toggleSplit = useCallback(() => {
-    setIsOpen(prev => !prev);
-    // When opening, we need to ensure the main content is visible
-    document.body.style.overflow = !isOpen ? 'hidden' : 'auto';
-  }, [isOpen]);
+    setIsOpen(prevState => {
+      const newState = !prevState;
+      document.body.style.overflow = newState ? 'hidden' : 'auto';
+      return newState;
+    });
+  }, []);
+
+  // Handle escape key to close split screen
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        toggleSplit();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, toggleSplit]);
 
   return (
     <>
@@ -42,6 +66,7 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
+              key={isOpen ? 'open' : 'closed'} // Force iframe refresh when reopening
               src="https://jupyter.org/try-jupyter/lab/"
               width="100%"
               height="100%"
