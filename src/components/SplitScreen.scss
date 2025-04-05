@@ -37,13 +37,14 @@
   display: flex;
   visibility: hidden;
   transition: visibility 0s 0.5s;
+  background: transparent;
 
   .main-content {
     width: 50%;
     height: 100%;
     transform: translateX(-100%);
     transition: transform 0.5s ease;
-    background-color: #ffffff;
+    background-color: transparent;
     overflow-y: auto;
     pointer-events: auto;
     display: flex;
@@ -55,6 +56,7 @@
       max-width: 480px; // Standard mobile breakpoint
       margin: 0 auto;
       padding: 0 1rem;
+      background: transparent;
 
       // Keep header/banner at full width
       :global(.header) {
