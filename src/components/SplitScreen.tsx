@@ -42,15 +42,13 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
-              src="https://www.jdoodle.com/embed/v0/6bYR"
+              src="https://www.pythonanywhere.com/embedded3/"
               width="100%"
               height="100%"
               title="Python Development Environment"
               frameBorder="0"
-              marginwidth="0"
-              marginheight="0"
               allowFullScreen
-              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads"
             />
           </div>
         </div>
