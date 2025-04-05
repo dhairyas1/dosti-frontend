@@ -42,13 +42,13 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
-              src="https://gitpod.io/#https://github.com/gitpod-io/python-hello-world"
+              src="https://jupyter.org/try-jupyter/lab/"
               width="100%"
               height="100%"
-              title="Python Development Environment"
+              title="Python Jupyter Environment"
               frameBorder="0"
               allowFullScreen
-              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              allow="clipboard-read; clipboard-write; fullscreen"
               sandbox="allow-downloads allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation"
             />
           </div>
