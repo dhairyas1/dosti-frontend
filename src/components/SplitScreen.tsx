@@ -6,6 +6,12 @@ const SplitScreen: FC = () => {
 
   const toggleSplit = () => {
     setIsOpen(!isOpen);
+    // When opening, we need to ensure the main content is visible
+    if (!isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   return (
@@ -32,18 +38,17 @@ const SplitScreen: FC = () => {
       </button>
 
       <div className={`split-container ${isOpen ? 'active' : ''}`}>
-        <div className="content-wrapper">
-          <div className="main-content">
-            {/* This div will wrap your existing content */}
-          </div>
-          <div className="replit-content">
-            <iframe
-              src="https://replit.com/@replit/HTML-CSS-JS?embed=true"
-              width="100%"
-              height="100%"
-              title="Replit Embed"
-            />
-          </div>
+        <div className="main-content">
+          {/* This div will wrap your existing content */}
+        </div>
+        <div className="replit-content">
+          <iframe
+            src="https://replit.com/@replit/Python?embed=true&theme=dark&outputonly=0"
+            width="100%"
+            height="100%"
+            title="Python Replit"
+            allow="clipboard-write"
+          />
         </div>
       </div>
     </>

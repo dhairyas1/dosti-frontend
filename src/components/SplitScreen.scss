@@ -34,43 +34,38 @@
   height: 100vh;
   z-index: 999;
   pointer-events: none;
+  display: flex;
+  transform: translateX(100%);
+  transition: transform 0.5s ease;
 
-  .content-wrapper {
-    display: flex;
-    width: 200%;
+  .main-content {
+    width: 50%;
     height: 100%;
-    transform: translateX(0);
-    transition: transform 0.5s ease;
+    pointer-events: auto;
+    background-color: #0A1929;
   }
 
-  .main-content,
   .replit-content {
     width: 50%;
     height: 100%;
-  }
-
-  .main-content {
-    pointer-events: auto;
-  }
-
-  .replit-content {
     background-color: white;
     opacity: 0;
     transition: opacity 0.5s ease;
+    position: relative;
 
     iframe {
       border: none;
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   }
 
   &.active {
     pointer-events: auto;
-
-    .content-wrapper {
-      transform: translateX(-50%);
-    }
+    transform: translateX(0);
 
     .replit-content {
       opacity: 1;
