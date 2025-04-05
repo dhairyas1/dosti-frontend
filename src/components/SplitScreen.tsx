@@ -33,24 +33,26 @@ const SplitScreen: FC = () => {
         </svg>
       </button>
 
-      <div className={`split-container ${isOpen ? 'active' : ''}`}>
-        <div className="main-content">
-          <div id="main-site-content">
-            {/* Your main site content will be moved here by React */}
+      {isOpen && (
+        <div className="split-container active">
+          <div className="main-content">
+            <div id="main-site-content">
+              {/* Your main site content will be moved here by React */}
+            </div>
+          </div>
+          <div className="replit-content">
+            <iframe
+              src="https://codesandbox.io/embed/python-starter?fontsize=14&hidenavigation=1&theme=dark"
+              width="100%"
+              height="100%"
+              title="Python Development Environment"
+              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+              loading="lazy"
+            />
           </div>
         </div>
-        <div className="replit-content">
-          <iframe
-            src="https://codesandbox.io/embed/new?file=/main.py&template=python"
-            width="100%"
-            height="100%"
-            title="Python CodeSandbox"
-            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-            sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-            loading="lazy"
-          />
-        </div>
-      </div>
+      )}
     </>
   );
 };
