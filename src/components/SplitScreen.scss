@@ -26,11 +26,23 @@
   }
 }
 
+// Add transition to body content
+body > div#root {
+  transition: width 0.3s ease, margin-right 0.3s ease;
+  width: 100%;
+  margin-right: 0;
+
+  &.split-active {
+    width: 50%;
+    margin-right: 50%;
+  }
+}
+
 .split-container {
   position: fixed;
   top: 8rem;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 50%;
   height: calc(100vh - 8rem);
   z-index: 999;
   pointer-events: none;
@@ -40,42 +52,11 @@
   background: transparent;
 
   .main-content {
-    width: 50%;
-    height: 100%;
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
-    background-color: transparent;
-    overflow-y: auto;
-    pointer-events: auto;
-    display: flex;
-    flex-direction: column;
-
-    #main-site-content {
-      min-height: 100%;
-      width: 100%;
-      max-width: 480px; // Standard mobile breakpoint
-      margin: 0 auto;
-      padding: 0 1rem;
-      background: transparent;
-
-      // Keep header/banner at full width
-      :global(.header) {
-        max-width: none;
-        width: 100vw;
-        margin-left: calc(-50vw + 240px); // Centers the header
-        padding: 0;
-      }
-
-      // Apply mobile styles to the content
-      > *:not(.header) {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
+    display: none; // Hide the duplicate main content
   }
 
   .replit-content {
-    width: 50%;
+    width: 100%;
     height: 100%;
     transform: translateX(100%);
     transition: transform 0.5s ease;
@@ -98,7 +79,6 @@
     visibility: visible;
     transition: visibility 0s;
 
-    .main-content,
     .replit-content {
       transform: translateX(0);
     }

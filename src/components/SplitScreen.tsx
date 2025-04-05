@@ -8,6 +8,7 @@ const SplitScreen: FC = () => {
   useEffect(() => {
     return () => {
       document.body.style.overflow = 'auto';
+      document.getElementById('root')?.classList.remove('split-active');
     };
   }, []);
 
@@ -16,6 +17,14 @@ const SplitScreen: FC = () => {
     setIsOpen(prevState => {
       const newState = !prevState;
       document.body.style.overflow = newState ? 'hidden' : 'auto';
+      const rootElement = document.getElementById('root');
+      if (rootElement) {
+        if (newState) {
+          rootElement.classList.add('split-active');
+        } else {
+          rootElement.classList.remove('split-active');
+        }
+      }
       return newState;
     });
   }, []);
