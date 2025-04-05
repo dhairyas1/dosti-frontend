@@ -24,6 +24,13 @@
   &.active {
     background-color: #1a2b3c;
   }
+
+  @media (max-width: 768px) {
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 // Add transition to body content
@@ -39,11 +46,23 @@ body > div#root {
     width: 50%;
     margin-right: 50%;
 
+    @media (max-width: 1024px) {
+      width: 40%;
+      margin-right: 60%;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 50vh; // Make space for the split screen at bottom
+    }
+
     // Adjust content container
     .container {
       width: 100% !important;
       padding: 0 1rem;
       flex: 1;
+      max-width: 100% !important;
       
       // Make content flow vertically
       > * {
@@ -63,19 +82,29 @@ body > div#root {
           margin-right: 0 !important;
         }
       }
+
+      @media (max-width: 768px) {
+        padding: 0 0.5rem;
+      }
     }
 
     // Ensure header spans full width
     .header {
-      width: 100vw !important;
+      width: 100% !important;
       left: 0;
-      right: 50%;
       padding: 0 1rem;
+      position: fixed;
+      top: 0;
+      z-index: 1001;
 
       &__wrapper {
         width: 100% !important;
         max-width: 100% !important;
         padding: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        padding: 0 0.5rem;
       }
     }
 
@@ -103,6 +132,20 @@ body > div#root {
   background: transparent;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 
+  @media (max-width: 1024px) {
+    width: 60%;
+  }
+
+  @media (max-width: 768px) {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50vh;
+    border-left: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
   .main-content {
     display: none; // Hide the duplicate main content
   }
@@ -115,6 +158,10 @@ body > div#root {
     background-color: transparent;
     position: relative;
     overflow: hidden; // Prevent iframe overflow
+
+    @media (max-width: 768px) {
+      transform: translateY(100%);
+    }
 
     iframe {
       border: none;
@@ -134,6 +181,10 @@ body > div#root {
 
     .replit-content {
       transform: translateX(0);
+
+      @media (max-width: 768px) {
+        transform: translateY(0);
+      }
     }
   }
 } 
