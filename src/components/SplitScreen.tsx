@@ -42,13 +42,14 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
-              src="https://www.pythonanywhere.com/embedded3/"
+              src="https://gitpod.io/#https://github.com/gitpod-io/python-hello-world"
               width="100%"
               height="100%"
               title="Python Development Environment"
               frameBorder="0"
               allowFullScreen
-              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-downloads"
+              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              sandbox="allow-downloads allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation"
             />
           </div>
         </div>
