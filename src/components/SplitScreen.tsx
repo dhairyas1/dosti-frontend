@@ -42,7 +42,7 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
-              src="https://codesandbox.io/embed/python-starter?fontsize=14&hidenavigation=1&theme=dark"
+              src="https://codesandbox.io/p/sandbox/python-forked-yvx573?file=/main.py&embed=1"
               width="100%"
               height="100%"
               title="Python Development Environment"
