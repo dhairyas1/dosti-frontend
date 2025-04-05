@@ -41,12 +41,12 @@ const SplitScreen: FC = () => {
         </div>
         <div className="replit-content">
           <iframe
-            src="https://replit.com/@replit/Python-3?lite=true&embed=true"
+            src="https://replit.com/languages/python3"
             width="100%"
             height="100%"
             title="Python Replit"
-            allow="clipboard-write"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+            allow="clipboard-write; clipboard-read; fullscreen"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-popups-to-escape-sandbox"
           />
         </div>
       </div>
