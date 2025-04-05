@@ -42,13 +42,15 @@ const SplitScreen: FC = () => {
           </div>
           <div className="replit-content">
             <iframe
-              src="https://codesandbox.io/p/sandbox/python-forked-yvx573?file=/main.py&embed=1"
+              src="https://www.jdoodle.com/embed/v0/6bYR"
               width="100%"
               height="100%"
               title="Python Development Environment"
-              allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+              frameBorder="0"
+              marginwidth="0"
+              marginheight="0"
+              allowFullScreen
               sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-              loading="lazy"
             />
           </div>
         </div>
